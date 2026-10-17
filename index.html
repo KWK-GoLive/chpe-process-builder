@@ -151,6 +151,7 @@ button { font: inherit; color: inherit; }
 .node.bad polygon, .node.bad circle:not(.node-hit) { filter: url(#none); }
 .node.bad { filter: drop-shadow(0 0 6px #ff3b2a) saturate(1.3); }
 .node.shake { animation: shake .45s; }
+.pad-base.bad { fill: rgba(255,59,42,.18); stroke: #ff3b2a; }   /* v6.4: the plot of a stopped unit (plots lie in their own layer) */
 @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
 .node-hit { fill: transparent; cursor: pointer; }
 .tag { pointer-events: auto; cursor: pointer; opacity: .82; transition: opacity .12s; } .tag:hover { opacity: 1; }   /* v6.4: name tags are a little see-through; hovering or tapping one opens its unit's card */
@@ -256,7 +257,7 @@ cite.ref { font-style: normal; font-family: var(--f-mono); font-size: .85em; col
 .tile-ico .ico { width: 40px; height: 44px; display: block; color: var(--fg); }
 .tile-txt { display: grid; min-width: 0; }
 .tile-l { font: 600 11px var(--f-display); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-.tile-v { font: 700 20px/1.15 var(--f-display); overflow-wrap: anywhere; }
+.tile-v { font: 700 20px/1.15 var(--f-display); overflow-wrap: break-word; }
 .tile-react .tile-v { font-size: 17px; }
 .tile-n { color: var(--muted); font-size: 12px; }
 .bubbles { display: flex; align-items: center; gap: 8px; }
@@ -503,7 +504,8 @@ details.more[open] summary { margin-bottom: 6px; }
 .report-time { display: flex; flex-direction: column; align-items: center; margin: 6px 0 14px; }
 .report-time .mono { font-size: 40px; font-weight: 700; color: var(--accent); line-height: 1.1; } .report-time small { color: var(--text-2); }
 
-.hc-go2 { display: flex; gap: 18px; flex-wrap: wrap; } .hc-go2 .hc-go { text-decoration: none; }   /* v6.4: two example processes */
+.hc-go2 { display: flex; gap: 18px; flex-wrap: wrap; } .hc-go2 .hc-go { text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }   /* final review: tap targets */
+.home-top .home-links a { display: inline-flex; align-items: center; min-height: 44px; }   /* v6.4: two example processes */
 
 </style>
 </head>
@@ -619,7 +621,7 @@ details.more[open] summary { margin-bottom: 6px; }
   <section class="screen" id="s-qr">
     <div class="qr-wrap">
       <p class="eyebrow">Competition</p>
-      <h1 class="display sm">Scan to build the CO₂ → methanol plant</h1>
+      <h1 class="display sm">Scan to build the CO₂&nbsp;→&nbsp;methanol plant</h1>
       <div class="qr-box" id="qr-box"></div>
       <p class="qr-url mono" id="qr-url"></p>
       <p class="note" id="qr-note" hidden></p>
@@ -3790,7 +3792,7 @@ PB.LEVELS.bioethanol = {
       biod: { name: 'Biodiesel', fl: 'biod', layer: 'light' },
       gly: { name: 'Glycerol', fl: 'gly', layer: 'heavy', polar: 1 },
       sugar: { name: 'Sugar', fl: 'molasses', polar: 1 },
-      vin: { name: 'Leftovers', fl: 'vinasse', polar: 1 },
+      vin: { name: 'Vinasse', fl: 'vinasse', polar: 1 },
       water: { name: 'Water', fl: 'water', bp: 100.0, cond: 'cw', aq: 1, polar: 1 },
       yeast: { name: 'Yeast', fl: 'yeast', cells: 1 },
       etoh: { name: 'Ethanol', fl: 'etoh', bp: 78.4, cond: 'cw', flam: 1, polar: 1 },
@@ -3826,7 +3828,9 @@ PB.LEVELS.bioethanol = {
         recycle: { c: 'meoh', name: 'methanol', msg: 'The unused methanol should be recovered and recycled back into the process. [1]' } },
 
       methanol: { id: 'methanol', skins: { reactor: 'fixedbed' }, title: 'CO₂ → Methanol', subtitle: 'Captured CO₂ + hydrogen → methanol', levelId: 'methanol', color: '#3a8fd0',
-        card: Object.assign({}, R_MEOH, {
+        card: Object.assign({}, R_MEOH, {   // final review: the reactor takes 75 bar [3] (± 5 bar), so the card shows that design only
+          tiles: R_MEOH.tiles.map(x => x.k === 'press' ? { k: 'press', label: 'Pressure', value: '75 bar', ref: 3 } : x),
+          needs: R_MEOH.needs.map(x => /^Pressure/.test(x) ? 'Pressure: high. One published design compresses the feed to 75 bar. [3]' : x),
           sep: [ lv('methanol', 'M6').facts[1], lv('methanol', 'M8').facts[1], lv('methanol', 'M6').facts[2] ],
           spec: [ 'Product: liquid methanol in the product tank. By-product: water.' ] }),
         reactions: [ { units: ['reactor', 'converter'], in: { c: ['co2', 'h2'], ph: 'G', T: [250], P: [75], cat: 'inside', Tref: ['Heat to 250 °C [3]'], Pref: ['Compress to 75 bar [3]'], span: 1 },
@@ -4052,7 +4056,7 @@ PB.LEVELS.bioethanol = {
         info: [ 'Sodium methoxide is one of the most commonly used biodiesel catalysts. [1]', 'It is usually supplied as a solution in methanol. [1]' ] },
       { id: 'co2', name: 'Captured CO₂', comps: ['co2'], ph: 'G', shape: 'sphere', band: 'co2', store: 'Gas · storage sphere (let down to low pressure at the tank outlet)',
         info: [ 'Carbon dioxide is a colourless, odourless gas, shipped as a liquefied compressed gas. [18]' ] },
-      { id: 'h2', name: 'Hydrogen', comps: ['h2'], ph: 'G', shape: 'sphere', band: 'h2', store: 'Gas · storage sphere (let down to low pressure at the tank outlet)',
+      { id: 'h2', name: 'Hydrogen', comps: ['h2'], ph: 'G', shape: 'sphere', band: 'h2', store: 'Gas · high-pressure storage sphere',
         info: [ 'Hydrogen is stored as a gas in high-pressure tanks, or as a liquid at very low (cryogenic) temperatures. [19]' ] },
       { id: 'n2', name: 'Nitrogen', comps: ['n2'], ph: 'G', shape: 'sphere', band: 'n2', store: 'Gas · storage sphere (let down to low pressure at the tank outlet)',
         info: [ 'Nitrogen is a colourless, odourless gas that does not burn. [20]' ] },
@@ -4144,6 +4148,8 @@ PB.LEVELS.bioethanol = {
       noLoop: 'The fermenter overheats: it needs a cooling loop (broth out, through a cooler set to the yeast temperature, and back in).',
       flashGas: 'There is no liquid in this stream yet, so a flash drum has nothing to separate. Cool it first so part of it condenses.',
       flashOne: 'This liquid has nothing volatile to flash off.',
+      flashWarm: 'The oils separate at the cooler temperature on the spec card. Cool the stream more first.',
+      flashCold: 'The liquid is too cold for the {c} to boil off. Heat it to its boiling point first.',
       flashLL: 'These are two liquid layers. Let them separate in a settler first.',
       flashCol: 'A single flash cannot split two liquids that both boil easily. Use a distillation column with many stages.',
       colIn: 'A distillation column needs a liquid feed made of parts with different boiling points.',
@@ -4305,13 +4311,13 @@ PB.ASSUMPTIONS = [
   { id: 'store', kind: 'basis', text: 'Product tanks, ponds and the wastewater plant store liquid at 1.01 bar and take it at 50 °C or cooler (cooling-water reach in Thailand): hot liquids are cooled on the way. The refrigerated ammonia tank takes chilled liquid at 0 °C or colder.' },
   { id: 'cw', kind: 'basis', text: 'Cooling water arrives at about 30 °C and returns at about 40 °C; process coolers bring streams to about 50 °C.' },
   { id: 'cwmin', kind: 'basis', text: 'The closest a cooling-water cooler gets is about 45 °C; colder needs refrigeration (chilled water).' },
-  { id: 'hotoil', kind: 'basis', text: 'Steam or hot oil heats streams up to about 350 °C (thermal fluids can serve up to 750 °F [22]); hotter heating uses a fired heater.' },
+  { id: 'hotoil', kind: 'basis', text: 'Hot oil heats streams up to about 350 °C (thermal fluids can serve up to 750 °F [22]); most steam systems only up to about 400 °F (≈ 204 °C) [22]; hotter heating uses a fired heater.' },
   { id: 'atm', kind: 'derived', text: 'Atmospheric pressure: 1 atm = 1.01 bar.' },
   { id: 'phase', kind: 'estimate', text: 'Whether a part is gas or liquid is judged by its normal boiling point, except that ammonia condenses when chilled to 0 °C or colder under loop pressure and a column\'s bottoms stay liquid at their boiling point at the column pressure. Compressors are cooled so the gas leaves at the temperature it came in.' },
-  { id: 'dp', kind: 'estimate', text: 'Pressure drops: heat exchanger 0.5 bar (within the 3–9 psi rule of thumb [30]), reactor 1 bar, flash drum 0.2 bar, pipe tee 0.1 bar. A flash drum fed with only liquid lets it down to 1.01 bar. Pressure never falls below 1.01 bar.' },
+  { id: 'dp', kind: 'estimate', text: 'Pressure drops: heat exchanger 0.5 bar (within the 3–9 psi rule of thumb [30]), reactor 1 bar, flash drum 0.2 bar, pipe joint 0.1 bar. A flash drum fed with only liquid lets it down to 1.01 bar. Pressure never falls below 1.01 bar.' },
   { id: 'pump', kind: 'estimate', text: 'A pump starts at 3 bar: enough to push a liquid through the next units.' },
   { id: 'blow', kind: 'estimate', text: 'Air for the sulfur burner is blown in at 1.2 bar, just above atmospheric pressure.' },
-  { id: 'colP', kind: 'estimate', text: 'Methanol column at about 1.2 bar, the pressure its feed enters at (120 kPa [3]); ethanol column at 2 atm = 2.03 bar, the overhead pressure of the NREL beer column [9].' },
+  { id: 'colP', kind: 'estimate', text: 'Methanol column at about 1.2 bar, the pressure its feed enters at (120 kPa [3]); ethanol column at 2 atm = 2.03 bar, the overhead pressure of the NREL beer column [9]. The game merges the NREL beer and rectification columns into one column.' },
   { id: 'colT', kind: 'derived', text: 'Column product temperatures are boiling points at the column pressure from NIST Antoine equations [2] [5] [8]: methanol 69 °C and water 105 °C at 1.2 bar; ethanol 99 °C and water 121 °C at 2.03 bar. The two water values extend the Antoine fit beyond its stated range.' },
   { id: 'held', kind: 'estimate', text: 'A reactor held at its spec temperature releases its products at that temperature: biodiesel reactor 65 °C, fermenter 45 °C.' },
   { id: 'meohT', kind: 'estimate', text: 'Methanol reactor outlet taken at 250 °C, the reaction temperature: the reactor is cooled to hold it, as in the isothermal reactor of [4].' },
@@ -4320,7 +4326,8 @@ PB.ASSUMPTIONS = [
   { id: 'convT', kind: 'estimate', text: 'SO₃-converter outlet about 600 °C, inside the 420–660 °C operating range of the catalyst [10].' },
   { id: 'absT', kind: 'estimate', text: 'Acid and leftover gas leave the absorption tower at about 60 °C: the circulating acid takes up the heat.' },
   { id: 'super', kind: 'estimate', text: 'Ethanol vapour is superheated before the molecular sieve [9], in the reference plant to about 120 °C, so that it cannot condense in the beads.' },
-  { id: 'saf', kind: 'basis', text: 'SAF from palm oil follows the course slides [31] and is simplified for teaching: no light gas is formed, no column runs under vacuum, and the reactor outlet is shown as all gas until it is cooled.' },
+  { id: 'saf', kind: 'basis', text: 'SAF from palm oil follows the course slides [31] and is simplified for teaching: no light gas is formed, no column runs under vacuum, and the reactor outlet is shown as all gas until it is cooled. Columns given at 1 bar on the slides are shown at 1.01 bar (1 atm).' },
+  { id: 'purge', kind: 'basis', text: 'The methanol loop has no purge: the game treats its feeds as pure CO₂ and hydrogen, so nothing builds up in the loop. Real plants purge a small part of the loop gas.' },
   { id: 'span', kind: 'basis', text: 'A reactor accepts its spec pressure ± 5 bar: methanol 75 bar → 70–80 bar; SAF 70 bar → 65–75 bar.' },
   { id: 'valve', kind: 'basis', text: 'A pressure drop of more than 2 bar into a low-pressure unit needs a pressure-reducing valve (control valves need a drop of at least 10 psi to control well [30]). So a stream let down into a tank at 1.01 bar may arrive at up to 3.01 bar without a valve, and a column takes its feed from its own pressure up to 2 bar above it: methanol column 1.2–3.2 bar, ethanol column 2.03–4.03 bar, SAF columns 1.01–3.01 bar.' },
   { id: 'loop', kind: 'estimate', text: 'The fermenter cooling loop uses cooling water: the cooler is set to 45 °C and takes away the heat the fermenting broth keeps making, so the broth goes back at 45 °C.' },
@@ -4616,8 +4623,9 @@ window.PB = window.PB || {};
     const S = SBX(), B = BS(), W = S.cardWords, N = S.needsSep[type]; if (!N) return null;
     const P = S.library[proc], made = uniq([].concat(...P.reactions.map(R => [].concat(...Object.values(R.out).map(o => o.c)))));
     let T = W.anyT, Pr = W.anyP;
-    if (type === 'flash') {   // a gas + liquid flash needs the vapour condensed first; a liquid flash (biodiesel) takes any temperature
+    if (type === 'flash') {   // a gas + liquid flash needs the vapour condensed first; a liquid flash (biodiesel) needs its light part at its boiling point
       const gasOut = P.reactions.some(R => Object.values(R.out).some(o => o.ph === 'G'));
+      if (!gasOut) { const C = S.comps, vol = made.filter(c => C[c].bp != null); if (vol.length) T = 'at least ' + Math.min(...vol.map(c => C[c].bp)) + ' °C'; }
       if (gasOut) { const C = S.comps, cond = made.filter(c => C[c].cond);
         if (cond.some(c => C[c].cond === 'chill')) T = '≤ ' + fmtT(B.chillCond);
         else if (cond.some(c => C[c].cond === 'oil')) T = '≤ ' + fmtT(B.oilCond);
@@ -4802,7 +4810,7 @@ window.PB = window.PB || {};
           const def = { id, x: it.x, y: it.y, name: it.name, tagText: it.name + (needSet && !isSet ? ' · set ?' : '') };
           pads.push(def); this.nodes[id] = { id, def, kind: 'pad', x: it.x, y: it.y, unit: it.type, skin: it.skin, flipX: it.flipX, bad: this.badId === id };
         } else {
-          const def = { id, kind: kindOf[it.cat], name: it.name, x: it.x, y: it.y, shape: shapeOf(it) };
+          const def = { id, kind: kindOf[it.cat], name: this.name(id), x: it.x, y: it.y, shape: shapeOf(it) };   // v7 review: a product tank shows what it stores
           fixed.push(def); this.nodes[id] = { id, def, kind: def.kind, x: it.x, y: it.y };
         }
       }
@@ -4826,8 +4834,8 @@ window.PB = window.PB || {};
       // other unit (along the axis it lies farther along, or k.axis), down to a stub; the route never comes back over the casing
       const upNoz = (it, o, k) => { const f = this.fp(it), [dx, dy, z] = k.up, ax = it.x + dx, ay = it.y + dy, out = 0.4 + (k.reach || 0);   // k.reach: a stub further out
         const sx = Math.sign(o.x - it.x) || 1;   // k.xdir: the only way this nozzle may run along x (never back over the casing's other nozzle)
-        if (k.axis === 'x' || (k.axis !== 'y' && Math.abs(o.x - it.x) > Math.abs(o.y - it.y) && (!k.xdir || k.xdir === sx))) { const sd = sx;
-          return { port: { k: 'ring', p: [ax, ay, z] }, stub: [snapOut(sd > 0 ? f.x1 + out : f.x0 - out, sd), ay], out: [sd, 0] }; }
+        if (k.axis !== 'y' && Math.abs(o.x - it.x) > Math.abs(o.y - it.y) && (!k.xdir || k.xdir === sx))
+          return { port: { k: 'ring', p: [ax, ay, z] }, stub: [snapOut(sx > 0 ? f.x1 + out : f.x0 - out, sx), ay], out: [sx, 0] };
         const sd = Math.sign(o.y - it.y) || (k.xdir ? -k.xdir : 1);   // on the same row a casing's two nozzles go out on opposite sides
         return { port: { k: 'ring', p: [ax, ay, z] }, stub: [ax, snapOut(sd > 0 ? f.y1 + out : f.y0 - out, sd)], out: [0, sd] }; };
       const noz = (p, id, port, isOut) => {
@@ -4855,9 +4863,9 @@ window.PB = window.PB || {};
           return { port: { k: kind, p: [it.x + sd[0] * R, it.y + sd[1] * R, z] },
             stub: sd[0] ? [snapOut(sd[0] > 0 ? f.x1 + 0.4 : f.x0 - 0.4, sd[0]), it.y] : [it.x, snapOut(sd[1] > 0 ? f.y1 + 0.4 : f.y0 - 0.4, sd[1])], out: sd };
         };
-        if (k === 'top' && eq.ring) { const wall = q => ['low', 'side'].includes(q.to === id ? nozzle(id, q.inPort, false) : nozzle(id, q.port, true)), mine = this.pipes.filter(q => q.to === id || q.from === id);
-          const tops = mine.filter(q => (q.to === id ? nozzle(id, q.inPort, false) : nozzle(id, q.port, true)) === 'top'), walls = mine.filter(wall);   // pipes at the wall keep their side free when there is room
-          return side(tops.length + walls.length <= 4 ? tops.concat(walls) : tops, eq.ring.r, eq.ring.z, 'ring'); }
+        if (k === 'top' && eq.ring) { const kindAt = q => q.to === id ? nozzle(id, q.inPort, false) : nozzle(id, q.port, true), mine = this.pipes.filter(q => q.to === id || q.from === id);
+          const tops = mine.filter(q => kindAt(q) === 'top'), walls = mine.filter(q => ['low', 'side'].includes(kindAt(q)));   // pipes at the wall keep their side free when there is room
+          return side(tops.length + walls.length <= 4 ? tops.concat(walls) : tops, eq.ring.r, eq.ring.z, 'ring') || { port: 'top' }; }
         if (eq.arms) return side(this.pipes.filter(q => q.to === id || q.from === id), eq.arms.r, eq.arms.z, 'end') || { port: 'top' };   // a fifth pipe drops onto the centre from above
         return { port: k };
       };
@@ -5148,7 +5156,7 @@ window.PB = window.PB || {};
           this.duty[it.id] = heat ? 'heat' : s.Tv >= B.whbFrom && T >= B.whbFrom ? 'whb' : T < B.cwMin ? 'refrig' : 'cw';
           // cooling condenses what boils above the new temperature (NIST normal boiling points); ammonia needs chilling under pressure
           let liq = s.liq.slice();
-          if (!heat) s.c.forEach(c => { if ((C[c].cond === 'cw' && T < C[c].bp) || (C[c].cond === 'chill' && T <= B.chillCond) || (C[c].cond === 'oil' && T <= B.oilCond)) liq.push(c); });
+          if (!heat) s.c.forEach(c => { if ((C[c].cond === 'cw' && T < C[c].bp) || (C[c].cond === 'chill' && T <= B.chillCond) || C[c].cond === 'oil') liq.push(c); });
           return { outs: { out: Object.assign({}, s, { liq: uniq(liq), Tv: T, Pv: drop(s.Pv, 'hx'), Ps: undefined, solid: false, sat: heat ? false : s.sat, cooled: !heat && s.c.includes('yeast') && s.c.includes('etoh') ? it.id : undefined }) } };
         }
         case 'mixer':
@@ -5175,13 +5183,16 @@ window.PB = window.PB || {};
         case 'flash': {
           if (p === 'G') return { fail: M.flashGas };
           if (p === 'LL') return { fail: M.flashLL };
+          if (s.c.some(c => C[c].cond === 'oil') && s.Tv > B.oilCond) return { fail: M.flashWarm };   // the SAF separation runs at its slide temperature
           const fP = { Pv: drop(s.Pv, 'flash') };
           if (p === 'GL') return { outs: { top: sub(s, s.c.filter(c => !s.liq.includes(c)), [], fP), bot: sub(s, s.liq, s.liq, Object.assign({ Pset: undefined }, fP)) } };
           if (p !== 'L') return { fail: M.flashOne };
           const vol = s.c.filter(c => C[c].bp != null), non = s.c.filter(c => C[c].bp == null);
           if (!vol.length) return { fail: M.flashOne };
-          if (!non.length) return { fail: vol.length > 1 ? M.flashCol : M.flashOne };
+          if (vol.length > 1) return { fail: M.flashCol };   // v7 review: two parts that both boil need a column, whatever else the liquid carries
+          if (!non.length) return { fail: M.flashOne };
           const light = vol.sort((a, b) => C[a].bp - C[b].bp)[0];
+          if (s.Tv < C[light].bp) return { fail: fmt(M.flashCold, { c: C[light].name }) };   // too cold to boil off at atmospheric pressure
           fP.Pv = B.atmP;   // a liquid flash lets the pressure down to boil off the volatile part
           return { outs: { top: sub(s, [light], [], fP), bot: sub(s, s.c.filter(c => c !== light), s.c.filter(c => c !== light), Object.assign({ Pset: undefined }, fP)) } };
         }
@@ -5326,8 +5337,10 @@ window.PB = window.PB || {};
     toJSON() { return { v: 1, proc: this.procId, mode: this.mode, seq: this.seq, items: this.order.map(id => this.items[id]), pipes: this.pipes, links: this.links, runs: this.runs, usedReference: !!this.usedReference, elapsed: this.elapsed() }; },
     load(o) {
       if (!o || o.proc !== this.procId || o.mode !== this.mode) return false;
-      this.items = {}; this.order = []; (o.items || []).filter(it => it.cat !== 'tee').forEach(it => { it.skin = this.skinOf(it.cat, it.type); this.items[it.id] = it; this.order.push(it.id); });
-      this.pipes = (o.pipes || []).filter(p => this.items[p.from] && this.items[p.to]); this.links = o.links || []; this.seq = o.seq || 0; this.runs = o.runs || 0; this.usedReference = !!o.usedReference; if (o.elapsed) this.started = performance.now() - o.elapsed * 1000;
+      const S = SBX(), known = it => it && typeof it.id === 'string' && /^\w+$/.test(it.id) && ({ unit: S.units, sink: S.sinks, waste: S.waste, util: S.utilities }[it.cat] || {}).hasOwnProperty(it.type) || (it && it.cat === 'raw' && typeof it.id === 'string' && /^\w+$/.test(it.id) && S.materials.some(m => m.id === it.type));
+      const own = id => typeof id === 'string' && Object.hasOwn(this.items, id), ok = q => q && typeof q.id === 'string' && /^\w+$/.test(q.id);
+      this.items = {}; this.order = []; (Array.isArray(o.items) ? o.items : []).filter(known).forEach(it => { it.sp = it.sp || {}; it.skin = this.skinOf(it.cat, it.type); this.items[it.id] = it; this.order.push(it.id); });
+      this.pipes = (Array.isArray(o.pipes) ? o.pipes : []).filter(p => ok(p) && own(p.from) && own(p.to)); this.links = (Array.isArray(o.links) ? o.links : []).filter(l => ok(l) && own(l.unit) && own(l.util)); this.seq = o.seq || 0; this.runs = o.runs || 0; this.usedReference = !!o.usedReference; if (o.elapsed) this.started = performance.now() - o.elapsed * 1000;
       this.placeFixed(); this.changed(); return true;
     },
     clear() { this.items = {}; this.order = []; this.pipes = []; this.links = []; this.usedReference = false; this.placeFixed(); this.changed(); },   // deploys and time are kept (fair scoring)
@@ -5631,7 +5644,7 @@ PB.IsoView.prototype = {
     if (n.kind === 'pad') {
       const s = 1.05, P = (x, y) => this.P(n.x + x, n.y + y, 0.03);
       if (this.padEls[id]) this.padEls[id].remove();
-      const base = this.padEls[id] = this.el('polygon', { class: 'pad-base' + (this.focus === id ? ' focus' : ''), points: this.poly([P(-s, -s), P(s, -s), P(s, s), P(-s, s)]) }, this.padLayer);
+      const base = this.padEls[id] = this.el('polygon', { class: 'pad-base' + (this.focus === id ? ' focus' : '') + (n.bad ? ' bad' : ''), points: this.poly([P(-s, -s), P(s, -s), P(s, s), P(-s, s)]) }, this.padLayer);
       const eq = PB.EQUIP[n.skin || n.unit];
       this.drawShape(PB.unitShape(n), n.x, n.y, g);
       tagsG[id] = this.tag(this.tagLayer, n.x, n.y, Math.min(PB.shapeTop(eq.shape), 2.6) + (/^(settler|flash)$/.test(n.unit) ? 0.85 : 0.35), n.def.tagText, n.bad ? 'tag-bad' : 'tag-unit');
@@ -5681,11 +5694,11 @@ PB.IsoView.prototype = {
     const n = this.g.nodes[id]; if (n) return this.P(n.x, n.y, 0.8);
     const pe = this.pipeEls[id]; if (!pe) return null; return this.P(...pe.anchor);
   },
-  centerOn(id, frac) {
+  centerOn(id, frac, lift) {   // lift: the unit sits this fraction of the height above the centre
     const c = this.itemPos(id); if (!c) return;
     const r = this.svg.getBoundingClientRect(), asp = (r.height || 1) / (r.width || 1);
     const w = this.bounds.w * (frac || 0.5), h = w * asp;
-    this.anim = { x: c[0] - w / 2, y: c[1] - h / 2, w, h };
+    this.anim = { x: c[0] - w / 2, y: c[1] - h / 2 + h * (lift || 0), w, h };
   },
   /* client (screen) position of an item, used by the automated tap test */
   screenPos(id) {
@@ -5781,7 +5794,10 @@ PB.IsoView.prototype = {
       const c = n.def.card; if (!c || (only && only !== n.id)) continue;
       const shape = n.kind === 'pad' ? PB.unitShape(n) : n.def.shape, base = this.P(n.x, n.y, Math.min(PB.shapeTop(shape), 2.6) + 0.55);
       const rows = Math.max(...c.cols.slice(0, PB.CARD_MAX_COLS).map(k => k.comps.length)), w = Math.max(96 * Math.min(PB.CARD_MAX_COLS, c.cols.length) + 8, 30 + c.title.length * 6.6), h = 64 + rows * 13;   // a long title widens the card
-      todo.push({ n, c, base, w, h, x: base[0] - w / 2, y: base[1] - h - 6 });
+      const r = this.svg.getBoundingClientRect(), s = Math.min(r.width / this.vb.w, r.height / this.vb.h) || 1;
+      const k = only ? Math.min(Math.max(1, 1.3 / s), (r.width - 32) / s / w) : 1;   // final review: card text about 11 px, never wider than the screen
+      const m = 16 / s, x0 = base[0] - w * k / 2, xc = only ? Math.max(this.vb.x + m, Math.min(x0, this.vb.x + this.vb.w - w * k - m)) : x0;   // a single card stays on screen
+      todo.push({ n, c, base, w, h, k, x: xc, y: base[1] - h * k - 6 });
       if (this.tagEls && this.tagEls[n.id]) this.tagEls[n.id].style.display = 'none';   // the card title replaces the name tag
     }
     todo.sort((a, b) => b.base[1] - a.base[1]);
@@ -5791,10 +5807,10 @@ PB.IsoView.prototype = {
       placed.push(k);
     }
     const leads = this.el('g', {}, layer);
-    for (const { n, c, base, w, h, x, y } of todo) {
+    for (const { n, c, base, w, h, k, x, y } of todo) {
       if (y + h + 6 < base[1] - 2) this.el('line', { class: 'ucard-lead', x1: base[0], y1: base[1], x2: base[0], y2: y + h }, leads);
       const colW = 96, rowH = 13, cols = c.cols.slice(0, PB.CARD_MAX_COLS);
-      const g = this.el('g', { class: 'ucard g-' + (c.grp || 'unit') + (n.bad ? ' bad' : '') + (this.cardFocus === n.id ? ' on' : ''), 'data-id': n.id, transform: `translate(${x.toFixed(1)},${y.toFixed(1)})` }, layer);
+      const g = this.el('g', { class: 'ucard g-' + (c.grp || 'unit') + (n.bad ? ' bad' : '') + (this.cardFocus === n.id ? ' on' : ''), 'data-id': n.id, transform: `translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${k.toFixed(3)})` }, layer);
       g.addEventListener('pointerenter', () => layer.appendChild(g));   // v6: the card under the pointer comes to the front (and turns solid in CSS)
       const clip = 'ucc-' + n.id;
       const cp = this.el('clipPath', { id: clip }, g); this.el('rect', { width: w, height: h, rx: 7 }, cp);
@@ -5854,10 +5870,10 @@ window.PB = window.PB || {};
 
   /* ---------- entry / exit ---------- */
   function enter(hash) {
-    const ex = /^example(?:-([a-z]+))?$/.exec(hash || ''); if (ex) return start(ex[1] && LIB()[ex[1]] ? ex[1] : 'biodiesel', 'basic', 'example');   // v6.4: biodiesel or SAF
+    const ex = /^example(?:-([a-z]+))?$/.exec(hash || ''); if (ex) return start(ex[1] && Object.hasOwn(LIB(), ex[1]) ? ex[1] : 'biodiesel', 'basic', 'example');   // v6.4: biodiesel or SAF
     if (hash === 'competition') return start('methanol', 'basic', 'competition');
     const m = /^sandbox-([a-z]+)-(basic|advanced)$/.exec(hash || '');
-    if (m && LIB()[m[1]]) start(m[1], m[2], 'sandbox'); else showSetup();
+    if (m && Object.hasOwn(LIB(), m[1])) start(m[1], m[2], 'sandbox'); else showSetup();
   }
   function leave() { stop(); closeSheet(); }
   function stop() { if (!SB) return; SB.alive = false; cancelAnimationFrame(SB.raf); if (SB.view) SB.view.destroy(); SB = null; }
@@ -6029,10 +6045,12 @@ window.PB = window.PB || {};
   function clearAction() { if (!SB) return; SB.action = null; $('#sb-banner').hidden = true; SB.view.highlightZone(null); SB.view.setFocus(null); status(); }
   $('#sb-cancel').onclick = () => clearAction();
 
+  /* the board view before a phone's first-tap zoom comes back once the card is done with */
+  function unZoom() { if (!SB.preZoom) return; SB.view.vb = SB.preZoom; SB.preZoom = null; SB.view.applyVB(); }
   /* ---------- taps on the board ---------- */
   function onTapBoard(xy) {
     if (!SB) return; const a = SB.action;
-    if (!a) { if (SB.cardOnly) { SB.cardOnly = null; makeView(); } else U().toast('Tap ＋ Add to place equipment here.'); return; }
+    if (!a) { if (SB.cardOnly) { SB.cardOnly = null; unZoom(); makeView(); } else U().toast('Tap ＋ Add to place equipment here.'); return; }
     if (a.kind === 'place') {
       const r = SB.game.place(a.cat, a.type, xy[0], xy[1]);
       if (!r.ok) { U().toast(r.msg, true); return; }
@@ -6059,7 +6077,10 @@ window.PB = window.PB || {};
     if (a && a.kind === 'connect') { if (node) connectTo(node.id); else onTapBoard(xy); return; }
     if (a && a.kind === 'link') { if (node) linkTo(node.id); else onTapBoard(xy); return; }
     // v6.4: on a touch screen the first tap shows the unit's card on the board, a second tap opens the unit card
-    if (node && ptype && ptype !== 'mouse' && !SB.cardsOn && SB.cardOnly !== node.id) { SB.cardOnly = node.id; makeView(); return; }
+    if (node && ptype && ptype !== 'mouse' && !SB.cardsOn && SB.cardOnly !== node.id) { SB.cardOnly = node.id; makeView();
+      if (U().smallScreen()) { const v = SB.view, r = v.svg.getBoundingClientRect(); if (!SB.preZoom) SB.preZoom = Object.assign({}, v.vb); v.centerOn(node.id, Math.min(0.5, r.width / 1.3 / v.bounds.w), -0.15); v.vb = Object.assign({}, v.anim); v.anim = null; v.applyVB(); v.drawCards(node.id); }   // final review: on a phone the card is read close up
+      return; }
+    if (SB.cardOnly) { SB.cardOnly = null; unZoom(); makeView(); }   // the enlarged card is done once the unit card opens
     if (node) itemCard(node.id); else if (edge) pipeCard(edge.id);
   }
   function connectTo(to, inPort) {
@@ -6148,7 +6169,7 @@ window.PB = window.PB || {};
     // connections
     // v6: one section for what comes in and one for what goes out; each lists its pipes with a remove button
     const outs = g.outPorts(id), insP = g.pipes.filter(p => p.to === id);
-    const pipeRow = (p, label) => `<li><span>${label}</span><button class="icon-btn sm" data-unpipe="${p.id}" aria-label="Remove pipe">✕</button></li>`;
+    const pipeRow = (p, label) => `<li><span>${label}</span><button class="icon-btn sm" data-unpipe="${esc(p.id)}" aria-label="Remove pipe">✕</button></li>`;
     let cx = '';
     if (g.inPorts(id).length) cx += `<p class="eyebrow">Inlets</p>` + (insP.length ? `<ul class="sb-pipes">${insP.map(p => pipeRow(p, 'From ' + esc(g.name(p.from)))).join('')}</ul>` : '<p class="muted small">Nothing is connected yet. Connect it from the unit upstream.</p>');
     if (outs.length) cx += `<p class="eyebrow">Outlets</p>` + outs.map(o => { const ps = g.pipes.filter(p => p.from === id && p.port === o[0]);
@@ -6158,7 +6179,7 @@ window.PB = window.PB || {};
       const need = g.needs(id), lk = g.links.filter(l => l.unit === id), heatOil = it.type === 'hx' && g.hxDuty(id) === 'heat' && it.sp.T > PB.SANDBOX.basis.steamMax;
       const NAME = { power: 'electricity', steam: heatOil ? 'hot oil (Boiler House)' : 'steam (Boiler House)', cw: 'cooling water', refrig: 'refrigeration', fuel: 'fuel gas' };
       if (need.length || lk.length) cx += `<p class="eyebrow">Utilities</p><ul class="sb-pipes">${need.map(n => `<li><span>${lk.find(l => l.gives === n) ? '✓' : '○'} ${n === 'steam' && it.type === 'hx' && g.hxDuty(id) === 'whb' ? 'Sends steam to the Boiler House' : 'Needs ' + NAME[n]}</span></li>`).join('')}` +
-        lk.map(l => `<li><span>Linked: ${esc(g.name(l.util))}</span><button class="icon-btn sm" data-unlink="${l.id}" aria-label="Remove link">✕</button></li>`).join('') + `</ul><button class="btn sm" data-link="1">Link a utility →</button>`;
+        lk.map(l => `<li><span>Linked: ${esc(g.name(l.util))}</span><button class="icon-btn sm" data-unlink="${esc(l.id)}" aria-label="Remove link">✕</button></li>`).join('') + `</ul><button class="btn sm" data-link="1">Link a utility →</button>`;
     }
     const kicker = it.fixed ? 'Reactor · fixed in place' : { raw: 'Raw material', unit: 'Process unit', sink: 'Product storage', util: 'Utility', waste: 'Waste treatment' }[it.cat];
     const actions = it.fixed ? [{ label: 'Spec card', fn: () => specCard() }, { label: 'OK', primary: true }]
@@ -6199,7 +6220,7 @@ window.PB = window.PB || {};
     clearAction(); g.run(); save(); makeView(); status('Deploying…'); $('#sb-run').disabled = true;
   };
   function onError(f) {
-    if (!SB) return; $('#sb-run').disabled = false; save(); const ui = U(); makeView(); if (f.node) { SB.view.flashError(f.node); SB.view.centerOn(f.node, 0.6); }
+    if (!SB) return; $('#sb-run').disabled = false; save(); const ui = U(); makeView(); if (f.node) { SB.view.flashError(f.node); SB.view.centerOn(f.node, 0.6, 0.25); }   // the stopped unit stays above the message
     status('Find out why, fix it, then deploy again.');
     $('#toast').hidden = true;
     const where = f.between ? 'The flow stopped between ' + SB.game.name(f.between[0]) + ' and ' + SB.game.name(f.between[1]) : f.node ? 'The flow stopped at ' + SB.game.name(f.node) : 'The flow did not reach the end of your plant';
@@ -6264,7 +6285,7 @@ window.PB = window.PB || {};
     const ref = { label: SB.kind === 'example' ? 'Show finished plant' : 'Show a reference design', fn: () => { SB.game.clear(); try { SB.game.buildSolution(PB.sandboxSolution(SB.proc, SB.mode)); SB.game.usedReference = SB.kind !== 'example'; save(); ui.toast('Built. Press Deploy.'); } catch (e) { console.error(e); ui.toast('Could not build it.', true); } } };
     const teacher = PB.teacher.on(), showRef = SB.kind !== 'competition' || teacher;
     if (teacher) ref.label = 'Show finished plant';
-    const acts = [{ label: 'Clear board', cls: 'danger', fn: () => { SB.game.clear(); ui.toast('Board cleared.'); } }].concat(showRef ? [ref] : [],
+    const acts = [{ label: 'Clear board', cls: 'danger', fn: () => ui.modal({ kicker: 'Clear board', title: 'Remove everything you built?', html: '<p>The fixed reaction units stay. Your time keeps running.</p>', actions: [{ label: 'Keep my board', primary: true }, { label: 'Clear board', cls: 'danger', fn: () => { SB.game.clear(); ui.toast('Board cleared.'); } }] }) }].concat(showRef ? [ref] : [],
       teacher ? [{ label: 'Leave teacher mode', fn: () => { PB.teacher.set(false); ui.toast('Teacher mode is off.'); } }] : [{ label: 'Teacher mode', fn: () => PB.teacher.ask() }], [{ label: 'OK', primary: true }]);
     ui.modal({ kicker: KIND[SB.kind] + (teacher ? ' · teacher mode' : ''), title: 'Options', html: '<p>Your board is saved on this device only.</p><ul class="needs"><li><b>Clear board</b> removes everything except the fixed reaction units. Your time keeps running.</li>' + (showRef ? '<li><b>' + ref.label + '</b> builds one working plant for this process (it replaces your board).</li>' : '') + '<li>Tap a unit to set it, connect it, move it or remove it.</li></ul>',
       actions: acts });
@@ -6285,7 +6306,7 @@ window.PB = window.PB || {};
 
   const $ = s => document.querySelector(s);
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
-  const esc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));   // safe in text and in attributes
   const refLinks = s => esc(s).replace(/\[(\d+(?:,\s*\d+)*)\]/g, (m, g) => '<cite class="ref">[' + g + ']</cite>');
   PB.fmtTime = s => { s = Math.round(s); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 
@@ -6355,13 +6376,13 @@ window.PB = window.PB || {};
   /* ---------- v5 teacher mode: the course code unlocks the finished plant of every process (this device, this browser) ---------- */
   PB.teacher = {
     hash: '36f09ec3a5d077106c880e6a19c02f764917db1fe54c842ac098e19a51c5b1f5',   // SHA-256 of 'chpe-teacher:' + the code; the code itself is not in the page (client, 2026-10-17)
-    async check(s) { const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('chpe-teacher:' + s)); return [...new Uint8Array(d)].map(b => b.toString(16).padStart(2, '0')).join('') === PB.teacher.hash; },
+    async check(s) { if (!(window.crypto && crypto.subtle)) { toast('Teacher mode needs the https site.', true); return false; } const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('chpe-teacher:' + s)); return [...new Uint8Array(d)].map(b => b.toString(16).padStart(2, '0')).join('') === PB.teacher.hash; },
     on() { return store.get('pb-teacher') === '1'; },
     set(v) { store.set('pb-teacher', v ? '1' : '0'); document.documentElement.classList.toggle('teacher', !!v); },
     ask() {
       modal({ kicker: 'Teacher mode', title: 'Enter the teacher code', html: '<label class="tm-l" for="tm-code">Code</label><input id="tm-code" class="tm-in" type="password" autocomplete="off" spellcheck="false">' +
         '<p class="muted">Teacher mode adds <b>Show finished plant</b> to the ⋯ menu of every board, including the competition.</p>',
-        actions: [{ label: 'Cancel' }, { label: 'Unlock', primary: true, fn: async () => { const ok = await PB.teacher.check(($('#tm-code').value || '').trim()); PB.teacher.set(ok); toast(ok ? 'Teacher mode is on.' : 'That code is not right.', !ok); } }] });
+        actions: [{ label: 'Cancel' }, { label: 'Unlock', primary: true, fn: async () => { const code = ($('#tm-code').value || '').trim(); if (!code) return; const ok = await PB.teacher.check(code); PB.teacher.set(ok); toast(ok ? 'Teacher mode is on.' : 'That code is not right.', !ok); } }] });
       setTimeout(() => { const i = $('#tm-code'); i && i.focus(); i && i.addEventListener('keydown', e => { if (e.key === 'Enter') $('#modal-actions .primary').click(); }); }, 60);
     }
   };
@@ -6388,7 +6409,7 @@ window.PB = window.PB || {};
   }
   function buildQR() {
     const url = studentUrl(), qr = qrcode(0, 'M'); qr.addData(url); qr.make();
-    $('#qr-box').innerHTML = qr.createSvgTag({ cellSize: 8, margin: 0, scalable: true });
+    $('#qr-box').innerHTML = qr.createSvgTag({ cellSize: 8, margin: 4, scalable: true });   // a 4-module quiet zone
     $('#qr-url').textContent = url;
     const local = /^file:|^blob:|localhost|127\.0\.0\.1/.test(url);
     $('#qr-note').hidden = !local;
