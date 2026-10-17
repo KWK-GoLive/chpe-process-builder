@@ -10,7 +10,9 @@ High-school students build a chemical plant on a board: they place storage tanks
 - **Competition:** CO₂ → methanol. Students join from the QR code on the projector.
 - **Sandbox:** six processes in Normal or Advanced mode.
 
-The game is one self-contained file (`index.html`) and also works offline. Scores stay on the player's device; no data is collected.
+The game is one self-contained file (`index.html`) and also works offline. The Example Process and the Sandbox send nothing: boards and times stay on the player's device.
+
+**Class board (Competition only):** when the teacher runs the Competition with a class code, each student's device sends the class code, the nickname the student picks (not a real name), a random run ID made by the game (no personal data), the deploy count, the milestone reached and the time to the teacher's class board, a Google Sheet run by the department. Nothing else is sent.
 
 Every number in the game comes from a cited source, a calculation or a stated design assumption. The full reference list is on the game's **Sources** page.
 
