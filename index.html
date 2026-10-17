@@ -507,7 +507,24 @@ details.more[open] summary { margin-bottom: 6px; }
 .hc-go2 { display: flex; gap: 18px; flex-wrap: wrap; } .hc-go2 .hc-go { text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }   /* final review: tap targets */
 .home-top .home-links a { display: inline-flex; align-items: center; min-height: 44px; }   /* v6.4: two example processes */
 
+/* v7: read-only 3D view (three-view.js): over the whole board screen, under the toast and the unit card */
+.v3d { position: absolute; inset: 0; z-index: 12; background: radial-gradient(900px 500px at 50% 40%, #ffffff, #e4e9e3); touch-action: none; overflow: hidden; }
+.v3d-view { position: absolute; inset: 0; } .v3d-view canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.v3d-tags { position: absolute; inset: 0; pointer-events: none; }
+.t3-tag { position: absolute; left: 0; top: 0; pointer-events: none; white-space: nowrap; background: var(--tag-bg); border: 1px solid var(--tag-line); border-radius: 6px; padding: 1px 8px; font: 600 13px/1.5 var(--f-body); color: var(--fg); opacity: .85; }
+.v3d-bar { position: absolute; top: calc(env(safe-area-inset-top, 0px) + 10px); right: 12px; display: flex; gap: 8px; }
+.v3d-msg { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); margin: 0; font: 600 16px var(--f-display); color: var(--muted); }
+.v3d.dock { z-index: 5; }   /* desktop: over the board only; clicks go to the units (name tags never take a tap: the model does) */
+.t3-leads { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; } .t3-leads line { stroke: #4b5650; stroke-width: 1.2; stroke-dasharray: 3 3; }
+.t3-card.sm .t3-card-t { font-size: 11px; padding: 2px 7px 1px; } .t3-card.sm .cond-col { font-size: 10.5px; padding: 3px 6px 4px; min-width: 76px; gap: 2px; } .t3-card.sm .cond-col .io-h { font-size: 9px; } .t3-card.sm .cond-col ul { padding-top: 3px; }
+.t3-card { position: absolute; left: 0; top: 0; pointer-events: none; width: max-content; max-width: 420px; background: #fff; border: 1px solid var(--line); border-top: 4px solid var(--gc); border-radius: 10px; box-shadow: 0 6px 18px rgba(23,32,26,.14); }
+.t3-card-t { display: block; padding: 4px 9px 3px; font: 600 13px var(--f-display); }
+.t3-card .cond { margin: 0; border: 0; border-radius: 0 0 10px 10px; } .t3-card .cond-col { font-size: 12px; padding: 5px 9px 7px; min-width: 96px; } .t3-card .cond-col .io-h { font-size: 10px; }
+.modal-card.ro [data-out], .modal-card.ro [data-unpipe], .modal-card.ro [data-unlink], .modal-card.ro [data-link] { display: none; }
+@media (max-width: 560px) { #sb-3d { padding-inline: 10px; } }
+
 </style>
+<script type="importmap">{"imports":{"https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.js":"https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.min.js"},"integrity":{"https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.module.min.js":"sha512-5y1OuWCUVXtYlPOwdMCvNr/Scu/rs2aBbVxO5q1Du9DzLe7X0QpPf1yxAV839cwp7ZqIDv/UrCm0O2oXxM+rMA==","https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.min.js":"sha512-XHAcLGgLlaKvTJVfBh76iqQUVHJhHbsu+g/JhY0gQBrpYkg+L1MbYckDdUXkh4D/tsp/mVoPi+Art8oxizfddA==","https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.js":"sha512-qlDOLg8zPtXvEqSrHL/iQY763kv248HYdKLW3j2F/XJDA/XnKZj1SNqvjXVrRe0gw96iMOgMFwj8cFSOtIrELQ=="}}</script>
 </head>
 <body>
 <div id="app">
@@ -602,6 +619,7 @@ details.more[open] summary { margin-bottom: 6px; }
           <div class="hud-title"><span class="hud-name" id="sb-title">Sandbox</span><span class="hud-sub"><span class="hud-mode" id="sb-mode">Normal</span><span id="sb-time" class="mono">0:00</span></span></div>
           <button class="btn sm" id="sb-card" aria-label="Spec card">Spec<span class="k-txt"> card</span></button>
           <button class="btn ghost sm" id="sb-key" aria-label="Key: what the icons mean"><span aria-hidden="true" class="k-ico">?</span><span class="k-txt"> Key</span></button><button class="btn sm" id="sb-cards" aria-pressed="true" aria-label="Cards"><span aria-hidden="true" class="k-ico">▤</span><span class="k-txt"> Cards</span></button>
+          <button class="btn ghost sm" id="sb-3d" aria-label="3D view" hidden>3D</button>
           <button class="icon-btn" id="sb-more" aria-label="More">⋯</button>
         </div>
         <div class="sb-zones" id="sb-zones"></div>
@@ -616,6 +634,14 @@ details.more[open] summary { margin-bottom: 6px; }
       </div>
     </div>
   </section>
+
+  <!-- v7: read-only 3D view of the board -->
+  <div class="v3d" id="v3d" hidden>
+    <div class="v3d-view" id="v3d-view"></div>
+    <div class="v3d-tags" id="v3d-tags"></div>
+    <p class="v3d-msg" id="v3d-msg" hidden></p>
+    <div class="v3d-bar"><button class="btn sm" id="v3d-reset">Reset view</button><button class="btn primary sm" id="v3d-close">Close</button></div>
+  </div>
 
   <!-- QR -->
   <section class="screen" id="s-qr">
@@ -3242,7 +3268,7 @@ PB.FIXED = {
                         {t:'cyl',axis:'z',x:R*0.85,y:0,z:0,r:0.07,h:R+0.3,c:'steelDark'},
                         {t:'cyl',axis:'z',x:0,y:R*0.85,z:0,r:0.07,h:R+0.3,c:'steelDark'},
                         {t:'sph',x:0,y:0,z:R+0.35,r:R,c:'steelLight'},
-                        {t:'cyl',axis:'z',x:0,y:0,z:R+0.36,r:R*0.83,h:0.1,c:band,ring:1} ],   // v6.4: the band sits on the front of the sphere (r matches the drawn outline; painted after the sphere)
+                        {t:'cyl',axis:'z',x:0,y:0,z:R+0.36,r:R*0.83,h:0.1,c:band,ring:1,sph:R} ],   // v6.4: the band sits on the front of the sphere (r matches the drawn outline; painted after the sphere); v7: sph = the sphere radius the 3D band sits on
   hopper: (band) => [ {t:'cyl',axis:'z',x:-0.3,y:-0.3,z:0,r:0.05,h:0.8,c:'steelDark'}, {t:'cyl',axis:'z',x:0.3,y:-0.3,z:0,r:0.05,h:0.8,c:'steelDark'},
                       {t:'cyl',axis:'z',x:-0.3,y:0.3,z:0,r:0.05,h:0.8,c:'steelDark'}, {t:'cyl',axis:'z',x:0.3,y:0.3,z:0,r:0.05,h:0.8,c:'steelDark'},
                       {t:'cyl',axis:'z',x:0,y:0,z:0.3,r:0.08,r2:0.5,h:0.5,c:'steelLight'},
@@ -5853,6 +5879,392 @@ PB.IsoView.prototype = {
 
 </script>
 <script>
+/* ChPE Process Builder — v7 3D view of the board (plan-chpe-process-builder-v7-3d.md).
+   It reads the game (units, pipes, Deploy progress) and never changes it itself. Phones and tablets: look only, a tap on a unit
+   asks the board screen to open that unit's card. Desktop (mouse, wide screen): the view docks over the board and passes clicks
+   to the board screen's own tap handlers (place, Move, connect, cards), so every edit goes through the same game API as 2.5D;
+   it shows the selection, the zone to place in, the live cards (the same card data as 2.5D) and the Deploy stop. three.js 0.186.1 is loaded from cdnjs the first time 3D is opened (the import map in index.html
+   points its core at the minified file). The models are built from the same PB.EQUIP parts as the 2.5D view.
+   The 3D layer shows no text except unit names and its button labels (no digits; tools/check-3d.cjs). */
+window.PB = window.PB || {};
+(function () {
+  const PB = window.PB;
+  PB.THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.module.min.js';
+  PB.T3_TEXT = { loading: 'Loading 3D…', offline: '3D needs an internet connection. Reload the page to try again.', failed: '3D could not start on this device.' };
+
+  /* ---------- the scene plan (plain data, no three.js; checked headless by tools/check-3d.cjs) ---------- */
+  // every key a model part may carry; check-3d fails on any other key
+  PB.PRIM3D_KEYS = ['t', 'x', 'y', 'z', 'w', 'd', 'h', 'c', 'axis', 'r', 'r2', 'ring', 'sph'];   // sph: a band on a sphere of that radius (2.5D draws it smaller)
+  PB.prim3DKind = p => p.t === 'box' ? 'box' : p.t === 'sph' ? 'sph'
+    : p.t === 'cyl' && /^[xyz]$/.test(p.axis) ? (p.ring ? (p.axis === 'z' ? 'ring' : null) : 'cyl') : null;
+  PB.PIPE3D = { pipe: 0.12, util: 0.07, cable: 0.045, joint: 1.0, metal: '#9aa2aa', cable3: '#f2c200' };
+  PB.scene3D = function (game) {
+    const L = game.level, out = { W: L.W, H: L.H, plates: [], parts: [], pipes: [], tags: [], hits: [], unknown: [] };
+    L.plates.forEach(pl => out.plates.push({ x: pl.x, y: pl.y, w: pl.w, d: pl.d, zone: pl.zone, label: pl.label, tint: (pl.zone && PB.ZONE_TINT[pl.zone]) || ['#b79f6e', '#a3a5a1'] }));
+    for (const n of Object.values(game.nodes)) {
+      const shape = n.kind === 'pad' ? PB.unitShape(n) : n.def.shape;
+      shape.forEach(p => { const kind = PB.prim3DKind(p), bad = Object.keys(p).filter(k => !PB.PRIM3D_KEYS.includes(k));
+        if (!kind || bad.length) out.unknown.push(n.def.name + ': ' + JSON.stringify(p)); else out.parts.push({ id: n.id, kind, p, ox: n.x, oy: n.y }); });
+      const top = PB.shapeTop(shape), R = Math.max(0.5, ...[[1, 0], [-1, 0], [0, 1], [0, -1]].map(([dx, dy]) => PB.shapeSupport(shape, dx, dy)));
+      out.hits.push({ id: n.id, x: n.x, y: n.y, r: Math.min(R, 1.3), h: Math.max(0.6, top) });
+      out.tags.push({ id: n.id, text: n.def.name, x: n.x, y: n.y, z: Math.min(top, 2.6) + (n.kind === 'pad' && /^(settler|flash)$/.test(n.unit) ? 0.85 : 0.35) });
+    }
+    const paths = PB.bridgedPaths(game);
+    for (const e of Object.values(game.edges)) {
+      const P = (paths[e.id] || PB.edgePath(game, e)).map(q => q.slice(0, 3)), kind = e.def.kind === 'util' || e.def.kind === 'cable' ? e.def.kind : 'pipe', segs = []; let s0 = 0;
+      // a level end that stops at the edge of a base plate or short of a casing runs on into the unit's first part at that height (3D only)
+      const ext = [0, P.length - 1].map((i, k) => { const q = P[i], o = P[k ? i - 1 : 1], L = Math.hypot(q[0] - o[0], q[1] - o[1]);
+        if (Math.abs(q[2] - o[2]) > 1e-6 || L < 1e-6) return 0; const n = game.nodes[k ? e.def.to : e.def.from];
+        const t = PB.rayInShape(n.kind === 'pad' ? PB.unitShape(n) : n.def.shape, q[0] - n.x, q[1] - n.y, q[2], (q[0] - o[0]) / L, (q[1] - o[1]) / L);
+        if (t == null || t > 1.2) return 0; const d = t + Math.min(0.06, 0.5 * PB.PIPE3D[kind]); q[0] += (q[0] - o[0]) / L * d; q[1] += (q[1] - o[1]) / L * d; return d; });
+      for (let k = 1; k < P.length; k++) { const a = P[k - 1], b = P[k], len = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
+        if (len < 1e-6) continue; segs.push({ a: [a[0], a[1], a[2]], b: [b[0], b[1], b[2]], len, s0 }); s0 += len; }
+      out.pipes.push({ id: e.id, kind, r: PB.PIPE3D[kind], color: e.def.color || PB.FLUIDS[e.def.fluid] || '#999999', full: kind === 'util' && !!e.def.color, segs, len: s0, path: P, ext });
+    }
+    return out;
+  };
+  /* how far a level ray (from x, y at height z, direction dx, dy; relative to the unit centre) runs before it meets a part of the
+     shape (rings left out); null when it meets none. A start inside a part counts as no meeting. */
+  PB.rayInShape = function (shape, x, y, z, dx, dy) {
+    let best = null;
+    const slab = (x0, x1, y0, y1) => { let t0 = -Infinity, t1 = Infinity;
+      for (const [o, d, lo, hi] of [[x, dx, x0, x1], [y, dy, y0, y1]]) { if (Math.abs(d) < 1e-9) { if (o < lo || o > hi) return; continue; }
+        const a = (lo - o) / d, b = (hi - o) / d; t0 = Math.max(t0, Math.min(a, b)); t1 = Math.min(t1, Math.max(a, b)); }
+      if (t0 <= t1 && t0 >= -1e-9 && (best == null || t0 < best)) best = t0; };
+    const disc = (cx, cy, r) => { const ox = x - cx, oy = y - cy, b = ox * dx + oy * dy, c = ox * ox + oy * oy - r * r, D = b * b - c;
+      if (c < 0 || D < 0) return; const t = -b - Math.sqrt(D); if (t >= 0 && (best == null || t < best)) best = t; };
+    shape.forEach(p => { if (p.ring) return;
+      if (p.t === 'box') { if (z >= p.z && z <= p.z + p.h) slab(p.x - p.w / 2, p.x + p.w / 2, p.y - p.d / 2, p.y + p.d / 2); return; }
+      if (p.t === 'sph') { const dz = z - p.z; if (Math.abs(dz) < p.r) disc(p.x, p.y, Math.sqrt(p.r * p.r - dz * dz)); return; }
+      const r2 = p.r2 == null ? p.r : p.r2;
+      if (p.axis === 'z') { if (z >= p.z && z <= p.z + p.h) disc(p.x, p.y, p.r + (r2 - p.r) * (z - p.z) / p.h); return; }
+      const dz = z - p.z, r = Math.max(p.r, r2); if (Math.abs(dz) >= r) return; const hw = Math.sqrt(r * r - dz * dz);
+      if (p.axis === 'x') slab(p.x, p.x + p.h, p.y - hw, p.y + hw); else slab(p.x - hw, p.x + hw, p.y, p.y + p.h); });
+    return best;
+  };
+  // what the flow fill shows for a pipe now (the same rule as the 2.5D view: a utility line in service is always full)
+  PB.pipeFill3D = (pipe, edge) => pipe.kind === 'cable' ? 0 : pipe.full ? 1 : edge ? edge.progress : 0;
+
+  /* ---------- the view (three.js) ---------- */
+  const $ = s => document.querySelector(s);
+  let lib = null, webgl2 = null, V = null;
+  const loadThree = () => { if (!lib) lib = import(PB.THREE_URL).catch(e => { lib = null; throw e; }); return lib; };
+  function supported() {   // three.js 0.163+ needs WebGL 2
+    if (webgl2 === null) { try { const g = document.createElement('canvas').getContext('webgl2'); webgl2 = !!g; const x = g && g.getExtension('WEBGL_lose_context'); if (x) x.loseContext(); } catch (e) { webgl2 = false; } }
+    return webgl2;
+  }
+  const METAL = /^(steel|steelLight|steelDark)$/;
+  // desktop building: a mouse that hovers, and a wide screen (phones and tablets stay look only)
+  const canBuild = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth >= 900 && window.innerHeight >= 500;
+  const GLOW = { hover: ['#ffffff', 0.16], focus: ['#3fd27a', 0.5], bad: ['#ff2a1a', 0.5] };
+
+  function View(T, game, opts) {
+    this.T = T; this.g = game; this.opts = opts; this.build = !!opts.build; this.box = $('#v3d'); this.host = $('#v3d-view'); this.tagLayer = $('#v3d-tags');
+    this.mobile = Math.min(window.innerWidth, window.innerHeight) < 700 || window.matchMedia('(pointer: coarse)').matches;
+    const R = this.R = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: this.mobile ? 'default' : 'high-performance' });
+    R.setPixelRatio(Math.min(window.devicePixelRatio || 1, this.mobile ? 1.5 : 2));
+    R.toneMapping = T.NeutralToneMapping; R.toneMappingExposure = 1.0;
+    R.shadowMap.enabled = !this.mobile; R.shadowMap.type = T.PCFShadowMap;
+    this.host.appendChild(R.domElement);
+    this.box.classList.toggle('dock', this.build); this.dock();   // desktop: over the board only; the HUD, Add, Deploy and the banner stay usable
+    this.mats = {}; this.glows = {}; this.unitTube = {}; this.cards = {}; this.S = new T.Scene(); this.cam = new T.PerspectiveCamera(32, 1, 0.3, 400); this.ray = new T.Raycaster();
+    this.hitMat = new T.MeshBasicMaterial(); this.ground0 = new T.Plane(new T.Vector3(0, 1, 0), 0);
+    this.cursor3 = new T.Mesh(new T.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), new T.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.55, depthWrite: false }));
+    this.cursor3.add(new T.LineSegments(new T.EdgesGeometry(this.cursor3.geometry), new T.LineBasicMaterial({ color: '#ffffff' })));   // a white outlined cell
+    this.cursor3.visible = false; this.S.add(this.cursor3);
+    this.halo = new T.Mesh(new T.RingGeometry(1, 1.25, 40).rotateX(-Math.PI / 2), new T.MeshBasicMaterial({ color: '#ff2a1a', transparent: true, opacity: 0.6, depthWrite: false }));   // the Deploy stop, also on small units
+    this.halo.visible = false; this.S.add(this.halo);
+    this.lights(); this.content(); this.resize();
+    this.ro = new ResizeObserver(() => { this.dock(); this.resize(); }); this.ro.observe(this.host); if (this.build) this.ro.observe($('#sb-view'));
+    this.input(); this.idleAt = performance.now(); this.last = performance.now(); this.dirty = true;
+    const tick = () => { if (!this.R) return; this.frame(); this.raf = requestAnimationFrame(tick); }; this.raf = requestAnimationFrame(tick);
+  }
+  View.prototype = {
+    dock() {
+      if (!this.build) return; const a = $('#app').getBoundingClientRect(), v = $('#sb-view').getBoundingClientRect();
+      Object.assign(this.box.style, { top: (v.top - a.top) + 'px', left: (v.left - a.left) + 'px', width: v.width + 'px', height: v.height + 'px' });
+    },
+    mat(color, metal) {
+      const k = color + (metal ? 'm' : ''), T = this.T;
+      return this.mats[k] || (this.mats[k] = new T.MeshStandardMaterial({ color: new T.Color(color), metalness: metal ? 0.55 : 0.05, roughness: metal ? 0.35 : 0.72, envMapIntensity: metal ? 1.0 : 0.5 }));
+    },
+    glow(base, kind) {   // the same material, lit from inside (selection, the unit being connected or moved, the Deploy stop)
+      const k = base.uuid + kind; if (!this.glows[k]) { const m = this.glows[k] = base.clone(); m.emissive.set(GLOW[kind][0]); m.emissiveIntensity = GLOW[kind][1]; m.userData.kind = kind; }
+      return this.glows[k];
+    },
+    lights() {
+      const T = this.T, S = this.S, R = this.R, W = this.g.level.W, H = this.g.level.H;
+      // a soft studio environment for the metal (generated, no download)
+      const pm = new T.PMREMGenerator(R), env = new T.Scene(), sky = new T.Mesh(new T.SphereGeometry(50, 32, 16), new T.MeshBasicMaterial({ side: T.BackSide, vertexColors: true }));
+      const cols = [], pos = sky.geometry.attributes.position;
+      for (let i = 0; i < pos.count; i++) { const y = pos.getY(i) / 50, k = 0.25 + 0.6 * Math.max(0, y); cols.push(k * 0.97, k, k * 1.03); }
+      sky.geometry.setAttribute('color', new T.Float32BufferAttribute(cols, 3)); env.add(sky);
+      const panel = new T.Mesh(new T.PlaneGeometry(30, 10), new T.MeshBasicMaterial({ color: 0xffffff })); panel.position.set(0, 30, -20); panel.lookAt(0, 0, 0); env.add(panel);
+      this.envRT = pm.fromScene(env, 0.04); S.environment = this.envRT.texture; pm.dispose();
+      env.traverse(o => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
+      S.add(new T.HemisphereLight(0xf2f6fa, 0x5a5650, 1.1));
+      const sun = new T.DirectionalLight(0xfff6ea, 2.2); sun.position.set(W * 0.75, 26, H * 1.1 + 6); sun.target.position.set(W / 2, 0, H / 2); S.add(sun, sun.target);
+      if (!this.mobile) { sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.radius = 3; sun.shadow.bias = -0.0006; sun.shadow.normalBias = 0.02;
+        const c = sun.shadow.camera, m = Math.max(W, H) * 0.75; c.left = -m; c.right = m; c.top = m; c.bottom = -m; c.near = 1; c.far = 120; }
+    },
+    /* board, units and pipes, from the scene plan. Static parts of one material are merged into one mesh (per unit, so a unit can glow) */
+    content() {
+      const T = this.T, plan = this.plan = PB.scene3D(this.g), grp = this.grp = new T.Group(), sh = !this.mobile, buckets = {};
+      this.edgesRef = this.g.edges; this.S.add(grp); this.sig = null;
+      const put = (geo, color, metal, cast, id) => { const k = (id || '') + '|' + color + '|' + (metal ? 1 : 0) + '|' + (cast ? 1 : 0); (buckets[k] = buckets[k] || { id, color, metal, cast, list: [] }).list.push(geo); };
+      const at = (geo, x, y, z) => { geo.translate(x, z, y); return geo; };   // board (x, y, z up) → three (x, z, y), the same handedness the 2.5D view shows
+      // board slab, zone plates (each its own mesh: the zone to place in lights up) and their grid
+      put(at(new T.BoxGeometry(plan.W, 0.45, plan.H), plan.W / 2, plan.H / 2, -0.225), '#4a4d50', false, false);
+      const grid = []; this.plates = {};
+      plan.plates.forEach(pl => {
+        put(at(new T.BoxGeometry(pl.w + 0.44, 0.02, pl.d + 0.44), pl.x + pl.w / 2, pl.y + pl.d / 2, 0.01), pl.tint[0], false, false);
+        const m = new T.Mesh(at(new T.BoxGeometry(pl.w, 0.02, pl.d), pl.x + pl.w / 2, pl.y + pl.d / 2, 0.03), this.mat(pl.tint[1], false)); m.receiveShadow = sh; grp.add(m);
+        if (pl.zone) { m.userData.base = m.material; this.plates[pl.zone] = m; }
+        if (pl.label) {   // the zone name on the ground, as on the 2.5D board
+          const cv = document.createElement('canvas'), g = cv.getContext('2d'), text = pl.label.toUpperCase(), font = '700 38px "Chakra Petch", sans-serif';
+          g.font = font; cv.width = Math.ceil(g.measureText(text).width + 8); cv.height = 64; g.font = font; g.fillStyle = 'rgba(30,33,36,0.5)'; g.textBaseline = 'middle'; g.fillText(text, 4, 32);
+          const tex = new T.CanvasTexture(cv); tex.colorSpace = T.SRGBColorSpace; tex.anisotropy = 4;
+          let hh = 0.5, ww = hh * cv.width / cv.height; if (ww > pl.w - 0.6) { hh *= (pl.w - 0.6) / ww; ww = pl.w - 0.6; }
+          const lm = new T.Mesh(new T.PlaneGeometry(ww, hh).rotateX(-Math.PI / 2), new T.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false }));
+          lm.position.set(pl.x + 0.3 + ww / 2, 0.045, pl.y + pl.d - 0.3 - hh / 2); grp.add(lm); }
+        for (let gx = pl.x + 1; gx < pl.x + pl.w; gx += 1) grid.push(gx, 0.041, pl.y, gx, 0.041, pl.y + pl.d);
+        for (let gy = pl.y + 1; gy < pl.y + pl.d; gy += 1) grid.push(pl.x, 0.041, gy, pl.x + pl.w, 0.041, gy);
+      });
+      const gg = new T.BufferGeometry(); gg.setAttribute('position', new T.Float32BufferAttribute(grid, 3));
+      grp.add(new T.LineSegments(gg, new T.LineBasicMaterial({ color: '#979995' })));
+      // units: one part per PB.EQUIP primitive (skins and mirroring come with PB.unitShape)
+      plan.parts.forEach(({ id, kind, p, ox, oy }) => {
+        const col = PB.matColor(p.c), metal = METAL.test(p.c); let geo;
+        if (kind === 'box') geo = at(new T.BoxGeometry(p.w, p.h, p.d), ox + p.x, oy + p.y, p.z + p.h / 2);
+        else if (kind === 'sph') geo = at(new T.SphereGeometry(p.r, 24, 16), ox + p.x, oy + p.y, p.z);
+        else if (kind === 'ring') { const rb = (p.sph || p.r) + (p.sph ? 0.01 : 0.012); geo = at(new T.CylinderGeometry(rb, rb, p.h, 24, 1, true), ox + p.x, oy + p.y, p.z + p.h / 2); }   // a thin band on the shell (as many sides as the shell)
+        else { const r2 = p.r2 == null ? p.r : p.r2; geo = new T.CylinderGeometry(Math.max(r2, 0.0001), p.r, p.h, 24);   // r at the start, r2 at the end (a cone)
+          if (p.axis === 'z') at(geo, ox + p.x, oy + p.y, p.z + p.h / 2);
+          else if (p.axis === 'x') { geo.rotateZ(-Math.PI / 2); at(geo, ox + p.x + p.h / 2, oy + p.y, p.z); }
+          else { geo.rotateX(Math.PI / 2); at(geo, ox + p.x, oy + p.y + p.h / 2, p.z); } }
+        put(geo, col, metal, true, id);
+      });
+      // pipes: a metal shell along the 2.5D polyline (with the bridges) and a fluid sleeve that fills with the Deploy flow
+      const up = new T.Vector3(0, 1, 0), v3 = q => new T.Vector3(q[0], q[2], q[1]), seg = (A, B, r, open) => {
+        const g = new T.CylinderGeometry(r, r, A.distanceTo(B), 12, 1, open); g.applyQuaternion(new T.Quaternion().setFromUnitVectors(up, B.clone().sub(A).normalize()));
+        return g.translate((A.x + B.x) / 2, (A.y + B.y) / 2, (A.z + B.z) / 2); };
+      this.pipes = []; this.pipeHits = [];
+      plan.pipes.forEach(pp => {
+        const shellCol = pp.kind === 'cable' ? PB.PIPE3D.cable3 : PB.PIPE3D.metal, r = pp.r, joints = new Set();
+        pp.segs.forEach(s => { put(seg(v3(s.a), v3(s.b), r, true), shellCol, pp.kind !== 'cable', true); joints.add(s.a.join()); joints.add(s.b.join());
+          if (this.build) { const h = new T.Mesh(seg(v3(s.a), v3(s.b), 0.2, false), this.hitMat); h.userData.edge = pp.id; h.updateMatrixWorld(true); this.pipeHits.push(h); } });   // click targets for the pipe card
+        joints.forEach(j => { const q = j.split(',').map(Number); put(at(new T.SphereGeometry(r, 12, 8), q[0], q[1], q[2]), shellCol, pp.kind !== 'cable', true); });
+        if (pp.kind === 'cable') return;
+        const rf = r + 0.012, ug = this.unitTube[rf] || (this.unitTube[rf] = new T.CylinderGeometry(rf, rf, 1, 12, 1, false).translate(0, 0.5, 0)), fm = this.mat(pp.color, false);
+        const segs = pp.segs.map((s, k) => { const A = v3(s.a), dir = v3(s.b).sub(A).normalize(), m = new T.Mesh(ug, fm);
+          m.quaternion.setFromUnitVectors(up, dir); m.visible = false; m.castShadow = sh; grp.add(m);
+          return { m, A, dir, len: s.len, s0: s.s0, pre: k ? rf : 0, post: k < pp.segs.length - 1 ? rf : 0 }; });   // inner ends reach over the bend
+        this.pipes.push({ id: pp.id, plan: pp, segs, shown: -1 });
+      });
+      // merge the static parts per material (and per unit); unit meshes are what a tap or a click hits
+      this.units = {}; this.pickables = [];
+      for (const k in buckets) { const b = buckets[k], m = new T.Mesh(merge(T, b.list), this.mat(b.color, b.metal)); m.castShadow = sh && b.cast; m.receiveShadow = sh; grp.add(m);
+        if (b.id) { m.userData.id = b.id; m.userData.base = m.material; (this.units[b.id] = this.units[b.id] || []).push(m); this.pickables.push(m); } }
+      grp.updateMatrixWorld(true);
+      // tap targets around each unit (a tap between its parts still counts), name tags, and the card layer starts empty
+      this.hits = plan.hits.map(h => { const m = new T.Mesh(new T.CylinderGeometry(h.r, h.r, h.h, 12), this.hitMat); m.position.set(h.x, h.h / 2, h.y); m.updateMatrixWorld(true); m.userData.id = h.id; return m; });
+      this.tagLayer.innerHTML = ''; this.cards = {};
+      this.leads = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); this.leads.setAttribute('class', 't3-leads'); this.tagLayer.appendChild(this.leads);   // card leader lines
+      this.tags = plan.tags.map(t => { const el = document.createElement('div'); el.className = 't3-tag'; el.textContent = t.text; el.setAttribute('data-id', t.id);
+        this.tagLayer.appendChild(el); return { id: t.id, el, pos: new T.Vector3(t.x, t.z, t.y), w: 0 }; });
+      this.dirty = true;
+    },
+    clearContent() {
+      if (!this.grp) return; this.S.remove(this.grp);
+      const shared = new Set(Object.values(this.unitTube).concat(Object.values(this.mats), Object.values(this.glows)));
+      this.grp.traverse(o => { if (o.geometry && !shared.has(o.geometry)) o.geometry.dispose(); if (o.material && !shared.has(o.material)) { if (o.material.map) o.material.map.dispose(); o.material.dispose(); } });
+      this.hits.concat(this.pipeHits).forEach(h => h.geometry.dispose()); this.grp = null;
+    },
+    /* the Deploy flow: each pipe fills along its length as far as the edge's progress (the 2.5D view's rule) */
+    flow() {
+      let changed = false;
+      for (const p of this.pipes) {
+        const f = PB.pipeFill3D(p.plan, this.g.edges[p.id]); if (f === p.shown) continue; p.shown = f; changed = true;
+        const P = f * p.plan.len;
+        p.segs.forEach(s => { const d = Math.max(0, Math.min(s.len, P - s.s0)); s.m.visible = d > 1e-4;
+          if (s.m.visible) { const a = s.pre, b = d >= s.len - 1e-6 ? s.post : 0; s.m.scale.set(1, d + a + b, 1); s.m.position.copy(s.A).addScaledVector(s.dir, -a); } });
+      }
+      return changed;
+    },
+    /* desktop: what the board screen is doing (placing, moving, connecting, cards) shown in 3D: the zone, the glowing unit, the cards */
+    highlight(st, bad) {
+      for (const id in this.units) { const kind = id === bad ? 'bad' : id === st.focus ? 'focus' : id === this.hover ? 'hover' : null;
+        this.units[id].forEach(m => { m.material = kind ? this.glow(m.userData.base, kind) : m.userData.base; }); }
+      for (const z in this.plates) { const m = this.plates[z]; m.material = z === st.zone ? this.glow(m.userData.base, 'focus') : m.userData.base; }
+      this.cursor3.visible = !!(st.zone && this.cell); if (this.cell) this.cursor3.position.set(this.cell[0], 0.05, this.cell[1]);
+      const show = st.cardsOn ? Object.keys(this.g.nodes).filter(id => this.g.nodes[id].def.card) : [this.hover || st.cardOnly].filter(id => id && this.g.nodes[id] && this.g.nodes[id].def.card);
+      const sm = !!st.cardsOn;   // all cards: the compact size
+      for (const id in this.cards) if (!show.includes(id) || this.cards[id].sm !== sm) { this.cards[id].el.remove(); delete this.cards[id]; }
+      show.forEach(id => { if (this.cards[id]) return; const c = this.g.nodes[id].def.card, el = document.createElement('div');
+        el.className = 't3-card g-' + (c.grp || 'unit') + (sm ? ' sm' : ''); el.innerHTML = this.opts.cardHTML(c); this.tagLayer.appendChild(el);   // the card data of the 2.5D board, nothing more
+        const t = this.tags.find(q => q.id === id); this.cards[id] = { el, sm, pos: t.pos, w: el.offsetWidth, h: el.offsetHeight }; });
+    },
+    /* Deploy stop: the camera closes in so the unit sits in the upper third of the view, above the stop message (as 2.5D centerOn lifts it) */
+    flyTo(n) {
+      const keep = Object.assign({}, this.o), r = Math.max(8, this.fitR * 0.5), cx = Math.cos(this.o.theta), cz = Math.sin(this.o.theta), p = new this.T.Vector3();
+      const yAt = d => { Object.assign(this.o, { tx: n.x + d * cx, tz: n.y + d * cz, r }); this.place(); return p.set(n.x, 0.5, n.y).project(this.cam).y; };
+      let d = 0; for (let i = 0; i < 8; i++) { const y = yAt(d), g = (yAt(d + 0.1) - y) / 0.1; if (Math.abs(g) < 1e-6) break; d += (0.38 - y) / g; }   // NDC y 0.38: about a third down
+      this.o = keep; this.place(); this.anim = { tx: n.x + d * cx, tz: n.y + d * cz, r };
+    },
+    /* the starting view: the 2.5D angle on a wide screen; on a tall (phone) screen the long side of the board runs away from the viewer */
+    reset(phi) {
+      const W = this.g.level.W, H = this.g.level.H, T = this.T, box = [];
+      const tall = this.cam.aspect < 1; this.o = { theta: tall ? 0.12 : Math.PI / 4, phi: phi || (tall ? 0.75 : 0.95), r: 400, tx: W / 2, tz: H / 2 }; this.anim = null;
+      for (const x of [0, W]) for (const z of [0, H]) for (const y of [0, 2.5]) box.push(new T.Vector3(x, y, z));
+      const fits = () => { this.place(); return box.every(p => { const v = p.clone().project(this.cam); return Math.abs(v.x) < 0.94 && Math.abs(v.y) < 0.84; }); };
+      let r = 400; for (let i = 0; i < 120; i++) { this.o.r = r * 0.96; if (!fits()) break; r = this.o.r; }   // come closer while the whole board stays in view
+      this.o.r = this.fitR = r; this.dirty = true; this.idleAt = performance.now();
+    },
+    resize() {
+      const w = this.host.clientWidth || 1, h = this.host.clientHeight || 1; this.w = w; this.h = h;
+      this.R.setSize(w, h, false); this.cam.aspect = w / h; this.cam.updateProjectionMatrix();
+      if (!this.touched) this.reset(); this.dirty = true;
+    },
+    place() {
+      const o = this.o, s = Math.sin(o.phi);
+      this.cam.position.set(o.tx + o.r * s * Math.cos(o.theta), o.r * Math.cos(o.phi), o.tz + o.r * s * Math.sin(o.theta)); this.cam.lookAt(o.tx, 0.6, o.tz); this.cam.updateMatrixWorld();
+    },
+    frame() {
+      const now = performance.now(), dt = Math.min(0.05, (now - this.last) / 1000); this.last = now;
+      if (this.g.edges !== this.edgesRef) { this.clearContent(); this.content(); }   // the board changed (an edit, or a Deploy that recolours the pipes)
+      if (this.flow()) this.dirty = true;
+      if (this.build) {
+        if (this.mouse) { const [x, y] = this.mouse; this.mouse = null; this.hover = this.pickNode(x, y); const g = this.ground(x, y); this.cell = g && [Math.round(g[0] * 2) / 2, Math.round(g[1] * 2) / 2]; }
+        const st = this.opts.state() || {}, badN = Object.values(this.g.nodes).find(n => n.bad), bad = badN ? badN.id : null;
+        const sig = [st.zone, st.focus, st.cardsOn, st.cardOnly, this.hover, bad, st.zone && this.cell && this.cell.join()].join('|');
+        if (sig !== this.sig) { this.sig = sig; this.highlight(st, bad); this.dirty = true; }
+        if (bad && bad !== this.badSeen) { this.flyTo(badN); this.touched = true; }   // Deploy stopped: fly to the unit
+        this.badSeen = bad;
+        const pulse = 0.5 + 0.5 * Math.sin(now / 160); this.halo.visible = !!bad;
+        if (bad) { Object.values(this.glows).forEach(m => { if (m.userData.kind === 'bad') m.emissiveIntensity = 0.55 + 0.4 * pulse; });
+          const h = this.plan.hits.find(q => q.id === bad); this.halo.position.set(badN.x, 0.06, badN.y); this.halo.scale.setScalar(Math.max(0.8, h ? h.r : 0.8) * (1 + 0.12 * pulse)); this.halo.material.opacity = 0.45 + 0.4 * pulse; this.dirty = true; }
+      }
+      if (this.anim) { const a = this.anim; let done = true; ['tx', 'tz', 'r'].forEach(q => { this.o[q] += (a[q] - this.o[q]) * 0.12; if (Math.abs(a[q] - this.o[q]) > 0.02) done = false; }); if (done) this.anim = null; this.dirty = true; }
+      if (now - this.idleAt > (this.build ? 30000 : 4000) && !this.drag && !this.anim) { this.o.theta += dt * 0.12; this.dirty = true; }   // slow auto-spin when idle
+      if (!this.dirty) return; this.dirty = false;
+      this.place(); this.R.render(this.S, this.cam); this.placeLabels();
+    },
+    /* name tags and cards: projected from the unit tops; cards (the largest first) take the nearest free spot inside the view (above the
+       unit first, then beside it, then below it), with a leader line to their unit; a name tag moves up one step or
+       hides until zoomed in (laid out only when the picture changed) */
+    placeLabels() {
+      const v = new this.T.Vector3(), items = [], at = (pos, el) => { v.copy(pos).project(this.cam); if (v.z >= 1 || Math.abs(v.x) > 1.2 || Math.abs(v.y) > 1.2) { el.style.display = 'none'; return null; } el.style.display = ''; return [(v.x + 1) / 2 * this.w, (1 - v.y) / 2 * this.h]; };
+      for (const id in this.cards) { const c = this.cards[id], p = at(c.pos, c.el); if (p) items.push({ el: c.el, x: p[0], y: p[1], w: c.w, h: c.h, card: true }); }
+      this.tags.forEach(t => { if (this.cards[t.id]) { t.el.style.display = 'none'; return; } const p = at(t.pos, t.el); if (!p) return; if (!t.w) t.w = t.el.offsetWidth || 60; items.push({ el: t.el, x: p[0], y: p[1], w: t.w, h: 22 }); });
+      items.sort((a, b) => (b.card - a.card) || (a.card ? b.w * b.h - a.w * a.h : 0) || (b.y - a.y)); const placed = [];
+      const over = (q, y) => placed.find(r => Math.abs(r.x - q.x) < (r.w + q.w) / 2 + 2 && y > r.y - r.h - 1 && y - q.h < r.y + 1);   // a label spans [y - h, y]
+      let lines = '';
+      items.forEach(q => { let y = q.y, x = q.x, hit;
+        if (q.card) {   // the nearest free spot inside the view: above the unit first, then beside it, then below it
+          const inside = (x, y) => y - q.h >= 4 && y <= this.h - 4 && x - q.w / 2 >= 4 && x + q.w / 2 <= this.w - 4, free = (x, y) => !placed.some(r => Math.abs(r.x - x) < (r.w + q.w) / 2 + 2 && y > r.y - r.h - 1 && y - q.h < r.y + 1);
+          const cand = []; for (let dy = -720; dy <= 480; dy += 12) for (const f of [0, -0.55, 0.55, -1.1, 1.1]) cand.push([f * q.w, dy, Math.abs(dy) + (dy > 0 ? 60 : 0) + Math.abs(f) * q.w * 0.8]);
+          const best = cand.sort((a, b) => a[2] - b[2]).find(([dx, dy]) => inside(q.x + dx, q.y + dy) && free(q.x + dx, q.y + dy));
+          if (best) { x = q.x + best[0]; y = q.y + best[1]; } else { y = Math.min(this.h - 4, Math.max(q.h + 4, y)); x = Math.min(this.w - q.w / 2 - 4, Math.max(q.w / 2 + 4, x)); }
+          if (Math.hypot(x - q.x, y - q.y) > 6) { const ey = y <= q.y ? y : y - q.h, ex = Math.min(x + q.w / 2, Math.max(x - q.w / 2, q.x)); lines += `<line x1="${q.x.toFixed(1)}" y1="${q.y.toFixed(1)}" x2="${ex.toFixed(1)}" y2="${ey.toFixed(1)}"/>`; } }
+        else { for (let k = 0; k < 2 && (hit = over(q, y)); k++) y = hit.y - hit.h - 2; if (over(q, y)) { q.el.style.display = 'none'; return; } }
+        placed.push({ x, y, w: q.w, h: q.h }); q.el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) translate(-50%,-100%)`; });
+      if (this.leads) this.leads.innerHTML = lines;
+    },
+    rayAt(cx, cy) { const r = this.R.domElement.getBoundingClientRect(); this.place(); this.ray.setFromCamera(new this.T.Vector2((cx - r.left) / r.width * 2 - 1, -(cy - r.top) / r.height * 2 + 1), this.cam); },
+    /* the board (x, y) under a screen point, on the ground plane; null off the board */
+    ground(cx, cy) { this.rayAt(cx, cy); const p = this.ray.ray.intersectPlane(this.ground0, new this.T.Vector3()); return p && p.x >= 0 && p.z >= 0 && p.x <= this.plan.W && p.z <= this.plan.H ? [p.x, p.z] : null; },
+    /* the unit under a screen point: its parts first, then the round area around it whose centre is nearest */
+    pickNode(cx, cy) {
+      this.rayAt(cx, cy); const hit = this.ray.intersectObjects(this.pickables, false)[0]; if (hit) return hit.object.userData.id;
+      const g = this.ground(cx, cy), near = this.ray.intersectObjects(this.hits, false).map(h => h.object.userData.id);
+      if (!near.length || !g) return near[0] || null; const n = this.g.nodes;
+      return near.sort((a, b) => Math.hypot(n[a].x - g[0], n[a].y - g[1]) - Math.hypot(n[b].x - g[0], n[b].y - g[1]))[0];
+    },
+    look(id) { if (id && this.opts.onLook) this.opts.onLook(id); },
+    /* desktop: a click is handed to the board screen exactly as a 2.5D tap (a unit, else a pipe, else the board cell under it) */
+    click(cx, cy) {
+      const id = this.pickNode(cx, cy), xy = this.ground(cx, cy);
+      if (id) return this.opts.onTap([{ kind: this.g.isPad(id) ? 'pad' : 'fixed', id, d: 0 }], xy || [this.g.nodes[id].x, this.g.nodes[id].y], 'mouse');
+      this.rayAt(cx, cy); const e = this.ray.intersectObjects(this.pipeHits, false)[0];
+      if (e) return this.opts.onTap([{ kind: 'edge', id: e.object.userData.edge }], xy || [-1, -1], 'mouse');
+      if (xy) this.opts.onTapBoard(xy);
+    },
+    input() {
+      const el = this.R.domElement, pts = new Map(); let pinch = null, moved = false;
+      const poke = () => { this.idleAt = performance.now(); this.touched = true; this.dirty = true; };
+      this.wake = () => { this.idleAt = performance.now(); }; document.addEventListener('pointerdown', this.wake, true);   // any tap on the screen (cards, sheets) holds the spin
+      el.addEventListener('pointerdown', ev => { el.setPointerCapture(ev.pointerId); pts.set(ev.pointerId, [ev.clientX, ev.clientY]); moved = false; poke(); this.anim = null;
+        if (pts.size === 1) this.drag = { x: ev.clientX, y: ev.clientY, o: Object.assign({}, this.o), pan: ev.button === 2 || ev.shiftKey };
+        if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = { d: Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, mx: (a[0] + b[0]) / 2, my: (a[1] + b[1]) / 2, o: Object.assign({}, this.o) }; } });
+      el.addEventListener('contextmenu', ev => ev.preventDefault());
+      el.addEventListener('pointermove', ev => {
+        if (!pts.has(ev.pointerId)) { if (this.build && ev.pointerType === 'mouse') { this.mouse = [ev.clientX, ev.clientY]; this.idleAt = performance.now(); } return; }   // hover: picked once per frame
+        pts.set(ev.pointerId, [ev.clientX, ev.clientY]); poke();
+        if (pts.size === 2 && pinch) { const [a, b] = [...pts.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]) || 1;
+          this.o.r = this.clampR(pinch.o.r * pinch.d / d); this.panBy((a[0] + b[0]) / 2 - pinch.mx, (a[1] + b[1]) / 2 - pinch.my, pinch.o); moved = true; return; }
+        const D = this.drag; if (!D) return;
+        const dx = ev.clientX - D.x, dy = ev.clientY - D.y; if (Math.hypot(dx, dy) > 6) moved = true; if (!moved) return;
+        if (D.pan) this.panBy(dx, dy, D.o); else { this.o.theta = D.o.theta + dx * 0.006; this.o.phi = Math.min(1.4, Math.max(0.3, D.o.phi - dy * 0.005)); } });
+      el.addEventListener('pointerleave', () => { if (this.build) { this.hover = null; this.cell = null; } });
+      const up = ev => { const tap = pts.size === 1 && !moved && this.drag && !this.drag.pan; pts.delete(ev.pointerId); if (pts.size < 2) pinch = null; if (!pts.size) this.drag = null; poke();
+        if (tap) { if (this.build) this.click(ev.clientX, ev.clientY); else this.look(this.pickNode(ev.clientX, ev.clientY)); } };
+      el.addEventListener('pointerup', up); el.addEventListener('pointercancel', ev => { pts.delete(ev.pointerId); this.drag = null; pinch = null; });
+      el.addEventListener('wheel', ev => { ev.preventDefault(); poke(); this.anim = null; this.o.r = this.clampR(this.o.r * (ev.deltaY > 0 ? 1.1 : 1 / 1.1)); }, { passive: false });
+    },
+    clampR(r) { return Math.min(this.fitR * 2.5, Math.max(4, r)); },
+    panBy(dx, dy, o) {   // screen right = (-sin θ, cos θ) on the ground; screen down = (-cos θ, -sin θ)
+      const k = o.r / this.h * 1.1, th = o.theta;
+      this.o.tx = o.tx - (-Math.sin(th) * dx - Math.cos(th) * dy) * k; this.o.tz = o.tz - (Math.cos(th) * dx - Math.sin(th) * dy) * k;
+    },
+    /* client position of a unit (its middle) or of a board point on the ground (the automated play-test clicks there) */
+    toScreen(x, y, z) { this.place(); const v = new this.T.Vector3(x, z, y).project(this.cam), r = this.R.domElement.getBoundingClientRect(); return [r.left + (v.x + 1) / 2 * r.width, r.top + (1 - v.y) / 2 * r.height]; },
+    screenPos(id) { const h = this.plan.hits.find(q => q.id === id); return h ? this.toScreen(h.x, h.y, Math.min(h.h / 2, 0.8)) : null; },
+    screenPosBoard(x, y) { return this.toScreen(x, y, 0.04); },
+    /* for the play-test: draw now and count the distinct colours on the canvas (a blank canvas has one) */
+    probe() {
+      this.place(); this.R.render(this.S, this.cam); const gl = this.R.getContext(), w = gl.drawingBufferWidth, h = gl.drawingBufferHeight, px = new Uint8Array(w * h * 4);
+      gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px); const seen = new Set();
+      for (let i = 0; i < px.length; i += 4 * 7) seen.add((px[i] >> 3) + ',' + (px[i + 1] >> 3) + ',' + (px[i + 2] >> 3) + ',' + (px[i + 3] >> 5));
+      return { colours: seen.size, w, h, shadows: this.R.shadowMap.enabled, ratio: this.R.getPixelRatio(), build: this.build };
+    },
+    destroy() {
+      cancelAnimationFrame(this.raf); this.ro.disconnect(); document.removeEventListener('pointerdown', this.wake, true); this.clearContent();
+      Object.values(this.unitTube).forEach(g => g.dispose()); Object.values(this.mats).concat(Object.values(this.glows)).forEach(m => m.dispose());
+      this.hitMat.dispose(); [this.cursor3, this.cursor3.children[0], this.halo].forEach(o => { o.geometry.dispose(); o.material.dispose(); }); this.envRT.dispose();
+      this.S.traverse(o => { if (o.isLight && o.dispose) o.dispose(); });
+      this.R.dispose(); this.R.forceContextLoss(); this.R.domElement.remove(); this.R = null; this.tagLayer.innerHTML = '';
+    }
+  };
+  /* merge indexed geometries (already placed) into one */
+  function merge(T, list) {
+    let nv = 0, ni = 0; list.forEach(g => { nv += g.attributes.position.count; ni += g.index.count; });
+    const pos = new Float32Array(nv * 3), nor = new Float32Array(nv * 3), idx = new Uint32Array(ni); let v = 0, i = 0;
+    list.forEach(g => { pos.set(g.attributes.position.array, v * 3); nor.set(g.attributes.normal.array, v * 3);
+      const ix = g.index.array; for (let k = 0; k < ix.length; k++) idx[i + k] = ix[k] + v; v += g.attributes.position.count; i += ix.length; g.dispose(); });
+    const out = new T.BufferGeometry(); out.setAttribute('position', new T.BufferAttribute(pos, 3)); out.setAttribute('normal', new T.BufferAttribute(nor, 3)); out.setIndex(new T.BufferAttribute(idx, 1));
+    return out;
+  }
+
+  /* ---------- open / close ---------- */
+  let opening = 0;
+  async function open(game, opts) {
+    if (V || !supported()) return; const my = ++opening, box = $('#v3d'), msg = $('#v3d-msg');
+    box.hidden = false; msg.textContent = PB.T3_TEXT.loading; msg.hidden = false;
+    let T;
+    try { T = await loadThree(); } catch (e) { if (my === opening) { close(); PB.ui.toast(PB.T3_TEXT.offline, true); } return; }
+    if (my !== opening || box.hidden) return;   // closed while loading
+    msg.hidden = true; try { V = new View(T, game, opts || {}); } catch (e) { console.error(e); V = null; $('#v3d-view').innerHTML = ''; close(); PB.ui.toast(PB.T3_TEXT.failed, true); }
+  }
+  function close() { opening++; if (V) { V.destroy(); V = null; } const box = $('#v3d'); if (box) { box.hidden = true; box.classList.remove('dock'); box.removeAttribute('style'); } }
+  PB.View3D = { supported, canBuild, open, close, view: () => V };
+  if (typeof document.querySelector === 'function' && $('#v3d')) {
+    $('#v3d-close').onclick = () => close();
+    $('#v3d-reset').onclick = () => { if (V) { V.touched = false; V.reset(); } };
+  }
+})();
+
+</script>
+<script>
 /* ChPE Process Builder — the board screen (v4): Example Process, Competition and Sandbox all build freely on the zoned board.
    The reactor(s) stand pre-placed; every unit shows a live card with what leaves it; Deploy runs the plant and stops where it
    does not work, saying only where. Uses the shared helpers that app.js puts on PB.ui (modal, toast, cards, citations). */
@@ -5876,7 +6288,7 @@ window.PB = window.PB || {};
     if (m && Object.hasOwn(LIB(), m[1])) start(m[1], m[2], 'sandbox'); else showSetup();
   }
   function leave() { stop(); closeSheet(); }
-  function stop() { if (!SB) return; SB.alive = false; cancelAnimationFrame(SB.raf); if (SB.view) SB.view.destroy(); SB = null; }
+  function stop() { if (PB.View3D) PB.View3D.close(); if (!SB) return; SB.alive = false; cancelAnimationFrame(SB.raf); if (SB.view) SB.view.destroy(); SB = null; }
 
   function showSetup() {
     stop(); $('#sb-setup').hidden = false; $('#sb-play').hidden = true;
@@ -5898,6 +6310,7 @@ window.PB = window.PB || {};
     $('#sb-mode').textContent = U().smallScreen() && mode === 'advanced' ? 'Adv' : PB.SANDBOX.modes[mode].name;
     $('#sb-mode').hidden = U().smallScreen() && mode !== 'advanced';   // phones: Normal is the default, so only Advanced is marked
     $('#sb-cards').setAttribute('aria-pressed', String(SB.cardsOn));
+    $('#sb-3d').hidden = !PB.View3D.supported();   // v7: no WebGL 2, no 3D button
     $('#sb-zones').innerHTML = game.board.zones.map(z => `<button class="sb-zone" data-zone="${z.id}">${U().esc(z.label.replace(' Storage', '').replace('Raw Material', 'Raw materials'))}</button>`).join('');
     game.on('change', () => { save(); makeView(); status(); $('#sb-run').disabled = false; });
     game.on('error', d => onError(d));
@@ -6269,6 +6682,25 @@ window.PB = window.PB || {};
     $('#finish').hidden = false;
   }
 
+  /* ---------- v7: the 3D view. Desktop: clicks go to the same tap handlers as the 2.5D board (place, Move, connect, cards), and the
+     3D view shows what this screen is doing (state3D) and the same card data. Phones and tablets: look only; a tap on a unit opens its
+     unit card without the edit controls ---------- */
+  function open3D() {
+    if (!SB) return; clearAction();
+    PB.View3D.open(SB.game, PB.View3D.canBuild() ? { build: true, onTap, onTapBoard, state: state3D, cardHTML: c => `<b class="t3-card-t">${U().esc(c.title)}</b>${condHTML(c)}` }
+      : { onLook: id => { if (SB && !U().modalOpen()) card3D(id); } });
+  }
+  function state3D() {
+    if (!SB) return {}; const a = SB.action, it = a && a.kind === 'move' && SB.game.items[a.id];
+    return { zone: a && a.kind === 'place' ? ZONE_OF[a.cat] : it ? ZONE_OF[it.cat] || 'proc' : null, focus: a ? a.from || a.unit || a.id || null : null, cardsOn: SB.cardsOn, cardOnly: SB.cardOnly };
+  }
+  function card3D(id) {
+    itemCard(id); $('#modal-card').classList.add('ro');
+    $('#modal-b').querySelectorAll('input, button').forEach(el => { el.disabled = true; });
+    $('#modal-actions').querySelectorAll('.btn:not(.primary)').forEach(b => { if (b.textContent !== 'Spec card') b.remove(); });
+  }
+  $('#sb-3d').onclick = () => open3D();
+
   /* ---------- HUD ---------- */
   $('#sb-add').onclick = () => { if (SB) { clearAction(); openSheet(); } };
   $('#sb-card').onclick = () => specCard();
@@ -6286,6 +6718,7 @@ window.PB = window.PB || {};
     const teacher = PB.teacher.on(), showRef = SB.kind !== 'competition' || teacher;
     if (teacher) ref.label = 'Show finished plant';
     const acts = [{ label: 'Clear board', cls: 'danger', fn: () => ui.modal({ kicker: 'Clear board', title: 'Remove everything you built?', html: '<p>The fixed reaction units stay. Your time keeps running.</p>', actions: [{ label: 'Keep my board', primary: true }, { label: 'Clear board', cls: 'danger', fn: () => { SB.game.clear(); ui.toast('Board cleared.'); } }] }) }].concat(showRef ? [ref] : [],
+      PB.View3D.supported() ? [{ label: '3D view', fn: () => open3D() }] : [],
       teacher ? [{ label: 'Leave teacher mode', fn: () => { PB.teacher.set(false); ui.toast('Teacher mode is off.'); } }] : [{ label: 'Teacher mode', fn: () => PB.teacher.ask() }], [{ label: 'OK', primary: true }]);
     ui.modal({ kicker: KIND[SB.kind] + (teacher ? ' · teacher mode' : ''), title: 'Options', html: '<p>Your board is saved on this device only.</p><ul class="needs"><li><b>Clear board</b> removes everything except the fixed reaction units. Your time keeps running.</li>' + (showRef ? '<li><b>' + ref.label + '</b> builds one working plant for this process (it replaces your board).</li>' : '') + '<li>Tap a unit to set it, connect it, move it or remove it.</li></ul>',
       actions: acts });
