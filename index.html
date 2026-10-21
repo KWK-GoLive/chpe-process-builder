@@ -487,7 +487,7 @@ details.more[open] summary { margin-bottom: 6px; }
 .legend .ci { width: 26px; height: 26px; margin-top: 2px; }
 .legend b { font: 700 16px var(--f-display); } .legend p { margin: 2px 0 0; color: var(--text-2); font-size: 14px; }
 
-@media (max-width: 560px) { #sb-key .k-txt { display: none; } #sb-key { padding-inline: 10px; } }
+@media (max-width: 560px) { #sb-guide .k-txt { display: none; } #sb-guide { padding-inline: 10px; } }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 @media (max-width: 560px) { #sb-card .k-txt { display: none; } .hud-title .hud-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .hud-sub { white-space: nowrap; min-width: 0; gap: 6px; } .hud-mode { font-size: 9px; letter-spacing: .04em; padding: 0 3px; } #sb-cards .k-txt { display: none; } .hud-row > .btn, .hud-row > .icon-btn { flex: none; } #sb-card, #sb-cards { padding-inline: 10px; } }
@@ -504,7 +504,6 @@ details.more[open] summary { margin-bottom: 6px; }
 .report-time { display: flex; flex-direction: column; align-items: center; margin: 6px 0 14px; }
 .report-time .mono { font-size: 40px; font-weight: 700; color: var(--accent); line-height: 1.1; } .report-time small { color: var(--text-2); }
 
-.hc-go2 { display: flex; gap: 18px; flex-wrap: wrap; } .hc-go2 .hc-go { text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }   /* final review: tap targets */
 .home-top .home-links a { display: inline-flex; align-items: center; min-height: 44px; }   /* v6.4: two example processes */
 
 /* v7: read-only 3D view (three-view.js): over the whole board screen, under the toast and the unit card */
@@ -544,7 +543,7 @@ html:not(.teacher) .teacher-only, html:not(.board-on) .teacher-only { display: n
 #s-board { background: var(--bg); }
 .bd-wrap { max-width: 1760px; margin: 0 auto; padding-block: 12px 32px; font-size: clamp(16px, 1.25vw, 28px); }
 .bd-wrap .brief-top { margin-bottom: 6px; }
-.bd-gate { max-width: 560px; margin: 8vh auto; text-align: center; } form.bd-gate { text-align: left; }
+.bd-gate { max-width: 560px; margin: 24px auto 0; } .bd-gate h2 { margin: 0 0 4px; }   /* v8: the board key form under the public board */
 /* review R3-M1: one compact header line (join link, class code), so a class of 20+ fits the projector */
 .bd-head { display: flex; flex-wrap: wrap; gap: 4px 40px; align-items: flex-end; margin: 0 0 10px; }
 .bd-head .eyebrow { font-size: max(12px, .55em); margin: 0 0 2px; }
@@ -557,18 +556,19 @@ html:not(.teacher) .teacher-only, html:not(.board-on) .teacher-only { display: n
 .bd-count { color: var(--muted); font-weight: 600; }
 .bd-status { flex: 1; min-width: 10em; font-size: max(13px, .7em); color: var(--muted); } .bd-status.bad { color: var(--bad); }
 .bd-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.bd-row { display: grid; grid-template-columns: 2.2em minmax(11em, 1.3fr) minmax(0, 2.6fr) 5.5em 4.2em 1.5em; align-items: center; gap: 4px 16px; padding: 10px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+.bd-row { display: grid; grid-template-columns: 2.2em minmax(11em, 1.3fr) minmax(0, 2.6fr) 4.6em 5.5em 4.2em 1.5em; align-items: center; gap: 4px 16px; padding: 10px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
 .bd-row.done { border-color: var(--accent-line); background: linear-gradient(90deg, var(--accent-soft), #fff 60%); }
 .bd-rank { font: 700 1.3em var(--f-display); color: var(--muted); text-align: center; }
 .bd-row.done .bd-rank { color: var(--accent); }
 .bd-nick { font: 700 1.25em var(--f-display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bd-pts { text-align: right; white-space: nowrap; } .bd-pts b { font: 700 1.6em var(--f-display); color: var(--accent); } .bd-pts small { color: var(--muted); font-weight: 500; font-size: .7em; }   /* v8 points */
 .bd-dep { text-align: right; font-weight: 600; } .bd-dep small { color: var(--muted); font-weight: 500; font-size: .7em; }
 .bd-time { text-align: right; font-size: 1.3em; font-weight: 700; }
 .bd-x { width: 1.5em; height: 1.5em; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--muted); font-size: 1em; line-height: 1; cursor: pointer; opacity: .4; }
 .bd-x:hover, .bd-x:focus-visible { opacity: 1; background: var(--panel-2); color: var(--bad); }
-@media (pointer: coarse) { .bd-x { width: 44px; height: 44px; opacity: .7; } .bd-row { grid-template-columns: 2.2em minmax(11em, 1.3fr) minmax(0, 2.6fr) 5.5em 4.2em 44px; } }
+@media (pointer: coarse) { .bd-x { width: 44px; height: 44px; opacity: .7; } .bd-row { grid-template-columns: 2.2em minmax(11em, 1.3fr) minmax(0, 2.6fr) 4.6em 5.5em 4.2em 44px; } }
 .bd-list.many { gap: 5px; } .bd-list.many .bd-row { padding: 4px 14px; border-radius: 10px; } .bd-list.many .ms-step { padding: 3px 4px; }
-.bd-list.many .bd-nick, .bd-list.many .bd-time, .bd-list.many .bd-rank { font-size: 1.1em; }
+.bd-list.many .bd-nick, .bd-list.many .bd-time, .bd-list.many .bd-rank { font-size: 1.1em; } .bd-list.many .bd-pts b { font-size: 1.35em; }
 .bd-list.lots { gap: 3px; } .bd-list.lots .bd-row { padding: 2px 14px; font-size: .86em; } .bd-list.lots .ms-step { padding: 2px 4px; }
 .bd-empty { padding: 24px; text-align: center; color: var(--muted); background: var(--panel); border: 1px dashed var(--line); border-radius: 14px; }
 .bd-foot { margin: 16px 0 0; text-align: right; font-size: 14px; }
@@ -578,14 +578,45 @@ html:not(.teacher) .teacher-only, html:not(.board-on) .teacher-only { display: n
 .ms-step b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ms-step.on { background: var(--accent-line); color: var(--fg); }
 .ms-step.done { background: var(--accent); color: var(--accent-ink); }
-@media (max-width: 1100px) { .bd-row { grid-template-columns: 2em minmax(11em, 1.3fr) minmax(0, 2fr) 5em 4em 1.5em; gap: 4px 12px; } }
-@media (max-width: 1100px) and (pointer: coarse) { .bd-row { grid-template-columns: 2em minmax(11em, 1.3fr) minmax(0, 2fr) 5em 4em 44px; } }
+@media (max-width: 1100px) { .bd-row { grid-template-columns: 2em minmax(11em, 1.3fr) minmax(0, 2fr) 4.2em 5em 4em 1.5em; gap: 4px 12px; } }
+@media (max-width: 1100px) and (pointer: coarse) { .bd-row { grid-template-columns: 2em minmax(11em, 1.3fr) minmax(0, 2fr) 4.2em 5em 4em 44px; } }
 @media (max-width: 760px) {
-  .bd-row, .bd-list .bd-row { grid-template-columns: 1.6em 1fr auto auto; padding: 8px 10px; gap: 6px 10px; }
-  .bd-row .bd-time { grid-column: 3; grid-row: 1; } .bd-row .bd-x { grid-column: 4; grid-row: 1; }
-  .bd-row .ms { grid-column: 1 / 3; grid-row: 2; } .bd-row .bd-dep { grid-column: 3 / 5; grid-row: 2; }
+  .bd-row, .bd-list .bd-row { grid-template-columns: 1.6em 1fr auto auto auto; padding: 8px 10px; gap: 6px 10px; }
+  .bd-row .bd-pts { grid-column: 3; grid-row: 1; } .bd-row .bd-time { grid-column: 4; grid-row: 1; } .bd-row .bd-x { grid-column: 5; grid-row: 1; }
+  .bd-row .ms { grid-column: 1 / 3; grid-row: 2; } .bd-row .bd-dep { grid-column: 3 / 6; grid-row: 2; }
   .ms-step { flex-direction: column; gap: 2px; font-size: 11px; padding: 5px 2px; }
 }
+
+/* ---------------- v8: picker sub-classes, the Guide card, the Deploy progress bar and points ---------------- */
+.tray-sub { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; margin: 6px 2px 0; font: 600 15px var(--f-display); color: var(--fg); }
+.tray-sub:first-child { margin-top: 0; }
+.tray-sub .ci { width: 18px; height: 18px; } .tray-sub .pair { margin: 0; }
+.modal-card.guide-card { width: min(760px, 100%); }
+.gd-tabs { display: flex; gap: 6px; margin: 0 0 12px; border-bottom: 1px solid var(--line); }
+.gd-tab { font: 600 15px var(--f-display); padding: 8px 14px; border: 0; background: none; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px; cursor: pointer; min-height: 44px; }
+.gd-tab.on { color: var(--fg); border-bottom-color: var(--accent); }
+.gd-rules { list-style: none; margin: 0; padding: 0 !important; display: grid; gap: 10px; }
+.gd-rules li { display: grid; grid-template-columns: 240px 1fr; gap: 14px; align-items: center; padding: 8px 10px; border-radius: 10px; background: var(--panel-2); margin: 0; }
+.gd-rules b { font: 700 16px var(--f-display); } .gd-rules p { margin: 2px 0 0; color: var(--text-2); font-size: 15px; }
+.gd-pic { max-width: 100%; height: auto; fill: none; stroke: var(--muted); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.gd-pic .ph-G { stroke: #0f766e; } .gd-pic .ph-L, .gd-pic .ph-Lp { stroke: #1d4ed8; } .gd-pic .ph-Ln { stroke: #a16207; } .gd-pic .ph-V { stroke: #b45309; } .gd-pic .ph-S { stroke: #92400e; }
+.gd-pic .ok { stroke: var(--accent); stroke-width: 3; } .gd-pic .x { stroke: var(--bad); stroke-width: 3; }
+.gd-pic .hot { stroke: #d9472b; } .gd-pic .mid { stroke: #d97706; } .gd-pic .cold { stroke: #2a93d5; }
+@media (max-width: 560px) { .gd-rules li { grid-template-columns: 1fr; gap: 4px; } .gd-tab { flex: 1; } }
+.sb-prog-in { display: flex; align-items: center; gap: 10px; }
+.sb-prog-in .ms { flex: 1; min-width: 0; }
+.sb-prog-in .pts { font-size: 20px; white-space: nowrap; color: var(--accent); } .sb-prog-in .pts small { font-size: 12px; color: var(--muted); }
+.modal-card .sb-prog-in { margin: 4px 0 12px; }
+.sb-prog .ms-step { padding: 3px 4px; }
+@media (max-width: 560px) { .sb-prog-in .ms-step b { display: none; } .sb-prog-in .ms-step { padding: 4px 2px; } .modal-card .sb-prog-in .ms-step b { display: inline; font-size: 10px; } .modal-card .sb-prog-in .ms-step { flex-direction: column; gap: 2px; } }
+.report-score { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; }
+.report-time .mono small { font-size: 16px; color: var(--muted); }
+.b-stats { grid-template-columns: repeat(3, 1fr); }
+.modal-card ul.stops li { font-weight: 600; }
+.modal:has(.modal-card.stop-card) { align-items: end; }   /* v8: the stop message sits low, the stopped units above it */
+.b-stats span { white-space: nowrap; }   /* v8 review: the badge points never wrap */
+@media (min-width: 900px) { .pickb .sb-tabs { gap: 2px; padding: 8px 6px; } .pickb .sb-tab { padding: 6px 4px; gap: 2px; } .pickb .sb-tab .ci { width: 20px; height: 20px; } }   /* v8 review: the whole rail (Advanced: ten tabs) fits a 900 px high screen */
+.v3d.dock #v3d-close { display: none; }   /* v8 review: desktop 3D building closes with the HUD toggle; touch (look only) keeps Close */
 
 </style>
 <script type="importmap">{"imports":{"https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.js":"https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.min.js"},"integrity":{"https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.module.min.js":"sha512-5y1OuWCUVXtYlPOwdMCvNr/Scu/rs2aBbVxO5q1Du9DzLe7X0QpPf1yxAV839cwp7ZqIDv/UrCm0O2oXxM+rMA==","https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.min.js":"sha512-XHAcLGgLlaKvTJVfBh76iqQUVHJhHbsu+g/JhY0gQBrpYkg+L1MbYckDdUXkh4D/tsp/mVoPi+Art8oxizfddA==","https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.js":"sha512-qlDOLg8zPtXvEqSrHL/iQY763kv248HYdKLW3j2F/XJDA/XnKZj1SNqvjXVrRe0gw96iMOgMFwj8cFSOtIrELQ=="}}</script>
@@ -629,28 +660,28 @@ html:not(.teacher) .teacher-only, html:not(.board-on) .teacher-only { display: n
         </div>
       </div>
       <div class="home-cards three">
-        <div class="home-card lecturer">
+        <a class="home-card lecturer" href="#example">
           <span class="hc-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v11H3zM8 20h8M12 16v4"/></svg></span>
           <span class="hc-kicker">Example process</span>
-          <span class="hc-title">Biodiesel or SAF</span>
-          <span class="hc-sub">The teacher builds one with the class: vegetable oil + methanol &#8594; biodiesel, or palm oil + hydrogen &#8594; jet fuel.</span>
+          <span class="hc-title">A + B &#8594; C + D + E</span>
+          <span class="hc-sub">The teacher builds it with the class: liquid A and gas B react to gas C and liquids D and E, which are separated and stored.</span>
           <span class="hc-tags"><span>Teacher-led</span><span>No score</span></span>
-          <span class="hc-go2"><a class="hc-go" href="#example">Biodiesel &#8594;</a><a class="hc-go" href="#example-saf">SAF &#8594;</a></span>
-        </div>
+          <span class="hc-go">Build the example &#8594;</span>
+        </a>
         <a class="home-card student" href="#competition">
           <span class="hc-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM5 5h3M16 5h3M5 5c0 3 1 4 3 4M19 5c0 3-1 4-3 4M12 13v4M8 20h8"/></svg></span>
           <span class="hc-kicker">Competition</span>
           <span class="hc-title">CO&#8322; &#8594; Methanol</span>
-          <span class="hc-sub">Build the whole plant, then deploy. The fastest working plant wins.</span>
-          <span class="hc-tags"><span>Students</span><span>Fastest time</span></span>
+          <span class="hc-sub">Build the whole plant, then deploy. The most points win; on equal points, the faster plant.</span>
+          <span class="hc-tags"><span>Students</span><span>Points + time</span></span>
           <span class="hc-go">Start building &#8594;</span>
         </a>
         <a class="home-card sandbox-home" href="#sandbox">
           <span class="hc-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>
           <span class="hc-kicker">Sandbox</span>
           <span class="hc-title">Every process</span>
-          <span class="hc-sub">Biodiesel, methanol, bioethanol, ammonia, sulfuric acid, jet fuel from palm oil. Normal or Advanced.</span>
-          <span class="hc-tags"><span>Six processes</span><span>Utilities + waste</span></span>
+          <span class="hc-sub">Biodiesel, methanol, bioethanol, ammonia, sulfuric acid, jet fuel from palm oil, and A + B &#8594; C + D + E. Normal or Advanced.</span>
+          <span class="hc-tags"><span>Seven processes</span><span>Utilities + waste</span></span>
           <span class="hc-go">Choose a process &#8594;</span>
         </a>
       </div>
@@ -682,10 +713,11 @@ html:not(.teacher) .teacher-only, html:not(.board-on) .teacher-only { display: n
           <button class="icon-btn" id="sb-back" aria-label="Back">←</button>
           <div class="hud-title"><span class="hud-name" id="sb-title">Sandbox</span><span class="hud-sub"><span class="hud-mode" id="sb-mode">Normal</span><span id="sb-time" class="mono">0:00</span><button class="linkish sb-who" id="sb-who" type="button" hidden></button></span></div>
           <button class="btn sm" id="sb-card" aria-label="Spec card">Spec<span class="k-txt"> card</span></button>
-          <button class="btn ghost sm" id="sb-key" aria-label="Key: what the icons mean"><span aria-hidden="true" class="k-ico">?</span><span class="k-txt"> Key</span></button><button class="btn sm" id="sb-cards" aria-pressed="true" aria-label="Cards"><span aria-hidden="true" class="k-ico">▤</span><span class="k-txt"> Cards</span></button>
+          <button class="btn ghost sm" id="sb-guide" aria-label="Guide: rules and icon key"><span aria-hidden="true" class="k-ico">?</span><span class="k-txt"> Guide</span></button><button class="btn sm" id="sb-cards" aria-pressed="true" aria-label="Cards"><span aria-hidden="true" class="k-ico">▤</span><span class="k-txt"> Cards</span></button>
           <button class="btn ghost sm" id="sb-3d" aria-label="3D view" hidden>3D</button>
           <button class="icon-btn" id="sb-more" aria-label="More">⋯</button>
         </div>
+        <div class="sb-prog" id="sb-prog" hidden></div>
         <div class="sb-zones" id="sb-zones"></div>
       </header>
       <div class="view" id="sb-view"></div>
@@ -731,21 +763,19 @@ html:not(.teacher) .teacher-only, html:not(.board-on) .teacher-only { display: n
         <input id="join-class" class="join-in mono" type="text" maxlength="20" autocapitalize="characters" spellcheck="false" placeholder="from your teacher">
         <label for="join-nick">Nickname</label>
         <input id="join-nick" class="join-in" type="text" maxlength="16" spellcheck="false" placeholder="not your real name">
-        <p class="join-hint">Letters, digits, spaces, - and _ (Thai is fine). Your nickname and your time show on the class board.</p>
-        <p class="join-hint">Sent to your teacher's class board (a Google Sheet): class code, nickname, a random run ID, deploys, milestones and time. Nothing else.</p>
+        <p class="join-hint">Letters, digits, spaces, - and _ (Thai is fine). Your nickname, points and time show on the class board.</p>
+        <p class="join-hint">Sent to your teacher's class board (a Google Sheet): class code, nickname, a random run ID, deploys, milestones, points and time. Nothing else.</p>
         <p class="join-msg" id="join-msg" aria-live="polite"></p>
         <button class="btn primary" id="join-go" type="submit">Join and start</button>
       </form>
     </div>
   </section>
 
-  <!-- v7.1 TEACHER BOARD (teacher mode + the board key) -->
+  <!-- v7.1 CLASS BOARD; v8: public and read-only, the teacher tools need teacher mode + the board key -->
   <section class="screen" id="s-board">
     <div class="bd-wrap">
       <div class="brief-top"><a class="btn ghost sm" href="#home">← Home</a><img class="logo-sm" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAACnCAYAAABgpoUkAAAWfmNhQlgAABZ+anVtYgAAAB5qdW1kYzJwYQARABCAAACqADibcQNjMnBhAAAAFlhqdW1iAAAAR2p1bWRjMm1hABEAEIAAAKoAOJtxA3VybjpjMnBhOjgyYjg1ZTQ1LTdlN2MtNGIxNC04NDY0LTY5NDc4MzViN2ViNgAAAAOTanVtYgAAAClqdW1kYzJhcwARABCAAACqADibcQNjMnBhLmFzc2VydGlvbnMAAAAAuGp1bWIAAABEanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5pbmdyZWRpZW50LnYzAAAAABhjMnNomxrYyaw4RuQ47fRqiJ0wYAAAAGxjYm9yo2lkYzpmb3JtYXRpaW1hZ2UvcG5namluc3RhbmNlSUR4LHhtcDppaWQ6MDRkZmRmMjktMzAyMy00NTVjLTllYmItOWY0YTY4NzYxNDY1bHJlbGF0aW9uc2hpcGhwYXJlbnRPZgAAAeJqdW1iAAAAQWp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuYWN0aW9ucy52MgAAAAAYYzJzaB0LJOhpX1tmwswnsVEKIn8AAAGZY2JvcqJnYWN0aW9uc4KiZmFjdGlvbmtjMnBhLm9wZW5lZGpwYXJhbWV0ZXJzoWtpbmdyZWRpZW50c4GiY3VybHgtc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5pbmdyZWRpZW50LnYzZGhhc2hYIKvRzUeys6+OQUaQjO/IMTss3QMoqChL767M/RO0XdampGZhY3Rpb254HWNvbS5hbnRocm9waWMuY2xhdWRlLnByb3ZpZGVkanBhcmFtZXRlcnOheB9jb20uYW50aHJvcGljLm9yaWdpbi1jb25maWRlbmNlZ3Vua25vd25rZGVzY3JpcHRpb254ZkNsYXVkZSBwcm92aWRlZCB0aGlzIGZpbGUgYXQgdGhlIHJlcXVlc3Qgb2YgYSB1c2VyIGFuZCBtYXkgaGF2ZSBjcmVhdGVkIG9yIG1vZGlmaWVkIHRoZSBmaWxlIGNvbnRlbnRzLm1zb2Z0d2FyZUFnZW50oWRuYW1lZkNsYXVkZXJhbGxBY3Rpb25zSW5jbHVkZWT1AAAAyGp1bWIAAABAanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5oYXNoLmRhdGEAAAAAGGMyc2jt+6KTTpKL8J9Nzkiloum0AAAAgGNib3KlY2FsZ2ZzaGEyNTZjcGFkTQAAAAAAAAAAAAAAAABkaGFzaFgg8+pyrG45hGCybceYsCNdE+xoejJJ0+MzX+mQNWwgE0lkbmFtZW5qdW1iZiBtYW5pZmVzdGpleGNsdXNpb25zgaJlc3RhcnQYIWZsZW5ndGgZFooAAAI+anVtYgAAACdqdW1kYzJjbAARABCAAACqADibcQNjMnBhLmNsYWltLnYyAAAAAg9jYm9ypWNhbGdmc2hhMjU2aXNpZ25hdHVyZXhNc2VsZiNqdW1iZj0vYzJwYS91cm46YzJwYTo4MmI4NWU0NS03ZTdjLTRiMTQtODQ2NC02OTQ3ODM1YjdlYjYvYzJwYS5zaWduYXR1cmVqaW5zdGFuY2VJRHgseG1wOmlpZDplZTM0YTQyZi1hYjAxLTQwYmItODBmMS04NmUxOGI0ZWU5MmVyY3JlYXRlZF9hc3NlcnRpb25zg6JjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggq9HNR7Kzr45BRpCM78gxOyzdAyioKEvvrsz9E7Rd1qaiY3VybHgqc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5hY3Rpb25zLnYyZGhhc2hYIP+VMrvSMCA9IDmtTpcU0F060pzw3FdyY/za52/TrYP2omN1cmx4KXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaGFzaC5kYXRhZGhhc2hYIJ/56uho2CLdIGuWSXx9VKwkN6wS2gpTu9iuG792avO+dGNsYWltX2dlbmVyYXRvcl9pbmZvo2RuYW1lb0FudGhyb3BpYyBGaWxlc2d2ZXJzaW9uZTEuMC4wa3NwZWNWZXJzaW9uZTIuNC4wAAAQOGp1bWIAAAAoanVtZGMyY3MAEQAQgAAAqgA4m3EDYzJwYS5zaWduYXR1cmUAAAAQCGNib3LShFkCEqIBJhghWQIKMIICBjCCAY2gAwIBAgIUQOWgCu7COdC+uIP6BkIFPWdVEwAwCgYIKoZIzj0EAwMwSTEXMBUGA1UEChMOQW50aHJvcGljLCBQQkMxLjAsBgNVBAMTJUFudGhyb3BpYyBDb250ZW50IENyZWRlbnRpYWxzIFJvb3QgQ0EwHhcNMjYwODA3MTg0MzU2WhcNMjgwODA2MTk0MzU2WjBEMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEpMCcGA1UEAxMgQW50aHJvcGljIENsYXVkZSBDb250ZW50IFNpZ25pbmcwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASYegpry1AYBRTVNL1CpTlbROnY3dey+UrsF9C3phYrATN3ZHf93Mo8RQN0KOUuOn19P4oWNFWe5n2/She9N7eTo1gwVjAOBgNVHQ8BAf8EBAMCB4AwFQYDVR0lBA4wDAYKKwYBBAGD6F4CATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFM5R4gSBTmRbI/jjxM+aPpzB11zCMAoGCCqGSM49BAMDA2cAMGQCMDFzHRSeAXrSy1WOzkbhPZ6Km2wGTmZ/2gK18k8BQGXyqz88Rdrz6CTX9flAnYNVxgIwcF9c3fVhqmJKpi+UhasNUMko69cyX6STPfta3Q8EjyzDjzoyrol46FP6VFHhvUcJoWNwYWRZDZ4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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" alt="Chula ChPE"></div>
-      <div class="bd-gate" id="bd-gate" hidden><h1 class="display sm">Class board</h1><p>The class board is for teachers. Type the teacher code to open it.</p><button class="btn primary" id="bd-unlock" type="button">Enter the teacher code</button></div>
-      <form class="bd-gate join-form" id="bd-keygate" autocomplete="off" hidden><h1 class="display sm">Class board</h1><p>Type the board key. It stays on this device until you forget it.</p><label for="bd-key">Board key</label><input id="bd-key" class="join-in" type="password" autocomplete="off" spellcheck="false"><p class="join-msg" id="bd-key-msg" aria-live="polite"></p><button class="btn primary" type="submit">Open the board</button></form>
-      <div id="bd-main" hidden>
+      <div id="bd-main">
         <header class="bd-head">
           <div class="bd-join"><p class="eyebrow">Join at</p><p class="bd-link mono" id="bd-link"></p></div>
           <div class="bd-code"><p class="eyebrow">Class code</p><p class="bd-cls mono" id="bd-cls">—</p></div>
@@ -755,12 +785,13 @@ html:not(.teacher) .teacher-only, html:not(.board-on) .teacher-only { display: n
           <span class="bd-count" id="bd-count"></span>
           <span class="bd-status" id="bd-status" aria-live="polite"></span>
           <button class="btn primary" id="bd-open" type="button" hidden>Open this class</button>
-          <button class="btn" id="bd-csv" type="button">Download results</button>
-          <button class="btn danger" id="bd-clear" type="button">Clear class</button>
+          <button class="btn" id="bd-csv" type="button" hidden>Download results</button>
+          <button class="btn danger" id="bd-clear" type="button" hidden>Clear class</button>
         </div>
         <ol class="bd-list" id="bd-list"></ol>
-        <p class="bd-foot"><button class="linkish" id="bd-forget" type="button">Forget the board key on this device</button></p>
+        <p class="bd-foot"><button class="linkish" id="bd-unlock" type="button">Teacher tools</button><button class="linkish" id="bd-forget" type="button" hidden>Forget the board key on this device</button></p>
       </div>
+      <form class="bd-gate join-form" id="bd-keygate" autocomplete="off" hidden><h2>Teacher tools</h2><p>Type the board key to open, clear or download this class. It stays on this device until you forget it.</p><label for="bd-key">Board key</label><input id="bd-key" class="join-in" type="password" autocomplete="off" spellcheck="false"><p class="join-msg" id="bd-key-msg" aria-live="polite"></p><button class="btn primary" type="submit">Use the key</button></form>
     </div>
   </section>
 
@@ -824,7 +855,7 @@ html:not(.teacher) .teacher-only, html:not(.board-on) .teacher-only { display: n
       <p class="eyebrow">Certified</p>
       <h2 class="display sm">Junior Process Engineer</h2>
       <p class="b-plant" id="b-plant"></p>
-      <div class="b-stats"><div><span class="mono" id="b-time"></span><small>time</small></div><div><span id="b-mode"></span><small>mode</small></div></div>
+      <div class="b-stats"><div><span class="mono" id="b-pts"></span><small>/ 100 points</small></div><div><span class="mono" id="b-time"></span><small>time</small></div><div><span id="b-mode"></span><small>mode</small></div></div>
       <p class="b-date mono" id="b-date"></p>
     </div>
     <p class="finish-tip">Screenshot your badge!</p>
@@ -3178,6 +3209,8 @@ PB.REFS = {
   34: 'U.S. Department of Energy, Alternative Fuels Data Center. Sustainable Aviation Fuel. https://afdc.energy.gov/fuels/sustainable-aviation-fuel (accessed 2026-10-16).',
   35: 'Davis, R.; Kinchin, C.; Markham, J.; Tan, E. C. D.; Laurens, L. M. L.; Sexton, D.; Knorr, D.; Schoen, P.; Lukas, J. <i>Process Design and Economics for the Conversion of Algal Biomass to Biofuels: Algal Biomass Fractionation to Lipid- and Carbohydrate-Derived Fuel Products</i>; NREL/TP-5100-62368; National Renewable Energy Laboratory: Golden, CO, 2014. https://www.nrel.gov/docs/fy14osti/62368.pdf',
   36: 'Zhang, Y. <i>Design and Economic Assessment of Biodiesel Production from Waste Cooking Oil</i>. M.A.Sc. Thesis, University of Ottawa, Ottawa, ON, 2002. https://ruor.uottawa.ca/items/1380f7c6-e5b2-4bb0-8242-e6ab6c97d28d (accessed 2026-10-17).',
+  /* v8 (2026-10-21): the A + B → C + D + E teaching example */
+  37: 'Department of Chemical Engineering, Chulalongkorn University. <i>Chemical Process Operation: Chemical Production Process and Major Unit Operations — Chemical Process Synthesis</i> (course slides 37, 41, 56). Course material provided by the instructor.',
 };
 
 PB.STAGES = [
@@ -3283,7 +3316,7 @@ PB.EQUIP = {
              {t:'cyl',axis:'y',x:0,y:-0.42,z:1.95,r:0.07,h:0.84,c:'steelDark'}, {t:'cyl',axis:'y',x:0.3,y:-0.42,z:0.25,r:0.07,h:0.84,c:'steelDark'} ],   // v6.4: inlet and outlet headers (unit-models 6.4)
     nozzles: { out: { at: [0.3, 0, 0.25], dir: [1, 0], face: 1 } } },   // v6.4 (client decision 7): the dry vapour leaves from the lower header
   /* v6: explicit pipe joint, splitter and pressure-reducing valve */
-  joint: { name: 'Pipe Joint', does: 'Joins two or more pipes into one: gases, liquids or both, all at the same pressure.', arms: { r: 0.34, z: 0.34 },   // v6.4: each pipe at its own arm end
+  joint: { name: 'Pipe Joint', does: 'Joins two or more pipes into one: gases, liquids or both. The joined stream takes the lowest pressure and the average temperature.', arms: { r: 0.34, z: 0.34 },   // v6.4: each pipe at its own arm end
     shape: [ {t:'box',x:0,y:0,z:0,w:0.4,d:0.4,h:0.18,c:'concrete'},
              {t:'cyl',axis:'x',x:-0.34,y:0,z:0.34,r:0.13,h:0.68,c:'steel'}, {t:'cyl',axis:'y',x:0,y:-0.34,z:0.34,r:0.13,h:0.68,c:'steel'},
              {t:'sph',x:0,y:0,z:0.34,r:0.19,c:'steelLight'} ] },
@@ -3421,6 +3454,7 @@ PB.FLUIDS = {
   /* Sandbox */
   n2: '#dfe8f1', nh3: '#b9a6f0', nh3gas: '#d5c9f7', air: '#e8f4ff', sulfur: '#f2cf2e', so2: '#e6d27a', so3: '#f0b878', acid: '#c8dc8c',
   lightoil: '#f7e7a1', jet: '#7fc8a9', heavyoil: '#8a5a2b',
+  xa: '#e58fb0', xb: '#cfd8e6', xc: '#e3d3f2', xd: '#5fc4a0', xe: '#d4a64a',   // v8: A + B → C + D + E
   steam: '#f4f4f4', cw: '#4aa3df', refrig: '#7fd6e6', fuel: '#f0a640', power: '#f2c200', flame: '#ff7a2f', waste: '#8a8f7a'
 };
 
@@ -3946,7 +3980,10 @@ PB.LEVELS.bioethanol = {
       palm: { name: 'Palm oil', fl: 'oil' },
       lgt: { name: 'Light oil', fl: 'lightoil', rank: 1, cond: 'oil' },
       jet: { name: 'Bio-jet fuel', fl: 'jet', rank: 2, cond: 'oil' },
-      hvy: { name: 'Heavy oil', fl: 'heavyoil', rank: 3, cond: 'oil' }
+      hvy: { name: 'Heavy oil', fl: 'heavyoil', rank: 3, cond: 'oil' },
+      /* v8: the course example; D and E rank light → heavy for the column (D leaves the top) */
+      xa: { name: 'A', fl: 'xa', polar: 1 }, xb: { name: 'B', fl: 'xb', gas: 1 }, xc: { name: 'C', fl: 'xc', gas: 1 },
+      xd: { name: 'D', fl: 'xd', rank: 1, polar: 1 }, xe: { name: 'E', fl: 'xe', rank: 2, polar: 1 }
     },
 
     /* ---------------- the process library ---------------- */
@@ -3963,7 +4000,7 @@ PB.LEVELS.bioethanol = {
           out: { out: { c: ['biod', 'gly', 'meoh', 'naoh'], ph: 'LL', T: 65, est: 'held' } } } ],
         products: [ { c: ['biod'], name: 'Biodiesel', sink: ['tank'] } ],
         byproducts: [ { main: 'gly', name: 'Glycerol', basic: ['tank'], advanced: ['tank'] } ],
-        recycle: { c: 'meoh', name: 'methanol', msg: 'The unused methanol should be recovered and recycled back into the process. [1]' } },
+        recycle: { c: 'meoh', name: 'methanol' }, recovered: [ { c: ['meoh'], name: 'Methanol (recovered)', ph: 'L' } ] },   // v8: recycle optional; recovered materials may be stored
 
       methanol: { id: 'methanol', skins: { reactor: 'fixedbed' }, title: 'CO₂ → Methanol', subtitle: 'Captured CO₂ + hydrogen → methanol', levelId: 'methanol', color: '#3a8fd0',
         card: Object.assign({}, R_MEOH, {   // final review: the reactor takes 75 bar [3] (± 5 bar), so the card shows that design only
@@ -3975,7 +4012,7 @@ PB.LEVELS.bioethanol = {
           out: { out: { c: ['meoh', 'water', 'co2', 'h2'], ph: 'G', T: 250, est: 'meohT' } } } ],
         products: [ { c: ['meoh'], name: 'Methanol', sink: ['tank'] } ],
         byproducts: [ { main: 'water', name: 'Water', basic: ['pond'], advanced: ['wwt'] } ],
-        loop: { c: 'h2', name: 'unreacted gas', msg: lv('methanol', 'M6').facts[0], noPurge: 1 } },   // v6: no impurities, so the whole loop recycles
+        loop: { c: 'h2', name: 'unreacted gas', noPurge: 1 }, recovered: [ { c: ['co2', 'h2'], name: 'Unreacted gas', ph: 'G' } ] },   // v6: no impurities, so the whole loop recycles
 
       bioethanol: { id: 'bioethanol', title: 'Bioethanol', subtitle: 'Sugarcane molasses → fuel ethanol', levelId: 'bioethanol', color: '#2e8b4f',
         card: Object.assign({}, R_FER, {
@@ -3988,8 +4025,8 @@ PB.LEVELS.bioethanol = {
           out: { out: { c: ['etoh', 'water', 'yeast', 'vin'], ph: 'L', T: 45, est: 'held' }, gas: { c: ['co2'], ph: 'G', T: 45, est: 'held' } } } ],
         products: [ { c: ['etoh'], name: 'Fuel ethanol', sink: ['tank'] } ],
         byproducts: [ { main: 'vin', name: 'Vinasse', basic: ['tank', 'pond'], advanced: ['tank', 'wwt'] },
-                      { main: 'co2', name: 'CO₂ gas', basic: ['vent'], advanced: ['stack'] } ],
-        recycle: { c: 'yeast', name: 'yeast', msg: lv('bioethanol', 'Q6').facts[0] },
+                      { main: 'co2', name: 'CO₂ gas', basic: ['vent', 'gastank'], advanced: ['stack', 'gastank'] } ],
+        recycle: { c: 'yeast', name: 'yeast' }, recovered: [ { c: ['yeast'], name: 'Yeast cream', ph: 'S' } ],   // v8: the yeast may be stored (client decision)
         loopMsg: R_FER.needs[3] },
 
       ammonia: { id: 'ammonia', skins: { converter: 'converter3' }, title: 'Ammonia', subtitle: 'Hydrogen + nitrogen → ammonia (Haber–Bosch)', color: '#7b5cc4',
@@ -4012,7 +4049,8 @@ PB.LEVELS.bioethanol = {
           out: { out: { c: ['nh3', 'n2', 'h2'], ph: 'G', T: 450, est: 'nh3T' } } } ],
         products: [ { c: ['nh3'], name: 'Liquid ammonia', sink: ['refrigtank'] } ],
         byproducts: [],
-        loop: { c: 'h2', name: 'unreacted gas', msg: 'Only 20–30 % of the gas reacts in one pass, so the unreacted gas is recycled after the ammonia is removed. [10]',
+        recovered: [ { c: ['n2', 'h2'], name: 'Unreacted gas', ph: 'G' } ],
+        loop: { c: 'h2', name: 'unreacted gas',
                 purge: 'A small part of the loop gas is purged so that inert gases such as argon do not build up. [11]' } },
 
       sulfuric: { id: 'sulfuric', skins: { converter: 'converter4' }, title: 'Sulfuric Acid', subtitle: 'Sulfur + air + water → sulfuric acid (contact process)', color: '#8aa53a',
@@ -4064,9 +4102,30 @@ PB.LEVELS.bioethanol = {
           out: { out: { c: ['lgt', 'jet', 'hvy', 'h2'], ph: 'G', T: 300, Tref: 'Reactor: 300 °C and 70 bar. [31]' } } } ],
         products: [ { c: ['lgt'], name: 'Light oil', sink: ['tank'] }, { c: ['jet'], name: 'Bio-jet fuel', sink: ['tank'] }, { c: ['hvy'], name: 'Heavy oil', sink: ['tank'] } ],
         byproducts: [],
-        loop: { c: 'h2', name: 'unreacted hydrogen', msg: 'The unreacted hydrogen is recycled to the reactor (H₂ recycle). [31]', noPurge: 1 } }
+        loop: { c: 'h2', name: 'unreacted hydrogen', noPurge: 1 }, recovered: [ { c: ['h2'], name: 'Hydrogen', ph: 'G' } ] },
+      /* v8: the course teaching example (slides 37, 41, 56 [37]); 100 % conversion, no recycle */
+      abc: { id: 'abc', title: 'A + B → C + D + E', subtitle: 'Liquid A + gas B → gas C + liquids D and E (course example)', color: '#c2577a',
+        card: { title: 'Reactor spec card', intro: 'A teaching example from the course: liquid A and gas B react to make gas C and liquids D and E. Read what the reactor needs before you build.',
+          tiles: [ { k: 'temp', label: 'Temperature', value: '95 °C', ref: 37 },
+                   { k: 'press', label: 'Pressure', value: '10 bar', ref: 37 },
+                   { k: 'react', label: 'Conversion', value: '100 %', ref: 37 },
+                   { k: 'react', label: 'Reaction', value: 'A(l) + B(g) → C(g) + D(l) + E(l)', ref: 37 } ],
+          needs: [ 'Reaction: A(l) + B(g) → C(g) + D(l) + E(l), with 100 % conversion. [37]',
+                   'Reactor: 95 °C and 10 bar. [37]',
+                   'Feed: A is a liquid at 32 °C and 1 bar; B is a gas at 32 °C and 20 bar [37]. The board shows 1 atm = 1.01 bar.' ],
+          check: 'A is a liquid: pump it up and heat it. B comes from storage at high pressure: let it down with a valve and heat it. React, cool, separate the gas from the liquid, then distil the liquid.',
+          sep: [ 'The gas and the liquid are separated at 50 °C and 10 bar. [37]',
+                 'Purification: the feed enters at 2 bar; the top leaves at 50 °C and 2 bar, the bottom at 80 °C and 2 bar. [37]' ],
+          spec: [ 'Products: C is a gas by-product, D is the liquid primary product and E is a liquid by-product. [37]',
+                  'The products leave at 50 °C. [37]' ] },
+        feeds: { xa: { T: 32 }, xb: { T: 32, P: 20 } },
+        reactions: [ { units: ['reactor'], in: { c: ['xa', 'xb'], T: [95], P: [10], span: 1, allT: 1, Tref: ['Reactor: 95 °C and 10 bar. [37]'], Pref: ['Reactor: 95 °C and 10 bar. [37]'] },
+          out: { out: { c: ['xc', 'xd', 'xe'], ph: 'GL', liq: ['xd', 'xe'], T: 95, Tref: 'Reactor: 95 °C and 10 bar. [37]' } } } ],
+        products: [ { c: ['xc'], name: 'C', sink: ['gastank'] }, { c: ['xd'], name: 'D', sink: ['tank'] }, { c: ['xe'], name: 'E', sink: ['tank'] } ],
+        byproducts: [],
+        flashT: 50 }   // the separation runs at 50 °C [37]: a hotter flash feed stops the flow
     },
-    order: ['biodiesel', 'methanol', 'bioethanol', 'ammonia', 'sulfuric', 'saf'],
+    order: ['abc', 'biodiesel', 'methanol', 'bioethanol', 'ammonia', 'sulfuric', 'saf'],
 
     /* ---------------- v5: sliders and the numbers on the cards ----------------
        A slider snaps to its list of values; every cited value a reaction needs is on its list (the reactor check is exact).
@@ -4096,7 +4155,8 @@ PB.LEVELS.bioethanol = {
       pSpan: 5,              // a reactor accepts its cited pressure ± 5 bar (instructor design basis)
       valveDrop: 2,          // a drop of more than 2 bar into a low-pressure unit needs a pressure-reducing valve (instructor design basis)   // pressure drops (bar): HX within the 3–9 psi rule [30]; others estimates
       column: { meoh: { P: 1.2, top: 69, bot: 105, liqTop: 1 }, etoh: { P: 2.03, top: 99, bot: 121, liqTop: 0 },
-                lgt: { P: 1.01, top: 50, bot: 150, liqTop: 1, src: 'saf' }, jet: { P: 1.01, top: 50, bot: 230, liqTop: 1, src: 'saf' } },   // SAF columns: course slides [31]
+                lgt: { P: 1.01, top: 50, bot: 150, liqTop: 1, src: 'saf' }, jet: { P: 1.01, top: 50, bot: 230, liqTop: 1, src: 'saf' },   // SAF columns: course slides [31]
+                xd: { P: 2, top: 50, bot: 80, liqTop: 1, src: 'abc' } },   // v8: the A + B column, course slides [37]
       flashMax: 150,         // v7.1 review R2-2: a liquid flash (biodiesel methanol recovery) is fed at 150 °C or cooler [36]
       oilCond: 50,           // SAF oils are liquid at the 50 °C phase separation (course slides [31])   // P cited [3] / [9]; T derived (NIST Antoine)
     },
@@ -4127,16 +4187,23 @@ PB.LEVELS.bioethanol = {
       drytower:   { ins: [['in', 'low', 'Air in']], outs: [['top', 'top', 'Dry air (top)']], rule: 'drytower' }
     },
     /* v4: the unit picker groups units by what they change; chips say what each unit needs (no numbers) */
+    // v8: sub-classes in the picker (client figures docs/design/picker-subclass-*.png); icon = a PB.CARD_ICONS key or a phase pair; units = the union of the sub-classes
     groups: [
-      { id: 'press', name: 'Pressure changers', units: ['pump', 'compressor', 'valve'] },
-      { id: 'temp', name: 'Temperature changers', units: ['hx', 'firedheater'] },
-      { id: 'mix', name: 'Mixing and splitting', units: ['mixer', 'joint', 'splitter'] },
-      { id: 'react', name: 'Reactors', units: ['reactor', 'converter', 'fermenter', 'burner'], sandboxOnly: 1 },
-      { id: 'sep', name: 'Phase separators', units: ['flash', 'settler', 'centrifuge'] },
-      { id: 'pur', name: 'Purifiers', units: ['column', 'absorber', 'sieve', 'drytower', 'acidtank'] } ],
+      { id: 'press', name: 'Pressure changers', units: ['pump', 'compressor', 'valve'],
+        sub: [{ name: 'Raise pressure', icon: 'Top', units: ['pump', 'compressor'] }, { name: 'Lower pressure', icon: 'Bottom', units: ['valve'] }] },
+      { id: 'temp', name: 'Temperature changers', units: ['hx', 'firedheater'],
+        sub: [{ name: 'Heat or cool with utilities', icon: 'temp', units: ['hx'] }, { name: 'Very hot heating', icon: 'fuel', units: ['firedheater'] }] },
+      { id: 'mix', name: 'Mixing and splitting', units: ['joint', 'mixer', 'splitter'],
+        sub: [{ name: 'Combine streams', icon: 'In', units: ['joint', 'mixer'] }, { name: 'Split a stream', icon: 'Out', units: ['splitter'] }] },
+      { id: 'react', name: 'Reactors', units: ['reactor', 'converter', 'fermenter', 'burner'], sandboxOnly: 1,
+        sub: [{ name: 'Catalyst or stirred reactors', icon: 'cat', units: ['reactor', 'converter'] }, { name: 'Bioreactor (living cells)', icon: 'S', units: ['fermenter'] }, { name: 'Burner (combustion)', icon: 'fuel', units: ['burner'] }] },
+      { id: 'sep', name: 'Phase separators', units: ['flash', 'settler', 'centrifuge'],
+        sub: [{ name: 'Gas (vapour)–liquid separation', icon: ['G', 'L'], units: ['flash'] }, { name: 'Two-phase liquid separation', icon: ['Lp', 'Ln'], units: ['settler'] }, { name: 'Solid–fluid separation', icon: ['Lp', 'S'], units: ['centrifuge'] }] },
+      { id: 'pur', name: 'Purifiers', units: ['column', 'absorber', 'sieve', 'drytower', 'acidtank'],
+        sub: [{ name: 'Same-phase liquid separation', icon: ['Lp', 'Lp'], units: ['column'] }, { name: 'Gas purification', icon: 'G', units: ['absorber', 'sieve', 'drytower'] }, { name: 'Cell treatment', icon: 'S', units: ['acidtank'] }] } ],
     chips: {
       pump: ['Only liquid', 'Pushes it on'], compressor: ['Only gas', 'Set a pressure'], valve: ['Any stream', 'Lowers the pressure'],
-      joint: ['Two or more pipes', 'Same pressure on every pipe'], splitter: ['One pipe in', 'Two pipes out'],
+      joint: ['Two or more pipes', 'Takes the lowest pressure'], splitter: ['One pipe in', 'Two pipes out'],
       hx: ['Any stream', 'Set a temperature', 'Cooling can condense vapour'], firedheater: ['Any stream', 'Heats only, above the hot-oil range', 'Burns fuel gas'],
       mixer: ['Two or more liquids (a dissolving solid is fine)', 'No gases'],
       reactor: ['Feed must match the spec card'], converter: ['Hot gas', 'Catalyst inside'], fermenter: ['Sugar + water', 'Needs a cooling loop'], burner: ['Liquid sulfur + dry air'],
@@ -4159,17 +4226,31 @@ PB.LEVELS.bioethanol = {
       { ph: 'Lp', name: 'Polar liquid', text: 'Water-like. It mixes with other polar liquids; a distillation column separates them by boiling point.' },
       { ph: 'Ln', name: 'Oily liquid', text: 'Oil-like (non-polar). With a polar liquid it forms two layers, which a decanter separates (a little of one can still dissolve in the other). Oily liquids mix with each other; a column separates them by boiling point.' },
       { ph: 'S', name: 'Solid', text: 'Solids or cells carried in a liquid. A centrifuge spins them out.' } ],
+    /* v8: the Guide card's Rules tab. Numbers are never written here: {T:key} / {P:key} read PB.SANDBOX.basis live (a + b adds two keys).
+       pic: rows of picture tokens drawn by sandbox-ui (PB.CARD_ICONS keys, a phase pair [a, b], g+ g0 g- gauges, t+ t0 t- thermometers, > arrow, ok, x). pts: about points (not in the Example) */
+    guide: [
+      { title: 'Pipe joint', text: 'Every inlet component comes out. The outlet takes the lowest inlet pressure and the average inlet temperature.', pic: [[['g+', 'g-'], '>', 'joint', '>', 'g-'], [['t+', 't-'], '>', 'joint', '>', 't0']] },
+      { title: 'Mixer: liquids only', text: 'A mixer takes liquids. Gas with liquid, or gases, join at a pipe joint.', pic: [[['L', 'L'], '>', 'mix', 'ok'], [['G', 'L'], '>', 'mix', 'x'], [['G', 'L'], '>', 'joint', 'ok']] },
+      { title: 'Pump, compressor, valve', text: 'A pump pushes a liquid and a compressor a gas to the pressure you set. A valve lowers the pressure.', pic: [['L', '>', 'press', '>', 'g+'], ['G', '>', 'comp', '>', 'g+'], ['g+', '>', 'valve', '>', 'g-']] },
+      { title: 'Every outlet goes somewhere', text: 'Each outlet feeds one pipe. Connect every outlet, or the flow stops there.', pic: [['sep', '>', 'tank', 'ok'], ['sep', '>', 'x']] },
+      { title: 'Pressure drops', text: 'Heat exchanger {P:dP.hx}, reactor {P:dP.reactor}, flash drum {P:dP.flash}, pipe joint {P:dP.tee}. The pressure never falls below {P:atmP}.', pic: [['g+', '>', 'temp', '>', 'g0']] },
+      { title: 'Heating limit', text: 'A heat exchanger heats up to {T:hotOilMax} with steam or hot oil. Hotter needs a fired heater.', pic: [['temp', '>', 't0', 'ok'], ['fuel', '>', 't+', 'ok']] },
+      { title: 'Big pressure drop: valve', text: 'A drop of more than {P:valveDrop} into a column, a tank, Gas storage, the vent or the flare needs a pressure-reducing valve. Feeds meeting at a pipe joint, and gas feeds into a reactor, must be set within {P:valveDrop} of each other; a higher one needs a pressure-reducing valve.', pic: [['g+', '>', 'valve', '>', 'col', 'ok'], ['g+', '>', 'col', 'x']] },
+      { title: 'Match the NEEDS', text: 'Reactors, separators and purifiers work only when what arrives matches their NEEDS: components, temperature and pressure.', pic: [['In', '>', 'Needs', 'ok']] },
+      { title: 'Storage', text: 'Tanks take liquid at {T:storeMax} or cooler and {P:atmP+valveDrop} or lower; the refrigerated tank takes chilled liquid. Gas products go to Gas storage; leftover gases go to Gas storage, the vent or the flare.', pic: [[['L', 't-'], '>', 'tank', 'ok'], ['G', '>', 'gastank', 'ok']] },
+      { title: 'Recycle earns points', text: 'A recycle is optional. Sending unreacted material back to the reactor earns extra points.', pts: 1, pic: [['react', '>', 'sep', '>', 'recycle', '>', 'react']] },
+      { title: 'Two outlets, two flows', text: 'Each outlet of a unit runs on its own: one can stop while the other flows on.', pic: [['sep', 'Top', '>', 'x'], ['sep', 'Bottom', '>', 'tank', 'ok']] } ],
     /* v5 unit picker (Picker B): what each unit takes, what the student sets, what it gives — icon + a few words, no numbers.
        Icons are PB.CARD_ICONS keys (G gas, L liquid, S solid, T, P, Top, Bottom, no = not allowed). */
     pick: {
       pump:       { takes: [['L', 'Liquid only'], ['noG', 'No gas']], set: [['P', 'Outlet pressure']], gives: [['L', 'Liquid, pushed on']] },
       compressor: { takes: [['G', 'Gas only'], ['noL', 'No liquid']], set: [['P', 'Outlet pressure']], gives: [['G', 'Gas at higher pressure']] },
       valve:      { takes: [['any', 'Any stream under pressure']], set: [['P', 'Outlet pressure (lower)']], gives: [['any', 'Same stream, lower pressure']] },
-      joint:      { takes: [['G', 'Gas pipes'], ['L', 'or liquid pipes, or both'], ['P', 'All at the same pressure']], gives: [['Out', 'One pipe']] },
+      joint:      { takes: [['G', 'Gas pipes'], ['L', 'or liquid pipes, or both'], ['P', 'Takes the lowest pressure']], gives: [['Out', 'One pipe']] },
       splitter:   { takes: [['In', 'One pipe']], gives: [['Out', 'Outlet A'], ['Out', 'Outlet B (same stream)']] },
       hx:         { takes: [['any', 'Any stream']], set: [['T', 'Outlet temperature']], gives: [['L', 'Cooling can condense vapour']] },
       firedheater:{ takes: [['any', 'Any stream']], set: [['T', 'Outlet temperature, hotter than hot oil can reach']], gives: [['fuel', 'Burns fuel gas']] },
-      mixer:      { takes: [['L', 'Two or more liquids'], ['S', 'A dissolving solid is fine'], ['noG', 'No gases'], ['In', 'A recycled liquid meets the fresh feed here']], gives: [['L', 'One mixed liquid']] },
+      mixer:      { takes: [['L', 'Two or more liquids'], ['S', 'A dissolving solid is fine'], ['noG', 'No gases']], gives: [['L', 'One mixed liquid']] },
       reactor:    { takes: [['spec', 'Feed that matches the spec card']], gives: [['react', 'Products of the reaction']] },
       converter:  { takes: [['G', 'Hot gas'], ['cat', 'Catalyst inside']], gives: [['react', 'Products of the reaction']] },
       fermenter:  { takes: [['L', 'Sugar + water'], ['cool', 'A cooling loop']], gives: [['L', 'Broth'], ['G', 'Gas']] },
@@ -4208,7 +4289,9 @@ PB.LEVELS.bioethanol = {
       { id: 'palm', name: 'Palm oil', comps: ['palm'], ph: 'L', shape: 'tank', band: 'oil', store: 'Liquid · atmospheric tank',
         info: [ 'Plant oils are triglyceride feedstocks for hydroprocessed jet fuel. [34]', 'Palm oil is one of the oils studied for this route to jet fuel. [32]' ] },
       { id: 'sulfur', name: 'Molten sulfur', comps: ['s'], ph: 'L', T: 'molten', shape: 'tank', band: 'sulfur', store: 'Liquid · heated tank',
-        info: [ 'Solid sulfur is melted with steam coils, then burned as a liquid. [15]', 'Sulfuric acid plants keep a liquid sulfur storage tank. [10]', 'Liquid sulfur is delivered to the plant at 140–150 °C. [10]' ] }
+        info: [ 'Solid sulfur is melted with steam coils, then burned as a liquid. [15]', 'Sulfuric acid plants keep a liquid sulfur storage tank. [10]', 'Liquid sulfur is delivered to the plant at 140–150 °C. [10]' ] },
+      { id: 'xa', name: 'A', comps: ['xa'], ph: 'L', shape: 'tank', band: 'xa', store: 'Liquid · atmospheric tank', info: [ 'A is liquid raw material. [37]' ] },   // v8: the course example
+      { id: 'xb', name: 'B', comps: ['xb'], ph: 'G', shape: 'sphere', band: 'xb', store: 'Gas · high-pressure storage sphere', info: [ 'B is gas raw material. [37]' ] }
     ],
 
     /* ---------------- product storage (Product zone) ---------------- */
@@ -4219,6 +4302,7 @@ PB.LEVELS.bioethanol = {
                        {t:'cyl',axis:'z',x:0,y:0,z:0.75,r:1.02,h:0.05,c:'refrig',ring:1}, {t:'cyl',axis:'z',x:0,y:0,z:1.55,r:1.02,h:0.05,c:'refrig',ring:1},
                        {t:'cyl',axis:'z',x:0,y:0,z:2.3,r:1.0,r2:0.8,h:0.2,c:'steelLight'}, {t:'cyl',axis:'z',x:0,y:0,z:2.5,r:0.8,r2:0.2,h:0.28,c:'steelLight'} ],   // v6.4: insulated shell (bands) and a shallow domed roof (unit-models 7.4)
         info: [ 'Product: liquid ammonia, stored fully refrigerated at -33 °C in atmospheric tanks. [13]' ] },
+      gastank: { name: 'Gas storage', does: 'Stores one gas (a product, a by-product or leftover gas) at low pressure. Choose what it stores.', shape: () => PB.FIXED.sphere(0.85, 'steelDark') },   // v8: both modes
       vent: { name: 'Vent stack', basicOnly: 1, does: 'Releases leftover gas high above the ground.', shape: () => PB.FIXED.stack('co2') },
       pond: { name: 'Effluent pond', basicOnly: 1, does: 'Collects watery by-products for treatment or reuse.', shape: () => PB.FIXED.pond('water') }
     },
@@ -4266,10 +4350,9 @@ PB.LEVELS.bioethanol = {
       unused: 'The {m} tank is not connected. This process does not need it, or you forgot it.',
       pumpGas: 'A pump moves liquids. This stream is {ph}, so it needs a compressor (or cool it into a liquid first).',
       compLiq: 'A compressor squeezes gases. This stream contains liquid, so it needs a pump.',
-      teeP: 'Streams that join must be at the same pressure. Check the pressure settings on both sides.',
+      compDown: 'A compressor raises the pressure. To lower it use a pressure-reducing valve.',
       ventProduct: 'This gas still carries the product. Separate the product first, then send only the leftover gas away.',
       purgeWrong: 'A purge takes a little of the recycle gas, after the product has been separated. Do not purge fresh feed.',
-      recUnsep: 'This recycle still carries the product. Separate the product first, then recycle only the unreacted gas.',
       absWater: 'The absorption tower needs make-up water at the top.',
       mixGas: 'Not needed: gases mix by themselves when their pipes join, so a pipe tee is enough. A mixer is for liquids.',
       mixGasLiq: 'A mixer blends liquids. To dissolve a gas into a liquid, use an absorption tower.',
@@ -4304,6 +4387,7 @@ PB.LEVELS.bioethanol = {
       absLiq: 'The absorption tower needs a liquid coming in at the top.',
       dryIn: 'The drying tower is for damp air.',
       sinkGas: 'A gas cannot be stored in this liquid tank.',
+      gasLiq: 'Gas storage takes only gas. This stream contains liquid.',
       tankChoose: 'Choose what this tank stores (tap the tank).',
       tankWrong: 'This tank was chosen for {want}, but {got} arrives.',
       tankHot: 'The liquid is too hot to store. Cool it to {max} or below first.',
@@ -4319,8 +4403,6 @@ PB.LEVELS.bioethanol = {
       noProduct: 'No {p} reaches a product tank yet.',
       wrongSink: '{s} should go to: {list}.',
       rawBack: 'Only the same pure material can go back into the {m} tank.',
-      recMix: 'A recycled liquid is mixed with the fresh feed in a mixer before the reactor (not sent back into storage or joined at a pipe joint).',
-      loopRecycle: 'Most of the gas did not react. Recycle it back to the start.',
       noPurge: 'The recycle loop has no purge. Send a small purge stream from the recycle gas to a {sink}.',
       recLoopComp: 'Recycle gas loses pressure on the way round. It needs a compressor before it joins the feed again.',
       recPump: 'Missing pump on the {s} recycle: a liquid does not move back by itself.',
@@ -4355,15 +4437,15 @@ PB.SANDBOX.solutions = {
     basic: { place: [
       ['OIL', 'raw', 'oil', 3, 1.5], ['MEOH', 'raw', 'meoh', 3, 6.5], ['NAOH', 'raw', 'naoh', 3, 11.5],
       ['P1', 'unit', 'pump', 7.5, 1.5], ['H1', 'unit', 'hx', 10.5, 1.5, { T: 65 }], ['R', 'unit', 'reactor', 13.5, 4],
-      ['PM', 'unit', 'pump', 7.5, 6.5], ['PN', 'unit', 'pump', 7.5, 11.5], ['MX', 'unit', 'mixer', 10.5, 6.5], ['PX', 'unit', 'pump', 10.5, 9],
+      ['PM', 'unit', 'pump', 7.5, 6.5], ['PN', 'unit', 'pump', 7.5, 11.5], ['MX', 'unit', 'mixer', 10.5, 6.5], ['PX', 'unit', 'pump', 10.5, 9], ['HM', 'unit', 'hx', 13.5, 9, { T: 65 }],
       ['PR', 'unit', 'pump', 16.5, 4], ['S', 'unit', 'settler', 19.5, 4], ['PL', 'unit', 'pump', 19.5, 1.5], ['F', 'unit', 'flash', 22.5, 1.5],
       ['C', 'unit', 'hx', 16.5, 1.5, { T: 50 }], ['PP', 'unit', 'pump', 13.5, 1.5],
       ['CG', 'unit', 'hx', 23, 6.5, { T: 50 }], ['CB', 'unit', 'hx', 23, 9, { T: 50 }],
       ['BIO', 'sink', 'tank', 27, 9, { prod: 'Biodiesel' }], ['GLY', 'sink', 'tank', 27, 4, { prod: 'Glycerol' }] ],
       pipes: [ ['OIL', 'out', 'P1'], ['P1', 'out', 'H1'], ['H1', 'out', 'R'], ['MEOH', 'out', 'PM'], ['PM', 'out', 'MX'], ['NAOH', 'out', 'PN'], ['PN', 'out', 'MX'],
-        ['MX', 'out', 'PX'], ['PX', 'out', 'R'], ['R', 'out', 'PR'], ['PR', 'out', 'S'], ['S', 'bot', 'CG'], ['CG', 'out', 'GLY'], ['S', 'top', 'PL'], ['PL', 'out', 'F'],
-        ['F', 'bot', 'CB'], ['CB', 'out', 'BIO'], ['F', 'top', 'C'], ['C', 'out', 'PP'], ['PP', 'out', 'MX'] ] },
-    advanced: { links: [ ['P1', 'SUB'], ['PM', 'SUB'], ['PN', 'SUB'], ['MX', 'SUB'], ['PX', 'SUB'], ['PR', 'SUB'], ['PL', 'SUB'], ['PP', 'SUB'], ['H1', 'BOIL'], ['C', 'TOWER'], ['CG', 'TOWER'], ['CB', 'TOWER'] ],
+        ['MX', 'out', 'PX'], ['PX', 'out', 'HM'], ['HM', 'out', 'R'], ['R', 'out', 'PR'], ['PR', 'out', 'S'], ['S', 'bot', 'CG'], ['CG', 'out', 'GLY'], ['S', 'top', 'PL'], ['PL', 'out', 'F'],
+        ['F', 'bot', 'CB'], ['CB', 'out', 'BIO'], ['F', 'top', 'C'], ['C', 'out', 'PP'], ['PP', 'out', 'MX'] ], recycle: ['C', 'PP'] },   // v8: units only on the recycle (not in the points checklist)
+    advanced: { links: [ ['P1', 'SUB'], ['PM', 'SUB'], ['PN', 'SUB'], ['MX', 'SUB'], ['PX', 'SUB'], ['PR', 'SUB'], ['PL', 'SUB'], ['PP', 'SUB'], ['H1', 'BOIL'], ['HM', 'BOIL'], ['C', 'TOWER'], ['CG', 'TOWER'], ['CB', 'TOWER'] ],
       place: [ ['BOIL', 'util', 'boiler', 9, 2], ['TOWER', 'util', 'tower', 15, 2], ['SUB', 'util', 'substation', 21, 2] ] } },
   methanol: {
     basic: { place: [
@@ -4374,7 +4456,7 @@ PB.SANDBOX.solutions = {
       ['CT', 'unit', 'hx', 23, 6.5, { T: 50 }], ['CW', 'unit', 'hx', 23, 11.5, { T: 50 }],
       ['MEOHT', 'sink', 'tank', 27, 9, { prod: 'Methanol' }], ['POND', 'sink', 'pond', 27, 12] ],
       pipes: [ ['CO2', 'out', 'C1'], ['H2', 'out', 'C2'], ['C1', 'out', 'J'], ['C2', 'out', 'J'], ['RC', 'out', 'J'], ['J', 'out', 'H'], ['H', 'out', 'R'], ['R', 'out', 'K'], ['K', 'out', 'F'],
-        ['F', 'top', 'RC'], ['F', 'bot', 'V'], ['V', 'out', 'COL'], ['COL', 'top', 'CT'], ['CT', 'out', 'MEOHT'], ['COL', 'bot', 'CW'], ['CW', 'out', 'POND'] ] },
+        ['F', 'top', 'RC'], ['F', 'bot', 'V'], ['V', 'out', 'COL'], ['COL', 'top', 'CT'], ['CT', 'out', 'MEOHT'], ['COL', 'bot', 'CW'], ['CW', 'out', 'POND'] ], recycle: ['RC'] },
     advanced: { drop: ['POND'],
       place: [ ['BOIL', 'util', 'boiler', 10, 2], ['TOWER', 'util', 'tower', 15, 2], ['SUB', 'util', 'substation', 21, 2], ['WWT', 'waste', 'wwt', 20, 20] ],
       rename: { POND: 'WWT' },
@@ -4390,7 +4472,7 @@ PB.SANDBOX.solutions = {
       ['ETOH', 'sink', 'tank', 27, 4.5, { prod: 'Fuel ethanol' }], ['VIN', 'sink', 'tank', 27, 10, { prod: 'Vinasse' }], ['VENT', 'sink', 'vent', 27, 1.5] ],
       pipes: [ ['MOL', 'out', 'Q1'], ['WAT', 'out', 'QW'], ['Q1', 'out', 'MX'], ['QW', 'out', 'MX'], ['MX', 'out', 'QM'], ['QM', 'out', 'FER'], ['FER', 'gas', 'VENT'],
         ['FER', 'out', 'QV'], ['QV', 'out', 'FS'], ['FS', 'a', 'QC'], ['QC', 'out', 'FER'], ['FS', 'b', 'CEN'], ['CEN', 'cream', 'AT'], ['AT', 'out', 'QY'], ['QY', 'out', 'FER'],
-        ['CEN', 'out', 'QF'], ['QF', 'out', 'COL'], ['COL', 'top', 'SH'], ['SH', 'out', 'SV'], ['SV', 'out', 'CD'], ['CD', 'out', 'ETOH'], ['COL', 'bot', 'CV'], ['CV', 'out', 'VIN'] ] },
+        ['CEN', 'out', 'QF'], ['QF', 'out', 'COL'], ['COL', 'top', 'SH'], ['SH', 'out', 'SV'], ['SV', 'out', 'CD'], ['CD', 'out', 'ETOH'], ['COL', 'bot', 'CV'], ['CV', 'out', 'VIN'] ], recycle: ['AT', 'QY'] },
     advanced: { drop: ['VENT'], rename: { VENT: 'STACK' },
       place: [ ['BOIL', 'util', 'boiler', 8, 2], ['TOWER', 'util', 'tower', 13, 2], ['SUB', 'util', 'substation', 20, 2], ['STACK', 'waste', 'stack', 26, 20] ],
       links: [ ['Q1', 'SUB'], ['QW', 'SUB'], ['MX', 'SUB'], ['QM', 'SUB'], ['QV', 'SUB'], ['CEN', 'SUB'], ['QY', 'SUB'], ['QF', 'SUB'], ['QC', 'TOWER'], ['CD', 'TOWER'], ['CV', 'TOWER'], ['SH', 'BOIL'] ] } },
@@ -4402,7 +4484,7 @@ PB.SANDBOX.solutions = {
       ['F', 'unit', 'flash', 21, 7], ['SP', 'unit', 'splitter', 21, 4.5], ['RC', 'unit', 'compressor', 21, 2, { P: 100 }], ['J', 'unit', 'joint', 10, 6.5], ['V', 'unit', 'valve', 22, 10, { P: 1.01 }], ['VP', 'unit', 'valve', 23, 3, { P: 1.01 }],
       ['NH3', 'sink', 'refrigtank', 27, 8], ['VENT', 'sink', 'vent', 27, 2] ],
       pipes: [ ['H2', 'out', 'C1'], ['N2', 'out', 'C2'], ['C1', 'out', 'J'], ['C2', 'out', 'J'], ['RC', 'out', 'J'], ['J', 'out', 'H'], ['H', 'out', 'CV'], ['CV', 'out', 'K'], ['K', 'out', 'CH'], ['CH', 'out', 'F'],
-        ['F', 'top', 'SP'], ['SP', 'a', 'RC'], ['SP', 'b', 'VP'], ['VP', 'out', 'VENT'], ['F', 'bot', 'V'], ['V', 'out', 'NH3'] ] },
+        ['F', 'top', 'SP'], ['SP', 'a', 'RC'], ['SP', 'b', 'VP'], ['VP', 'out', 'VENT'], ['F', 'bot', 'V'], ['V', 'out', 'NH3'] ], recycle: ['SP', 'RC'] },
     advanced: { drop: ['VENT'], rename: { VENT: 'FLARE' },
       place: [ ['BOIL', 'util', 'boiler', 8, 2], ['TOWER', 'util', 'tower', 13, 2], ['REF', 'util', 'refrig', 18, 2], ['SUB', 'util', 'substation', 23, 2], ['FLARE', 'waste', 'flare', 22, 20] ],
       links: [ ['C1', 'SUB'], ['C2', 'SUB'], ['RC', 'SUB'], ['H', 'BOIL'], ['K', 'TOWER'], ['CH', 'REF'], ['REF', 'SUB'] ] } },
@@ -4430,9 +4512,22 @@ PB.SANDBOX.solutions = {
       ['LIGHT', 'sink', 'tank', 27, 2, { prod: 'Light oil' }], ['JET', 'sink', 'tank', 27, 6.5, { prod: 'Bio-jet fuel' }], ['HEAVY', 'sink', 'tank', 27, 11, { prod: 'Heavy oil' }] ],
       pipes: [ ['H2', 'out', 'VH'], ['VH', 'out', 'J'], ['RC', 'out', 'J'], ['J', 'out', 'HH'], ['HH', 'out', 'R'], ['PALM', 'out', 'PP'], ['PP', 'out', 'HP'], ['HP', 'out', 'R'],
         ['R', 'out', 'K'], ['K', 'out', 'F'], ['F', 'top', 'RC'], ['F', 'bot', 'VL'], ['VL', 'out', 'C1'], ['C1', 'top', 'LIGHT'], ['C1', 'bot', 'C2'],
-        ['C2', 'top', 'JET'], ['C2', 'bot', 'CH'], ['CH', 'out', 'HEAVY'] ] },
+        ['C2', 'top', 'JET'], ['C2', 'bot', 'CH'], ['CH', 'out', 'HEAVY'] ], recycle: ['RC', 'J'] },
     advanced: { place: [ ['BOIL', 'util', 'boiler', 9, 2], ['TOWER', 'util', 'tower', 15, 2], ['SUB', 'util', 'substation', 21, 2] ],
       links: [ ['PP', 'SUB'], ['RC', 'SUB'], ['HH', 'BOIL'], ['HP', 'BOIL'], ['K', 'TOWER'], ['CH', 'TOWER'] ] } },
+  /* v8: the course example, laid out like slide 56 [37] */
+  abc: {
+    basic: { place: [
+      ['A', 'raw', 'xa', 3, 1.5], ['B', 'raw', 'xb', 3, 6.5],
+      ['PA', 'unit', 'pump', 7.5, 1.5, { P: 10 }], ['HA', 'unit', 'hx', 11, 1.5, { T: 95 }],
+      ['VB', 'unit', 'valve', 7.5, 6.5, { P: 10 }], ['HB', 'unit', 'hx', 11, 6.5, { T: 95 }], ['R', 'unit', 'reactor', 14, 4],
+      ['K', 'unit', 'hx', 17, 4, { T: 50 }], ['F', 'unit', 'flash', 20, 4], ['VC', 'unit', 'valve', 20, 1.5, { P: 2 }], ['VL', 'unit', 'valve', 15.5, 9.5, { P: 2 }],
+      ['COL', 'unit', 'column', 20, 8.5], ['KE', 'unit', 'hx', 23, 11.5, { T: 50 }],
+      ['CT', 'sink', 'gastank', 27, 1.5, { prod: 'C' }], ['DT', 'sink', 'tank', 27, 7, { prod: 'D' }], ['ET', 'sink', 'tank', 27, 11.5, { prod: 'E' }] ],
+      pipes: [ ['A', 'out', 'PA'], ['PA', 'out', 'HA'], ['HA', 'out', 'R'], ['B', 'out', 'VB'], ['VB', 'out', 'HB'], ['HB', 'out', 'R'], ['R', 'out', 'K'], ['K', 'out', 'F'],
+        ['F', 'top', 'VC'], ['VC', 'out', 'CT'], ['F', 'bot', 'VL'], ['VL', 'out', 'COL'], ['COL', 'top', 'DT'], ['COL', 'bot', 'KE'], ['KE', 'out', 'ET'] ] },
+    advanced: { place: [ ['BOIL', 'util', 'boiler', 10, 2], ['TOWER', 'util', 'tower', 15, 2], ['SUB', 'util', 'substation', 21, 2] ],
+      links: [ ['PA', 'SUB'], ['HA', 'BOIL'], ['HB', 'BOIL'], ['K', 'TOWER'], ['KE', 'TOWER'] ] } },
 };
 /* a reactor with span: 1 accepts its cited pressure ± basis.pSpan (instructor design basis, PB.ASSUMPTIONS 'span') */
 Object.values(PB.SANDBOX.library).forEach(L => L.reactions.forEach(r => { if (r.in.span) r.in.P = r.in.P.map(p => [p - PB.SANDBOX.basis.pSpan, p + PB.SANDBOX.basis.pSpan]); }));
@@ -4448,7 +4543,7 @@ PB.sandboxSolution = function (proc, mode) {
 /* v5: numbers that are not taken straight from a source. Shown on the Sources page and in the plant report.
    kind: 'basis' = design basis set by the course instructor; 'derived' = calculated in review/calculations workbook; 'estimate' = engineering estimate. */
 PB.ASSUMPTIONS = [
-  { id: 'amb', kind: 'basis', text: 'Ambient temperature about 30 °C (Thailand): raw materials leave their tanks at about 30 °C (molten sulfur is kept hot; the SAF feeds follow the course slides).' },
+  { id: 'amb', kind: 'basis', text: 'Ambient temperature about 30 °C (Thailand): raw materials leave their tanks at about 30 °C (molten sulfur is kept hot; the SAF and A + B feeds follow the course slides).' },
   { id: 'store', kind: 'basis', text: 'Product tanks, ponds and the wastewater plant store liquid at 1.01 bar and take it at 50 °C or cooler (cooling-water reach in Thailand): hot liquids are cooled on the way. The refrigerated ammonia tank takes chilled liquid at 0 °C or colder.' },
   { id: 'cw', kind: 'basis', text: 'Cooling water arrives at about 30 °C and returns at about 40 °C; process coolers bring streams to about 50 °C.' },
   { id: 'cwmin', kind: 'basis', text: 'The closest a cooling-water cooler gets is about 45 °C; colder needs refrigeration (chilled water).' },
@@ -4469,9 +4564,10 @@ PB.ASSUMPTIONS = [
   { id: 'super', kind: 'estimate', text: 'Ethanol vapour is superheated before the molecular sieve [9], in the reference plant to about 120 °C, so that it cannot condense in the beads.' },
   { id: 'saf', kind: 'basis', text: 'SAF from palm oil follows the course slides [31] and is simplified for teaching: no light gas is formed, no column runs under vacuum, and the reactor outlet is shown as all gas until it is cooled. Columns given at 1 bar on the slides are shown at 1.01 bar (1 atm).' },
   { id: 'purge', kind: 'basis', text: 'The methanol loop has no purge: the game treats its feeds as pure CO₂ and hydrogen, so nothing builds up in the loop. Real plants purge a small part of the loop gas.' },
-  { id: 'span', kind: 'basis', text: 'A reactor accepts its spec pressure ± 5 bar: methanol 75 bar → 70–80 bar; SAF 70 bar → 65–75 bar.' },
-  { id: 'valve', kind: 'basis', text: 'A pressure drop of more than 2 bar into a low-pressure unit needs a pressure-reducing valve (control valves need a drop of at least 10 psi to control well [30]). So a stream let down into a tank at 1.01 bar may arrive at up to 3.01 bar without a valve, and a column takes its feed from its own pressure up to 2 bar above it: methanol column 1.2–3.2 bar, ethanol column 2.03–4.03 bar, SAF columns 1.01–3.01 bar.' },
+  { id: 'span', kind: 'basis', text: 'A reactor accepts its spec pressure ± 5 bar: methanol 75 bar → 70–80 bar; SAF 70 bar → 65–75 bar; A + B 10 bar → 5–15 bar.' },
+  { id: 'valve', kind: 'basis', text: 'A pressure drop of more than 2 bar into a low-pressure unit needs a pressure-reducing valve (control valves need a drop of at least 10 psi to control well [30]). So a stream let down into a tank at 1.01 bar may arrive at up to 3.01 bar without a valve, and a column takes its feed from its own pressure up to 2 bar above it: methanol column 1.2–3.2 bar, ethanol column 2.03–4.03 bar, SAF columns 1.01–3.01 bar, A + B column 2–4 bar.' },
   { id: 'loop', kind: 'estimate', text: 'The fermenter cooling loop uses cooling water: the cooler is set to 45 °C and takes away the heat the fermenting broth keeps making, so the broth goes back at 45 °C.' },
+  { id: 'abc', kind: 'basis', text: 'The A + B → C + D + E example follows the course slides [37] as a teaching example: the flash drum runs below 10 bar (after the pressure drops), and the products are stored at up to 3.01 bar like every tank, which covers the 1–2 bar products on the slides.' },
 ];
 
 </script>
@@ -4761,7 +4857,7 @@ PB.routeEdges = function (W, H, items, edges) {
 /* ChPE Process Builder — Sandbox engine (no rendering).
    The player places items on a zoned board and connects them. Run traces the streams from the raw-material tanks
    through every unit (phase, temperature, pressure, components), checks each unit against its rules and the process
-   spec card, and stops the flow at the first problem. The 2.5D view draws it through its game interface (nodes, edges, tick). */
+   spec card, and stops the flow at each problem (v8: each outlet runs on its own; points out of 100). The 2.5D view draws it through its game interface (nodes, edges, tick). */
 window.PB = window.PB || {};
 (function () {
   const SBX = () => PB.SANDBOX;
@@ -4775,11 +4871,9 @@ window.PB = window.PB || {};
   PB.fmtTemp = fmtT; PB.fmtPress = fmtP;
   const drop = (Pv, k) => Math.max(BS().atmP, Math.round((Pv - (BS().dP[k] || 0)) * 100) / 100);
   const pSpec = v => Array.isArray(v) ? v[0] + '–' + v[1] + ' bar' : fmtP(v);
-  // spans are written as [low, high]; with a span every feed's own setting must be inside it (v6 review r1)
+  // spans are written as [low, high]
   const inRange = (R, v) => v != null && R.in.P.some(r => Array.isArray(r) ? v >= r[0] && v <= r[1] : v === r);
-  const pOk = (R, s, arr) => !R.in.P || (R.in.P === 'blown' ? !!s.blown
-    : !arr ? inRange(R, s.Pset)
-    : arr.every(a => inRange(R, a.Pset)) && (R.in.span || new Set(arr.map(a => a.Pset)).size === 1));   // a feed with no setting (not compressed / not let down) fails
+  const pOk = (R, s) => !R.in.P || (R.in.P === 'blown' ? !!s.blown : inRange(R, s.Pset));   // v8: the merged setting (the lowest feed setting); a feed with no setting fails
   const tOk = (R, Tv) => !R.in.T || R.in.T.some(v => Math.abs(Tv - v) < 0.01);
 
   /* ---------- what each kind of item is ---------- */
@@ -4814,37 +4908,39 @@ window.PB = window.PB || {};
       cat: R.in.cat === 'inside', dry: !!R.in.dry, loop: R.in.loop != null };
   };
   /* v6.2: what a storage tank needs at its inlet (the student chose the product of a tank) */
-  PB.sandboxTankChoices = function (proc, mode) {
-    const P = SBX().library[proc], adv = mode === 'advanced';
-    return P.products.filter(p => p.sink.includes('tank')).map(p => p.name).concat(P.byproducts.filter(b => (adv ? b.advanced : b.basic).includes('tank')).map(b => b.name));
+  PB.sandboxTankChoices = function (proc, mode, type) {   // v8: type 'tank' (liquids) or 'gastank' (gases); recovered materials too
+    const P = SBX().library[proc], adv = mode === 'advanced', t = type || 'tank';
+    return P.products.filter(p => p.sink.includes(t)).map(p => p.name).concat(P.byproducts.filter(b => (adv ? b.advanced : b.basic).includes(t)).map(b => b.name),
+      (P.recovered || []).filter(r => (r.ph === 'G') === (t === 'gastank')).map(r => r.name));
   };
   PB.sandboxStoreNeeds = function (proc, type, prod) {
-    const S = SBX(), B = BS(), P = S.library[proc], liq = c => ({ name: S.comps[c].name, ph: phCode(c, { liq: [c] }) });
-    if (type === 'refrigtank') return { T: '≤ ' + fmtT(B.chillCond), P: '≤ ' + fmtP(B.atmP + B.valveDrop), comps: [liq('nh3')] };
+    const S = SBX(), B = BS(), P = S.library[proc], gas = type === 'gastank', one = c => ({ name: S.comps[c].name, ph: phCode(c, { liq: gas ? [] : [c] }) });
+    if (type === 'refrigtank') return { T: '≤ ' + fmtT(B.chillCond), P: '≤ ' + fmtP(B.atmP + B.valveDrop), comps: [one('nh3')] };
     const tP = '≤ ' + fmtP(B.atmP + B.valveDrop);   // a tank at 1.01 bar: up to 2 bar above it needs no valve (PB.ASSUMPTIONS 'valve')
     if (type === 'pond' || type === 'wwt') return { T: '≤ ' + fmtT(B.storeMax), P: tP, comps: [{ name: 'Watery liquid', ph: 'Lp' }] };
-    if (type !== 'tank') return null;
-    const pr = P.products.find(p => p.name === prod), by = P.byproducts.find(b => b.name === prod);
-    return { T: '≤ ' + fmtT(B.storeMax), P: tP, comps: pr ? bpSort(pr.c).map(liq) : by ? [Object.assign(liq(by.main), { name: by.name })] : [{ name: 'Tap to choose', ph: '' }] };
+    if (type !== 'tank' && !gas) return null;
+    const pr = P.products.find(p => p.name === prod), by = P.byproducts.find(b => b.name === prod), rc = (P.recovered || []).find(r => r.name === prod);
+    return { T: gas ? S.cardWords.anyT : '≤ ' + fmtT(B.storeMax), P: tP, comps: pr ? bpSort(pr.c).map(one) : by ? [Object.assign(one(by.main), { name: by.name })] : rc ? bpSort(rc.c).map(one) : [{ name: 'Tap to choose', ph: '' }] };
   };
   PB.sandboxSepNeeds = function (proc, type) {
     const S = SBX(), B = BS(), W = S.cardWords, N = S.needsSep[type]; if (!N) return null;
     const P = S.library[proc], made = uniq([].concat(...P.reactions.map(R => [].concat(...Object.values(R.out).map(o => o.c)))));
+    const gasOut = P.reactions.some(R => Object.values(R.out).some(o => o.ph === 'G' || o.ph === 'GL'));   // v8: the A + B reactor gives gas + liquid
     let T = W.anyT, Pr = W.anyP;
     if (type === 'flash') {   // a gas + liquid flash needs the vapour condensed first; a liquid flash (biodiesel) needs its light part at its boiling point
-      const gasOut = P.reactions.some(R => Object.values(R.out).some(o => o.ph === 'G'));
       if (!gasOut) { const C = S.comps, vol = made.filter(c => C[c].bp != null); if (vol.length) T = Math.min(...vol.map(c => C[c].bp)) + '–' + fmtT(B.flashMax); }   // v7.1 review R2-2: up to the flash feed limit [36]
       if (gasOut) { const C = S.comps, cond = made.filter(c => C[c].cond);
         if (cond.some(c => C[c].cond === 'chill')) T = '≤ ' + fmtT(B.chillCond);
         else if (cond.some(c => C[c].cond === 'oil')) T = '≤ ' + fmtT(B.oilCond);
-        else if (cond.length) T = 'below ' + Math.min(...cond.map(c => C[c].bp)) + ' °C'; } }
+        else if (cond.length) T = 'below ' + Math.min(...cond.map(c => C[c].bp)) + ' °C'; }
+      if (P.flashT != null) T = '≤ ' + fmtT(P.flashT); }   // v8: the A + B separation runs at the slide's temperature [37]
     if (type === 'column') { const ks = Object.keys(B.column).filter(k => made.includes(k)), ps = uniq(ks.map(k => B.column[k].P)); if (ps.length) Pr = ps.map(v => String(+v.toFixed(2)) + '–' + fmtP(Math.round((v + B.valveDrop) * 100) / 100)).join(' / ');   // v6.3: a range
       if (ks.length) T = uniq(ks.map(k => B.column[k].bot)).map(v => '≤ ' + fmtT(v)).join(' / '); }   // v7.1 review R2-2: the feed no hotter than the column bottoms
     if (type === 'sieve' && made.includes('etoh')) T = 'above ' + fmtT(B.column.etoh.top);
     if (type === 'absorber') T = '≤ ' + fmtT(B.absMax);
     const PHW = PB.PHASE_WORDS.short;
     if (type === 'flash') {   // v6.3: just what goes in, with icons
-      const gasOut = P.reactions.some(R => Object.values(R.out).some(o => o.ph === 'G')), C = S.comps;
+      const C = S.comps;
       const light = made.filter(c => C[c].bp != null).sort((a, b) => C[a].bp - C[b].bp)[0];
       return { T, P: Pr, comps: gasOut ? [{ ph: 'G', name: 'Gas' }, { ph: 'L', name: 'Liquid' }] : [{ ph: 'L', name: 'Liquid' }].concat(light ? [{ ph: 'V', name: C[light].name + ' boils off' }] : []), split: N.split || [] };
     }
@@ -4892,6 +4988,10 @@ window.PB = window.PB || {};
     const S = SBX(), sol = S.solutions[proc].basic;
     return sol.place.filter(p => p[1] === 'unit' && S.units[p[2]].rule === 'react');
   };
+  /* v8: the unit types of the reference plant (not the pre-placed reaction units, nor types that stand only on its recycle,
+     solutions[proc].basic.recycle): each one placed and reached by the flow earns points */
+  PB.sandboxChecklist = (proc, mode) => { const only = SBX().solutions[proc].basic.recycle || [];
+    return uniq(PB.sandboxSolution(proc, mode).place.filter(p => p[1] === 'unit' && SBX().units[p[2]].rule !== 'react' && !only.includes(p[0])).map(p => p[2])); };
 
   PB.SandboxGame.prototype = {
     on(ev, fn) { (this.listeners[ev] = this.listeners[ev] || []).push(fn); },
@@ -4901,7 +5001,7 @@ window.PB = window.PB || {};
     spec(id) { const it = this.items[id]; return it && spec(it.cat, it.type); },
     zone(id) { return this.board.zones.find(z => z.id === id); },
     fp(it) { return PB.footprint(shapeOf(it), it.x, it.y); },
-    name(id) { const it = this.items[id]; return !it ? id : it.type === 'tank' && it.sp && it.sp.prod ? it.sp.prod + ' tank' : it.name; },
+    name(id) { const it = this.items[id]; return !it ? id : it.cat === 'sink' && it.sp && it.sp.prod ? it.sp.prod + (it.type === 'gastank' ? ' storage' : ' tank') : it.name; },   // v8: gas storage too
 
     placeFixed() {
       const sh = this.mode === 'advanced' ? (this.board.shift || 0) : 0;
@@ -4951,7 +5051,7 @@ window.PB = window.PB || {};
       it.x = x; it.y = y; this.changed(); return { ok: true };
     },
     setpoint(id, key, val) { const it = this.items[id]; if (!it) return; it.sp[key] = val == null ? undefined : +val; this.changed(); },
-    store(id, prod) { const it = this.items[id]; if (!it || it.type !== 'tank') return; it.sp.prod = prod || undefined; this.changed(); },   // v6.2: what a product tank stores
+    store(id, prod) { const it = this.items[id]; if (!it || !['tank', 'gastank'].includes(it.type)) return; it.sp.prod = prod || undefined; this.changed(); },   // v6.2: what a product tank stores (v8: or a gas storage)
     inPorts(id) { const s = this.spec(id); return s ? s.ins : []; },
     outPorts(id) { const s = this.spec(id); return s ? s.outs : []; },
     connect(from, port, to, inPort) {
@@ -5017,10 +5117,10 @@ window.PB = window.PB || {};
         if (it.cat === 'unit') {
           const needSet = !!S.units[it.type].set, isSet = it.sp.T != null || it.sp.P != null;
           const def = { id, x: it.x, y: it.y, name: it.name, tagText: it.name + (needSet && !isSet ? ' · set ?' : '') };
-          pads.push(def); this.nodes[id] = { id, def, kind: 'pad', x: it.x, y: it.y, unit: it.type, skin: it.skin, flipX: it.flipX, bad: this.badId === id };
+          pads.push(def); this.nodes[id] = { id, def, kind: 'pad', x: it.x, y: it.y, unit: it.type, skin: it.skin, flipX: it.flipX, bad: !!(this.badIds && this.badIds.has(id)) };
         } else {
           const def = { id, kind: kindOf[it.cat], name: this.name(id), x: it.x, y: it.y, shape: shapeOf(it) };   // v7 review: a product tank shows what it stores
-          fixed.push(def); this.nodes[id] = { id, def, kind: def.kind, x: it.x, y: it.y };
+          fixed.push(def); this.nodes[id] = { id, def, kind: def.kind, x: it.x, y: it.y, bad: !!(this.badIds && this.badIds.has(id)) };   // v8: every stop glows
         }
       }
       this.level = { id: 'sandbox', title: 'Sandbox · ' + this.proc.title, W: this.board.W, H: this.board.H, fixed, pads,
@@ -5182,7 +5282,7 @@ window.PB = window.PB || {};
         d.pts = d.pts.map(q => [q[0], q[1]]);
         let L = 0; for (let i = 1; i < d.pts.length; i++) L += Math.hypot(d.pts[i][0] - d.pts[i - 1][0], d.pts[i][1] - d.pts[i - 1][1]);
         const old = prev[d.id];
-        this.edges[d.id] = { id: d.id, def: d, built: true, progress: old && this.running ? old.progress : 0, arrived: false, len: L };
+        this.edges[d.id] = { id: d.id, def: d, built: true, progress: old && this.running ? old.progress : 0, arrived: !!(old && this.running && old.arrived), len: L };   // v8: the stop glow (a re-layout) keeps the filled pipes
       }
       this.noRoute = all.filter(d => d.noRoute).map(d => d.id);
     },
@@ -5194,8 +5294,8 @@ window.PB = window.PB || {};
     evaluate() {
       const S = SBX(), P = this.proc, adv = this.mode === 'advanced', M = S.msg, items = this.items;
       const comps = S.comps, matOf = id => S.materials.find(m => m.id === items[id].type);
-      const B = S.basis; this.duty = {};
-      const fails = [], pens = [], warns = [], outs = {}, st = {}, passes = {};
+      const B = S.basis;
+      let fails, pens, warns, outs, passes, rec; const st = {};
       let idx = 0; const at = {}; // topological index per node (first problem in flow order wins)
       const fail = (node, msg, extra) => fails.push(Object.assign({ node, msg, i: node && at[node] != null ? at[node] : 1e6 + fails.length }, extra || {}));
       const pen = (msg, node) => { if (!pens.find(p => p.msg === msg)) pens.push({ msg, node }); };
@@ -5206,13 +5306,14 @@ window.PB = window.PB || {};
       const ph = s => !s || !s.c.length ? '' : s.solid ? 'S' : !s.liq.length ? 'G' : s.liq.length === s.c.length ? (s.ll ? 'LL' : 'L') : 'GL';
       const phName = { G: 'a gas', L: 'a liquid', LL: 'two liquids', GL: 'gas + liquid', S: 'a solid' };
       const mk = (c, liq, o) => Object.assign({ c: uniq(c), liq: uniq(liq), Tv: B.ambT, Pv: B.atmP }, o || {});
-      // joining streams: the hottest sets T, the lowest pressure sets P; Ps = the compressor settings that meet here
+      // v8 (universal stream rule, no mass or energy balance): joining streams carry every inlet component; P = the lowest inlet,
+      // T = the simple average of the inlets, setting = the lowest inlet setting (a stream with no setting counts with its pressure)
       const merge = arr => { arr = arr.filter(Boolean); if (!arr.length) return null;
-        const hot = arr.reduce((a, b) => (b.Tv > a.Tv ? b : a)), Ps = uniq(arr.map(s => s.Pset).filter(v => v != null));
         return { c: uniq([].concat(...arr.map(s => s.c))), liq: uniq([].concat(...arr.map(s => s.liq))), ll: arr.some(s => s.ll), solid: arr.every(s => s.solid),
-          Tv: hot.Tv, Pv: Math.min(...arr.map(s => s.Pv)), Pset: Ps.length === 1 && arr.every(s => s.Pset != null) ? Ps[0] : undefined, Ps, blown: arr.some(s => s.blown), sat: arr.some(s => s.sat), wet: arr.some(s => s.wet),
-          humid: arr.some(s => s.humid), treated: arr.some(s => s.treated), post: arr.some(s => s.post), cooled: arr.every(s => s.cooled && s.cooled === arr[0].cooled) ? arr[0].cooled : undefined }; };   // v6.2: the loop cooler's mark
-      const sub = (s, c, liq, o) => Object.assign({}, s, { c: uniq(c), liq: uniq(liq), ll: false, solid: false, Ps: undefined, cooled: undefined }, o || {});
+          Tv: arr.reduce((a, s) => a + s.Tv, 0) / arr.length, Pv: Math.min(...arr.map(s => s.Pv)), Pset: arr.some(s => s.Pset != null) ? Math.min(...arr.map(s => s.Pset ?? s.Pv)) : undefined,
+          blown: arr.some(s => s.blown), sat: arr.some(s => s.sat), wet: arr.some(s => s.wet),
+          humid: arr.some(s => s.humid), treated: arr.some(s => s.treated), cooled: arr.every(s => s.cooled && s.cooled === arr[0].cooled) ? arr[0].cooled : undefined }; };   // v6.2: the loop cooler's mark
+      const sub = (s, c, liq, o) => Object.assign({}, s, { c: uniq(c), liq: uniq(liq), ll: false, solid: false, cooled: undefined }, o || {});
       // ---- graph: flow order and recycles (back edges)
       // Follow the flow from the raw tanks: a unit is evaluated once all its feeds have arrived. When every remaining
       // unit waits on a loop, the loop is cut where an engineer would see the recycle join: at the waiting unit whose
@@ -5238,7 +5339,6 @@ window.PB = window.PB || {};
         fin(best).filter(p => !done.has(p.from)).forEach(p => back.add(p.id));
       }
       // ---- per-node rules
-      const rec = { loopHx: new Set(), yeastNoop: [], loopGas: false, purgeFrom: [], recycled: false, ferm: [], loopOK: {}, products: {}, byp: {} };
       const reactionFor = (type, s) => { const rs = P.reactions.filter(r => r.units.includes(type)); return rs.find(r => s && r.in.c.every(c => s.c.includes(c))) || rs[0]; };
       const tWord = s => fmtT(s.Tv), pWord = s => (s.Pset != null ? 'set to ' + fmtP(s.Pset) : fmtP(s.Pv));
       const needT = R => (R.in.Tref || []).join(' or ') || R.in.T.map(fmtT).join(' or '), needP = R => (R.in.Pref || []).join(' or ') || R.in.P.map(pSpec).join(' or ');
@@ -5247,110 +5347,74 @@ window.PB = window.PB || {};
       const bypOf = s => P.byproducts.find(b => s.c.includes(b.main));
       const prodWhy = s => { const pr = productLike(s); const extra = s.c.filter(c => !pr.c.includes(c));
         return extra.length ? fmt(M.notPure, { list: list(extra) }) : s.wet ? M.notDryP : ''; };
-      for (const id of topo) {
-        const it = items[id], ins = inP(id).filter(p => !back.has(p.id));
-        let res = { outs: {} };
-        if (it.cat === 'raw') {
-          const m = matOf(id), fd = (P.feeds || {})[m.id] || {};
-          res.outs.out = mk(m.comps, m.ph === 'G' ? [] : m.comps, { solid: m.ph === 'S', humid: !!m.humid, Tv: fd.T != null ? fd.T : m.T === 'molten' ? B.sulfurT : B.ambT, Pv: fd.P != null ? fd.P : B.atmP });
-          if (!outP(id).length) { warn(fmt(M.unused, { m: m.name })); passes[id] = true; outs[id] = res.outs; continue; }
-        } else {
-          const arr = ins.map(p => st[p.id]);
-          if (!ins.length) { if (it.cat === 'unit') fails.push({ node: id, msg: fmt(M.noInlet, { u: it.name }), i: 5e8 + fails.length }); continue; }   // after any open outlet
-          if (arr.some(s => !s)) continue;             // upstream stopped
-          res = this.rule(it, ins, arr, { M, P, S, B, adv, ph, phName, mk, merge, sub, tWord, pWord, needT, needP, list, reactionFor, rec, isProduct, productLike, bypOf, prodWhy, pen, fmt }) || { outs: {} };
-          if (res.fail) { fail(id, res.fail); continue; }
+      // v8: pass 0 runs without the recycles; when the plant has any, pass 1 runs again with each recycle carrying what pass 0 sent
+      // round, so every unit sees it through the same merge (one tear pass, presence only)
+      const pass = seeded => {
+        fails = []; pens = []; warns = []; outs = {}; passes = {}; this.duty = {};
+        rec = { loopHx: new Set(), yeastNoop: [], loopGas: false, purgeFrom: [], recPipes: new Set(), ferm: [], loopOK: {}, products: {}, byp: {} };
+        for (const p of pipes) if (!back.has(p.id)) delete st[p.id];
+        for (const id of topo) {
+          const it = items[id], ins = inP(id).filter(p => !back.has(p.id) || (seeded && st[p.id]));
+          let res = { outs: {} };
+          if (it.cat === 'raw') {
+            const m = matOf(id), fd = (P.feeds || {})[m.id] || {};
+            res.outs.out = mk(m.comps, m.ph === 'G' ? [] : m.comps, { solid: m.ph === 'S', humid: !!m.humid, Tv: fd.T != null ? fd.T : m.T === 'molten' ? B.sulfurT : B.ambT, Pv: fd.P != null ? fd.P : B.atmP });
+            if (!outP(id).length) { warn(fmt(M.unused, { m: m.name })); passes[id] = true; outs[id] = res.outs; continue; }
+          } else {
+            const arr = ins.map(p => st[p.id]);
+            if (!ins.length) { if (it.cat === 'unit') fails.push({ node: id, msg: fmt(M.noInlet, { u: it.name }), i: 5e8 + fails.length }); continue; }   // after any open outlet
+            if (arr.some(s => !s)) continue;             // upstream stopped
+            res = this.rule(it, ins, arr, { M, P, S, B, adv, ph, phName, mk, merge, sub, tWord, pWord, needT, needP, list, reactionFor, rec, isProduct, productLike, bypOf, prodWhy, pen, fmt }) || { outs: {} };
+            if (res.fail) { fail(id, res.fail); continue; }
+          }
+          outs[id] = res.outs; passes[id] = true;
+          const op = outP(id);
+          for (const [port, , label] of this.outPorts(id)) {
+            const s = res.outs[port]; const ps = op.filter(p => p.port === port);
+            if (s && s.c.length && !ps.length) fail(id, fmt(M.dangling, { p: label.toLowerCase(), u: it.name }), { port });
+            ps.forEach(p => { if (!back.has(p.id)) st[p.id] = s && s.c.length ? s : null; });
+          }
         }
-        outs[id] = res.outs; passes[id] = true;
-        const op = outP(id);
-        for (const [port] of this.outPorts(id)) {
-          const s = res.outs[port]; const ps = op.filter(p => p.port === port);
-          if (s && s.c.length && !ps.length) fail(id, fmt(M.dangling, { p: (this.outPorts(id).find(o => o[0] === port) || [])[2].toLowerCase(), u: it.name }));
-          ps.forEach(p => { st[p.id] = s && s.c.length ? s : null; });
-        }
-      }
+      };
+      pass(false);
+      if (pipes.some(p => back.has(p.id))) { pipes.forEach(p => { if (back.has(p.id)) { const s = (outs[p.from] || {})[p.port]; st[p.id] = s && s.c.length ? s : null; } }); pass(true); }
       // nodes from which a reaction unit can be reached along forward pipes (where a recycle may rejoin the feed)
       const reactIds = this.order.filter(id => items[id].cat === 'unit' && S.units[items[id].type].rule === 'react' && P.reactions.some(r => r.units.includes(items[id].type)));
       const feedSide = new Set(reactIds);
       for (let grew = true; grew;) { grew = false; for (const p of pipes) if (!back.has(p.id) && feedSide.has(p.to) && !feedSide.has(p.from)) { feedSide.add(p.from); grew = true; } }
-      // ---- recycle / return streams
+      // ---- recycle / return streams (v8: optional; a working one earns points)
       const upChain = (id, want) => { // walk upstream through single-feed units looking for a unit type
         for (let k = 0, cur = id; k < 12 && cur; k++) { const it = items[cur]; if (it.cat === 'unit' && it.type === want) return true;
           if (it.cat !== 'unit' || !['pump', 'compressor', 'valve', 'hx', 'firedheater', 'acidtank', 'joint', 'splitter'].includes(it.type)) return false;
           const ins = inP(cur).filter(p => !back.has(p.id)); if (ins.length !== 1) return false; cur = ins[0].from; }
         return false; };
-      const sepUp = id => { // v7.1: walk upstream through pass-through units to the separator a stream leaves (null at a reaction unit)
-        for (let k = 0; k < 12 && id; k++) { const it = items[id]; if (it.cat !== 'unit') return null;
-          if (!['pump', 'compressor', 'valve', 'hx', 'firedheater', 'splitter'].includes(it.type)) return isReact(id) || ['joint', 'mixer'].includes(it.type) ? null : id;
-          const ins = inP(id).filter(r => !back.has(r.id)); if (ins.length !== 1) return null; id = ins[0].from; }
-        return null; };
       for (const p of pipes.filter(q => back.has(q.id))) {
-        const src = outs[p.from]; if (!src) continue; const s = src[p.port]; if (!s || !s.c.length) continue;
-        st[p.id] = s; const T = items[p.to];
+        const s = (outs[p.from] || {})[p.port]; st[p.id] = s && s.c.length ? s : null; if (!st[p.id]) continue;
+        const T = items[p.to], prodIn = P.products.some(pr => pr.c.some(c => s.c.includes(c)));
         if (T.cat === 'raw') { const m = matOf(p.to); const ok = s.c.length === m.comps.length && m.comps.every(c => s.c.includes(c)) && ph(s) !== 'G';
-          if (!ok) fail(p.to, fmt(M.rawBack, { m: m.name.toLowerCase() })); else if (P.recycle && s.c.includes(P.recycle.c)) rec.recycled = true; }
-        if (T.cat === 'unit' && T.type === 'joint') { const fw = merge(inP(p.to).filter(q => !back.has(q.id)).map(q => st[q.id]));
-          if (ph(s) === 'G' && !upChain(p.from, 'compressor')) fail(p.to, M.recLoopComp);
-          else if (fw && fw.Pset !== s.Pset) fail(p.to, M.teeP); }
+          if (!ok) fail(p.to, fmt(M.rawBack, { m: m.name.toLowerCase() }), { pipe: p.id }); else rec.recPipes.add(p.id); }   // v8: a pure return to its own tank is a recycle; a wrong one stops only that return pipe
         if (ph(s) === 'G' && T.cat === 'unit' && !upChain(p.from, 'compressor')) fail(p.to, M.recLoopComp);
-        if (ph(s) === 'G' && T.cat === 'unit') { const fw = merge(inP(p.to).filter(q => !back.has(q.id)).map(q => st[q.id])), Rr = reactIds.includes(p.to) && reactionFor(T.type, s);
-          if (Rr && Rr.in.span) { if (!inRange(Rr, s.Pset)) fail(p.to, M.teeP); } else if (fw && fw.Pset !== s.Pset) fail(p.to, M.teeP); }
-        if (T.cat === 'unit' && reactIds.includes(p.to) && ph(s) === 'G') { const R = reactionFor(T.type, s); if (R && !tOk(R, s.Tv)) fail(p.to, fmt(M.wrongT, { got: tWord(s), need: needT(R) })); }
-        const prodIn = P.products.some(pr => pr.c.some(c => s.c.includes(c)));
-        if (feedSide.has(p.to) && P.loop && ph(s) === 'G' && prodIn) fail(sepUp(p.from) || p.to, M.recUnsep);   // v7.1: at the separator the gas leaves (a flash fed too warm), not where it rejoins
-        if (P.loop && s.c.includes(P.loop.c) && ph(s) === 'G' && feedSide.has(p.to) && !prodIn) rec.loopGas = true;
-        if (P.recycle && s.c.includes(P.recycle.c) && feedSide.has(p.to) && (P.recycle.c !== 'yeast' || s.treated)) rec.recycled = true;
-        // a recycle that joins the feed after the heater must not reach the reactor below its spec temperature
-        if (P.loop && ph(s) === 'G' && feedSide.has(p.to) && !reactIds.includes(p.to)) {
-          const seen = new Set([p.to]), qq = [p.to]; let cold = false;
-          while (qq.length && !cold) { const u = qq.shift(); for (const q2 of outP(u)) { if (back.has(q2.id) || seen.has(q2.to)) continue; const v = items[q2.to];
-            if (v.cat === 'unit' && (v.type === 'hx' || v.type === 'firedheater') && v.sp.T != null && v.sp.T > s.Tv) continue;   // a heater on the way warms it up
-            if (reactIds.includes(q2.to)) { const R = reactionFor(v.type, s); if (R && !tOk(R, s.Tv)) cold = true; continue; }
-            if (feedSide.has(q2.to)) { seen.add(q2.to); qq.push(q2.to); } } }
-          if (cold) { const R = P.reactions.find(r => r.in.T); fail(p.to, fmt(M.wrongT, { got: tWord(s), need: needT(R) })); }
-        }
+        if (P.loop && s.c.includes(P.loop.c) && ph(s) === 'G' && feedSide.has(p.to) && !prodIn) { rec.loopGas = true; rec.recPipes.add(p.id); }
+        if (P.recycle && s.c.includes(P.recycle.c) && feedSide.has(p.to) && !prodIn && (P.recycle.c !== 'yeast' || s.treated)) rec.recPipes.add(p.id);
         // the fermenter loop: broth cooled with cooling water (no colder than it reaches, no warmer than the fermenter) comes back (v6.2)
         const RF = P.reactions.find(r => r.in.loop != null), coolLoop = RF && s.Tv <= RF.in.loop && s.Tv >= B.cwMin && ph(s) !== 'G' && !!s.cooled;
-        if (coolLoop && T.cat === 'unit' && T.type === 'fermenter') rec.loopHx.add(s.cooled);
+        if (coolLoop && T.cat === 'unit' && T.type === 'fermenter') { rec.loopHx.add(s.cooled); rec.loopOK[p.to] = true; }
         if (coolLoop && feedSide.has(p.to)) { rec.loopHx.add(s.cooled); reactIds.filter(r => items[r].type === 'fermenter').forEach(r => rec.loopOK[r] = true); }   // v6.2 r2: a loop back through the feed mixer counts too
-        if (T.cat === 'unit' && T.type === 'fermenter') { if (coolLoop) rec.loopOK[p.to] = true; if (s.c.includes('yeast') && s.treated) rec.recycled = true; }
         if (ph(s) !== 'G' && !upChain(p.from, 'pump')) fail(p.from, fmt(M.recPump, { s: comps[s.c[0]].name.toLowerCase() }), { between: [p.from, p.to] });
       }
       // ---- the purge must come off the recycle path (the gas going round the loop), after the product is separated
-      const loopPath = new Set(); let loopHead = null;   // loopHead: the separator the recycle gas leaves (a missing purge stops the flow there)
+      const loopPath = new Set(); let loopHead = null, headPort = null;   // loopHead: the separator the recycle gas leaves (a missing purge stops that outlet)
       pipes.filter(q => back.has(q.id) && st[q.id] && ph(st[q.id]) === 'G' && P.loop && st[q.id].c.includes(P.loop.c)).forEach(q => {
-        for (let k = 0, cur = q.from; k < 12 && cur; k++) { loopPath.add(cur); loopHead = loopHead || (k ? null : cur); const it = items[cur]; if (it.cat === 'unit' && !['compressor', 'hx', 'firedheater', 'splitter', 'valve'].includes(it.type)) { loopHead = cur; break; }
-          const ins = inP(cur).filter(r => !back.has(r.id)); if (ins.length !== 1) break; cur = ins[0].from; } });
+        for (let k = 0, cur = q.from, port = q.port; k < 12 && cur; k++) { loopPath.add(cur); if (!k && !loopHead) { loopHead = cur; headPort = port; } const it = items[cur];
+          if (it.cat === 'unit' && !['compressor', 'hx', 'firedheater', 'splitter', 'valve'].includes(it.type)) { loopHead = cur; headPort = port; break; }
+          const ins = inP(cur).filter(r => !back.has(r.id)); if (ins.length !== 1) break; cur = ins[0].from; port = ins[0].port; } });
       const upValves = id => { for (let k = 0; k < 6 && id && items[id].cat === 'unit' && items[id].type === 'valve'; k++) { const ins = inP(id).filter(r => !back.has(r.id)); if (ins.length !== 1) break; id = ins[0].from; } return id; };
       rec.purge = rec.purgeFrom.some(x => loopPath.has(upValves(x.from)));
       if (rec.loopGas && !rec.purge && rec.purgeFrom.length) fail(rec.purgeFrom[0].sink, M.purgeWrong);
+      if (P.loop && rec.loopGas && !P.loop.noPurge && !rec.purge && !rec.purgeFrom.length) fail(loopHead, fmt(M.noPurge, { sink: adv ? 'flare' : 'vent stack' }) + ' ' + P.loop.purge, { port: headPort });   // v8: only when the loop exists; that outlet stops
       // ---- fermenter cooling loop
       rec.ferm.forEach(id => { if (!rec.loopOK[id]) fail(id, M.noLoop + ' ' + (P.loopMsg || '')); });
-      // v6.3: a recovered liquid reactant (it has passed the reaction) rejoins the process only in a mixer on the feed side that also
-      // takes fresh feed: never back into storage, a reaction unit or a pipe joint on the feed side. Topology only (not build order).
-      const feedAll = new Set(reactIds);
-      for (let grew = true; grew;) { grew = false; for (const p of pipes) if (feedAll.has(p.to) && !feedAll.has(p.from)) { feedAll.add(p.from); grew = true; } }
-      for (const p of pipes) { const s = st[p.id], T = items[p.to];
-        if (!s || !s.post || !['L', 'LL'].includes(ph(s)) || s.c.includes('yeast') || !P.reactions.some(R => R.in.c.some(c => s.c.includes(c)))) continue;
-        const fresh = () => inP(p.to).some(q => st[q.id] && !st[q.id].post);
-        if (T.cat === 'raw' || reactIds.includes(p.to) || (feedAll.has(p.to) && T.cat === 'unit' && T.type === 'joint')
-            || (T.cat === 'unit' && T.type === 'mixer' && feedAll.has(p.to) && !fresh())) fail(p.to, M.recMix); }
       rec.yeastNoop.filter(id => !rec.loopHx.has(id)).forEach(id => pen(fmt(M.noop, { u: items[id].name }), id));   // a cooler at the broth's own temperature that is not the loop cooler does nothing
-      // ---- whole-plant checks
-      // a missing product stops the flow at the furthest unit the streams reach (every stop names a unit)
-      const lastReached = () => this.order.filter(id => outs[id] && at[id] != null).sort((a, b) => at[b] - at[a])[0] || null;
-      // v7.1: a missing recycle stops the flow at the first separator giving the unrecycled stream (the flash drum the unreacted gas
-      // leaves, the unit giving the recovered methanol, the yeast treatment tank giving the treated yeast); none found and no other stop: the furthest unit reached
-      const sepU = k => items[k].cat === 'unit' && !isReact(k) && !['pump', 'compressor', 'valve', 'hx', 'firedheater', 'splitter', 'joint', 'mixer'].includes(items[k].type);
-      const noRecycle = (want, msg) => { const id = topo.find(k => sepU(k) && outs[k] && Object.values(outs[k]).some(s => s && s.post && want(s)));
-        let last = id;   // v7.1 review R2-8: the last separator or treatment unit on that stream before it leaves the process (the yeast treatment tank, not the centrifuge)
-        if (id) {   // the recycle is piped but stuck at a unit that already stops the flow (e.g. a pump on the gas): that unit is the stop (a tank or vent is not a recycle)
-          const seen = new Set([id]), qq = [id];
-          while (qq.length) { const u = qq.shift(); for (const q of outP(u)) { const s = st[q.id]; if (!s || !want(s) || seen.has(q.to) || items[q.to].cat !== 'unit') continue; if (fails.some(f => f.node === q.to)) return; seen.add(q.to); qq.push(q.to); if (sepU(q.to)) last = q.to; } } }
-        if (id || !fails.length) fail(last || lastReached(), msg); };
-      if (P.loop) { if (!rec.loopGas) noRecycle(s => ph(s) === 'G' && s.c.includes(P.loop.c), M.loopRecycle + ' ' + P.loop.msg); else if (!P.loop.noPurge && !rec.purge && !rec.purgeFrom.length) fail(loopHead, fmt(M.noPurge, { sink: adv ? 'flare' : 'vent stack' }) + ' ' + P.loop.purge); }
-      if (P.recycle && !rec.recycled) noRecycle(s => s.c.length === 1 && s.c[0] === P.recycle.c, P.recycle.msg);
-      if (!fails.length) P.products.forEach(pr => { if (!rec.products[pr.name]) fails.push({ node: lastReached(), msg: fmt(M.noProduct, { p: pr.name.toLowerCase() }), i: 1e9 }); });
       // ---- fuller pump rule (stops the flow): liquids leaving a tank, a mixer or a reactor, or entering a flash drum or column
       for (const p of pipes) {
         if (back.has(p.id)) continue; const s = st[p.id]; if (!s || !['L', 'LL'].includes(ph(s))) continue;
@@ -5371,13 +5435,24 @@ window.PB = window.PB || {};
         if (back.has(p.id) && Bt.cat !== 'raw') continue;   // recycles into a raw tank are checked too
         const into = Bt.cat === 'sink' || Bt.cat === 'waste' || Bt.cat === 'raw' ? B.atmP : Bt.cat === 'unit' && Bt.type === 'column' ? this.colP(s) : null;
         if (into == null) continue;
-        if (A.cat === 'unit' && A.type === 'valve') { if (A.sp.P != null && Math.min(A.sp.P, s.Pv) - into > B.valveDrop) fail(p.to, fmt(M.missValve, { a: A.name, b: Bt.name }), { between: [p.from, p.to] }); continue; }   // a valve set too high
+        if (A.cat === 'unit' && A.type === 'valve') { if (A.sp.P != null && Math.min(A.sp.P, s.Pv) - into > B.valveDrop) fail(p.to, fmt(M.missValve, { a: A.name, b: Bt.name }), { between: [p.from, p.to], pipe: back.has(p.id) ? p.id : undefined }); continue; }   // a valve set too high (v8: a return into a raw tank stops only that pipe)
         if (A.cat === 'unit' && A.type === 'pump') {   // a pump's own push needs no valve, but a pump is no let-down valve: check what reaches it
           const pin = inP(p.from).filter(q => !back.has(q.id)).map(q => st[q.id]).filter(Boolean), up = inP(p.from).find(q => !back.has(q.id));
           if (pin.length && Math.max(...pin.map(x => x.Pv)) - into > B.valveDrop) fail(p.from, fmt(M.missValve, { a: items[up.from].name, b: A.name }), { between: [up.from, p.from] });
           continue; }
-        if (s.Pv - into > B.valveDrop) fail(p.to, fmt(M.missValve, { a: A.name, b: Bt.name }), { between: [p.from, p.to] });
+        if (s.Pv - into > B.valveDrop) fail(p.to, fmt(M.missValve, { a: A.name, b: Bt.name }), { between: [p.from, p.to], pipe: back.has(p.id) ? p.id : undefined });
       }
+      // ---- v8 (client decisions R2-M1, round 2): at a pipe joint (any feed) or a catalytic reactor (reactor, converter; its gas feeds), a feed more than 2 bar above
+      // the lowest one needs a valve; when the lowest feed is below the reactor's pressure window, the reactor's wrong-pressure stop names the place
+      const catR = id => isReact(id) && ['reactor', 'converter'].includes(items[id].type);
+      const pLow = id => { const seen = new Set([id]), q = [id]; while (q.length) { const u = q.shift(); if (u !== id && ['compressor', 'pump', 'valve'].includes(items[u].type)) return null;   // they set a new pressure
+        if (catR(u)) { const R = P.reactions.find(r => r.units.includes(items[u].type));
+          return R && Array.isArray(R.in.P) ? Math.min(...R.in.P.map(r => [].concat(r)[0])) : null; }
+        outP(u).forEach(p => { if (!back.has(p.id) && !seen.has(p.to)) { seen.add(p.to); q.push(p.to); } }); } return null; };   // the window's low end of the reactor downstream
+      for (const id of this.order) { const it = items[id]; if (it.cat !== 'unit' || !(it.type === 'joint' || catR(id))) continue;
+        const ins = inP(id).filter(p => st[p.id]); if (ins.length < 2) continue;
+        const lvl = p => st[p.id].Pset ?? st[p.id].Pv, low = Math.min(...ins.map(lvl)), w = pLow(id); if (w != null && low < w) continue;
+        ins.filter(p => lvl(p) - low > B.valveDrop && (it.type === 'joint' || ph(st[p.id]) === 'G')).forEach(p => fail(id, fmt(M.missValve, { a: items[p.from].name, b: it.name }), { between: [p.from, id] })); }
       // ---- Advanced: utilities
       if (adv) for (const id of this.order) {
         const it = items[id]; if (it.cat !== 'unit' && it.cat !== 'util') continue;
@@ -5390,17 +5465,30 @@ window.PB = window.PB || {};
           fail(id, fmt(M[key], { u: it.name })); break;
         }
       }
+      let open = [];
       if (fails.some(f => f.i >= 5e8 && f.i < 1e9)) {   // a unit has nothing coming in: is the student still connecting?
-        const open = topo.filter(id => { const it = items[id]; if (!['unit', 'raw'].includes(it.cat) || (it.cat !== 'raw' && !inP(id).length)) return false;
+        open = topo.filter(id => { const it = items[id]; if (!['unit', 'raw'].includes(it.cat) || (it.cat !== 'raw' && !inP(id).length)) return false;
           return this.outPorts(id).some(([port]) => !outP(id).some(p => p.port === port)); });
         if (open.length) { const id = open[0], port = this.outPorts(id).find(([pt]) => !outP(id).some(p => p.port === pt));
-          fails.push({ node: id, msg: fmt(M.dangling, { p: port[2].toLowerCase(), u: items[id].name }), i: at[id] }); }
+          fails.push({ node: id, port: port[0], msg: fmt(M.dangling, { p: port[2].toLowerCase(), u: items[id].name }), i: at[id] }); }
       }
+      // ---- whole-plant check: a missing product (only when nothing else stops) stops the flow at the furthest unit the streams reach
+      const lastReached = () => this.order.filter(id => outs[id] && at[id] != null).sort((a, b) => at[b] - at[a])[0] || null;
+      if (!fails.length) P.products.forEach(pr => { if (!rec.products[pr.name]) fails.push({ node: lastReached(), msg: fmt(M.noProduct, { p: pr.name.toLowerCase() }), i: 1e9 }); });
       fails.sort((a, b) => a.i - b.i);
-      const f = fails[0] || null;
-      if (f && f.node) passes[f.node] = false;
+      // ---- v8: each outlet runs on its own. A stop with a port cuts only what that outlet feeds; one without, everything after the
+      // unit. A problem after an earlier stop is not a new place (the flow never gets there).
+      const cut = new Set(), cutP = new Set(), whole = new Set(), portStop = new Set(), stops = [];
+      const cutFrom = ps => { const q = ps.slice(); while (q.length) { const p = q.shift(); if (cutP.has(p.id)) continue; cutP.add(p.id);
+        if (!back.has(p.id) && !cut.has(p.to)) { cut.add(p.to); q.push(...outP(p.to)); } } };
+      for (const f of fails) { const n = f.node;
+        if (open.length && f.i >= 5e8 && f.i < 1e9) continue;   // the open outlet explains the units with nothing coming in
+        if (n && (cut.has(n) || whole.has(n) || (f.port && portStop.has(n + ':' + f.port)))) continue;
+        stops.push(f); if (!n) continue;
+        if (f.pipe) cutFrom(pipes.filter(p => p.id === f.pipe)); else if (f.port) { portStop.add(n + ':' + f.port); cutFrom(outP(n).filter(p => p.port === f.port)); } else { whole.add(n); passes[n] = false; cutFrom(outP(n)); } }
+      const flow = {}; pipes.forEach(p => { flow[p.id] = !cutP.has(p.id) && !!passes[p.from] && !!st[p.id]; });
       // colours for the pipes (main component of each stream)
-      const PRI = ['h2so4', 'nh3', 'biod', 'etoh', 'meoh', 'gly', 'jet', 'lgt', 'hvy', 'palm', 'so3', 'so2', 'yeast', 'vin', 'sugar', 'tg', 'water', 'co2', 'h2', 'n2', 'o2', 'naoh', 's'];
+      const PRI = ['h2so4', 'nh3', 'biod', 'etoh', 'meoh', 'gly', 'jet', 'lgt', 'hvy', 'palm', 'xd', 'xe', 'xc', 'xa', 'xb', 'so3', 'so2', 'yeast', 'vin', 'sugar', 'tg', 'water', 'co2', 'h2', 'n2', 'o2', 'naoh', 's'];
       const colors = {};
       for (const p of pipes) { const s = st[p.id]; if (!s) continue;
         const main = PRI.find(c => s.c.includes(c)); let fl = comps[main].fl;
@@ -5409,13 +5497,21 @@ window.PB = window.PB || {};
         else if (main === 'vin') fl = 'vinasse'; else if (main === 'meoh' && ph(s) === 'G') fl = 'meohv'; else if (main === 'meoh' && s.c.includes('naoh')) fl = 'methoxide';
         else if (main === 'biod' && s.c.length > 1) fl = s.c.includes('gly') ? 'mix' : 'crude'; else if (main === 'tg' && s.Tv > B.ambT + 5) fl = 'hotoil'; else if (main === 'etoh' && s.wet) fl = 'hydrous';
         colors[p.id] = fl; }
-      const nodeIn = {}; for (const id of this.order) { const ins = inP(id).filter(p => !back.has(p.id)); if (ins.length && ins.every(p => st[p.id])) nodeIn[id] = merge(ins.map(p => st[p.id])); }
+      const nodeIn = {}; for (const id of this.order) { const ins = inP(id).filter(p => !back.has(p.id) || st[p.id]); if (ins.length && ins.every(p => st[p.id])) nodeIn[id] = merge(ins.map(p => st[p.id])); }
       // v7.1 milestones (game.progress): 1 a feed reached a reaction unit, 2 it produced its outlet, 3 every product reached its tank, 4 the plant works.
-      // As the Deploy shows it: nothing after the stop counts (the flow stops there, run())
-      const cut = new Set(); if (f && f.node) { const q = [f.node]; while (q.length) { const u = q.shift(); outP(u).forEach(p => { if (!back.has(p.id) && !cut.has(p.to) && p.to !== f.node) { cut.add(p.to); q.push(p.to); } }); } }
-      const live = id => !cut.has(id), madeAt = r => live(r) && r !== (f && f.node) && outs[r] && Object.values(outs[r]).some(Boolean);
-      const stage = !f ? 4 : P.products.every(pr => (rec.products[pr.name] || []).some(live)) ? 3 : reactIds.some(madeAt) ? 2 : reactIds.some(r => live(r) && inP(r).some(p => st[p.id])) ? 1 : 0;
-      return this.lastEval = { ok: !f, fail: f, fails, pens, warns, passes, st, back, colors, ph, outs, nodeIn, stage, describe: s => this.describe(s, ph) };
+      // v8: per branch, as the Deploy shows it: nothing after a stop counts
+      const ok = !stops.length, reached = id => inP(id).some(p => !back.has(p.id) && flow[p.id]), live = id => !cut.has(id) && reached(id);
+      const madeAt = r => live(r) && !whole.has(r) && outs[r] && Object.values(outs[r]).some(Boolean);
+      const stored = P.products.filter(pr => (rec.products[pr.name] || []).some(id => live(id) && !whole.has(id))).length;
+      const stage = ok ? 4 : stored === P.products.length ? 3 : reactIds.some(madeAt) ? 2 : reactIds.some(live) ? 1 : 0;
+      // v8 points (out of 100): the reference plant's unit types placed and reached 40, milestones 45, a working recycle 15 (the pass
+      // takes those 15 where no recycle is possible)
+      const chk = PB.sandboxChecklist(this.procId, this.mode), noRec = !P.recycle && !P.loop;   // v8 review: the recycle points need the whole plant working
+      const parts = { units: 40 * chk.filter(t => this.order.some(id => items[id].cat === 'unit' && items[id].type === t && reached(id) && passes[id])).length / (chk.length || 1),
+        feeds: reactIds.some(live) ? 10 : 0, reaction: reactIds.some(madeAt) ? 10 : 0, products: 10 * stored / P.products.length,
+        pass: ok ? (noRec ? 30 : 15) : 0, recycle: ok && !noRec && pipes.some(p => rec.recPipes.has(p.id) && flow[p.id]) ? 15 : 0 };
+      const points = { total: Math.round(Object.values(parts).reduce((a, b) => a + b, 0)), parts };
+      return this.lastEval = { ok, fail: stops[0] || null, stops, flow, points, fails, pens, warns, passes, st, back, colors, ph, outs, nodeIn, stage, describe: s => this.describe(s, ph) };
     },
     describe(s, ph) {
       if (!s) return 'No flow yet.'; const C = SBX().comps, p = ph(s);
@@ -5427,31 +5523,26 @@ window.PB = window.PB || {};
       const { M, P, S, B, ph, phName, mk, merge, sub, tWord, pWord, needT, needP, list, reactionFor, rec, pen, fmt } = X;   // sinkRule reads the rest of X
       const s = merge(arr), p = ph(s), name = it.name, C = S.comps;
       const port = k => merge(pipesIn.map((q, i) => (q.inPort === k ? arr[i] : null)));
-      if (it.cat === 'unit' && it.type === 'joint') {
-        // v6.3: a pipe joint takes gases, liquids or both (e.g. SAF: H₂ joins the palm oil before one heater);
-        // when a liquid is involved every feed needs its own pressure setting (valve, compressor or pump), all equal
-        const allG = arr.every(a => ph(a) === 'G');
-        if (s.Ps.length > 1 || (s.Ps.length && arr.some(a => a.Pset == null)) || (!allG && arr.some(a => a.Pset == null))) return { fail: M.teeP };
-        return { outs: { out: Object.assign({}, s, { Pv: drop(s.Pv, 'tee') }) } };
-      }
+      if (it.cat === 'unit' && it.type === 'joint') return { outs: { out: Object.assign({}, s, { Pv: drop(s.Pv, 'tee') }) } };   // v8: any phase; the merge sets P, T and the setting
       if (it.cat === 'sink' || it.cat === 'waste') return this.sinkRule(it, arr, X, pipesIn);
       const t = it.type, u = S.units[t];
       switch (u.rule) {
         case 'pump':
           if (!['L', 'LL'].includes(p)) return { fail: fmt(M.pumpGas, { ph: phName[p] || p }) };
           if (it.sp.P == null) return { fail: fmt(M.setP, { u: name }) };   // pumps in a row are normal: no 'does nothing' penalty
-          return { outs: { out: Object.assign({}, s, { Pv: Math.max(s.Pv, it.sp.P), Pset: it.sp.P, Ps: undefined }) } };
+          return { outs: { out: Object.assign({}, s, { Pv: Math.max(s.Pv, it.sp.P), Pset: it.sp.P }) } };
         case 'splitter':
-          return { outs: { a: Object.assign({}, s, { Ps: undefined }), b: Object.assign({}, s, { Ps: undefined }) } };
+          return { outs: { a: s, b: s } };
         case 'valve':
           if (it.sp.P == null) return { fail: fmt(M.setP, { u: name }) };
           if (it.sp.P >= s.Pv) pen(fmt(M.noop, { u: name }), it.id);
-          return { outs: { out: Object.assign({}, s, { Pv: Math.min(s.Pv, it.sp.P), Pset: it.sp.P, Ps: undefined }) } };
+          return { outs: { out: Object.assign({}, s, { Pv: Math.min(s.Pv, it.sp.P), Pset: it.sp.P }) } };
         case 'compressor':
           if (p !== 'G') return { fail: M.compLiq };
           if (it.sp.P == null) return { fail: fmt(M.setP, { u: name }) };
-          if (it.sp.P <= s.Pv) pen(fmt(M.noop, { u: name }), it.id);
-          return { outs: { out: Object.assign({}, s, { Pv: it.sp.P, Pset: it.sp.P, Ps: undefined, blown: true }) } };
+          if (it.sp.P < s.Pv) return { fail: M.compDown };   // v8 final review: a compressor never lets the pressure down
+          if (it.sp.P === s.Pv) pen(fmt(M.noop, { u: name }), it.id);
+          return { outs: { out: Object.assign({}, s, { Pv: it.sp.P, Pset: it.sp.P, blown: true }) } };
         case 'hx': {
           if (it.sp.T == null) return { fail: fmt(M.setT, { u: name }) };
           const T = it.sp.T, heat = T > s.Tv;
@@ -5462,13 +5553,13 @@ window.PB = window.PB || {};
           // cooling condenses what boils above the new temperature (NIST normal boiling points); ammonia needs chilling under pressure
           let liq = s.liq.slice();
           if (!heat) s.c.forEach(c => { if ((C[c].cond === 'cw' && T < C[c].bp) || (C[c].cond === 'chill' && T <= B.chillCond) || C[c].cond === 'oil') liq.push(c); });
-          return { outs: { out: Object.assign({}, s, { liq: uniq(liq), Tv: T, Pv: drop(s.Pv, 'hx'), Ps: undefined, solid: false, sat: heat ? false : s.sat, cooled: !heat && s.c.includes('yeast') && s.c.includes('etoh') ? it.id : undefined }) } };
+          return { outs: { out: Object.assign({}, s, { liq: uniq(liq), Tv: T, Pv: drop(s.Pv, 'hx'), solid: false, sat: heat ? false : s.sat, cooled: !heat && s.c.includes('yeast') && s.c.includes('etoh') ? it.id : undefined }) } };
         }
         case 'mixer':
           if (this.pipes.filter(q => q.to === it.id).length < 2) pen(M.mixOne, it.id);
           if (arr.every(a => ph(a) === 'G')) { pen(M.mixGas, it.id); return { outs: { out: s } }; }
           if (arr.some(a => ph(a) === 'G' || ph(a) === 'GL')) return { fail: M.mixGasLiq };
-          return { outs: { out: Object.assign({}, s, { liq: s.c.slice(), ll: false, solid: false, Ps: undefined, post: arr.every(a => a.post) }) } };   // a recycle mixed into fresh feed is feed again
+          return { outs: { out: Object.assign({}, s, { liq: s.c.slice(), ll: false, solid: false }) } };
         case 'react': {
           const R = reactionFor(t, s); if (!R) return { fail: fmt(M.wrongReactor, { u: PB.EQUIP[t].name.toLowerCase() }) };
           const miss = R.in.c.filter(c => !s.c.includes(c));
@@ -5477,18 +5568,19 @@ window.PB = window.PB || {};
           // M3: a reaction marked allT needs every feed at its temperature (SAF: heat both the hydrogen and the oil)
           const tBad = R.in.allT ? arr.find(a => !tOk(R, a.Tv)) : (!tOk(R, s.Tv) ? s : null);
           if (tBad) return { fail: fmt(M.wrongT, { got: tWord(tBad), need: needT(R) }) };
-          if (!pOk(R, s, arr)) { const bad = R.in.P !== 'blown' && arr.find(a => !inRange(R, a.Pset)) || s; return { fail: fmt(M.wrongP, { got: pWord(bad), need: R.in.P === 'blown' ? 'air blown in' : needP(R) }) }; }
+          if (!pOk(R, s)) return { fail: fmt(M.wrongP, { got: pWord(s), need: R.in.P === 'blown' ? 'air blown in' : needP(R) }) };
           if (R.in.dry && s.humid) return { fail: M.notDry };
           if (R.in.loop) rec.ferm.push(it.id);
           const o = {};
           for (const k in R.out) { const r = R.out[k];
-            o[k] = mk(r.c, r.ph === 'G' ? [] : r.c, { ll: r.ph === 'LL', Tv: r.T, Pv: R.in.loop != null ? B.atmP : drop(s.Pv, 'reactor'), Pset: s.Pset, post: true }); }   // post: has passed the reaction (recycle rule)   // the fermenter vents its CO₂: atmospheric
+            o[k] = mk(r.c, r.liq || (r.ph === 'G' ? [] : r.c), { ll: r.ph === 'LL', Tv: r.T, Pv: R.in.loop != null ? B.atmP : drop(s.Pv, 'reactor'), Pset: s.Pset }); }   // the fermenter vents its CO₂: atmospheric   // v8: r.liq: the liquid parts of a gas + liquid outlet
           return { outs: o };
         }
         case 'flash': {
           if (p === 'G') return { fail: M.flashGas };
           if (p === 'LL') return { fail: M.flashLL };
           if (s.c.some(c => C[c].cond === 'oil') && s.Tv > B.oilCond) return { fail: M.flashWarm };   // the SAF separation runs at its slide temperature
+          if (P.flashT != null && s.Tv > P.flashT) return { fail: M.flashHot };   // v8: so does the A + B separation [37]
           const fP = { Pv: drop(s.Pv, 'flash') };
           if (p === 'GL') return { outs: { top: sub(s, s.c.filter(c => !s.liq.includes(c)), [], fP), bot: sub(s, s.liq, s.liq, Object.assign({ Pset: undefined }, fP)) } };
           if (p !== 'L') return { fail: M.flashOne };
@@ -5513,7 +5605,7 @@ window.PB = window.PB || {};
           const top = vol[0], azeo = top === 'etoh' && s.c.includes('water'), rest = s.c.filter(c => c !== top);
           const cf = B.column[top] || { P: B.atmP, top: C[top].bp, bot: Math.max(...rest.map(c => C[c].bp == null ? 100 : C[c].bp)), liqTop: 1 };
           if (B.column[top] && s.Tv > cf.bot) return { fail: M.colHot };   // v7.1 review R2-2: a feed hotter than the column bottoms would not be liquid (limit shown in NEEDS)
-          const base = { Pv: cf.P, Pset: undefined, Ps: undefined };
+          const base = { Pv: cf.P, Pset: undefined };
           return { outs: { top: sub(s, [top], cf.liqTop ? [top] : [], Object.assign({ Tv: cf.top, wet: azeo, sat: !cf.liqTop }, base)), bot: sub(s, rest, rest, Object.assign({ Tv: cf.bot, wet: false, sat: false }, base)) } };
         }
         case 'settler':
@@ -5527,10 +5619,10 @@ window.PB = window.PB || {};
           if (p !== 'G') return { fail: M.sieveIn };
           if (s.sat) return { fail: M.sieveSat };
           if (!s.wet) pen(M.sieveNoop, it.id);
-          return { outs: { out: Object.assign({}, s, { wet: false, Ps: undefined }) } };
+          return { outs: { out: Object.assign({}, s, { wet: false }) } };
         case 'acidtank':
           if (!s.c.includes('yeast')) return { fail: M.acidIn };
-          return { outs: { out: Object.assign({}, s, { treated: true, Ps: undefined }) } };
+          return { outs: { out: Object.assign({}, s, { treated: true }) } };
         case 'absorber': {
           const g = port('gas'), l = port('liq');
           if (!l || !['L'].includes(ph(l))) return { fail: M.absLiq };
@@ -5542,7 +5634,7 @@ window.PB = window.PB || {};
         }
         case 'drytower':
           if (p !== 'G' || !s.c.includes('o2')) return { fail: M.dryIn };
-          return { outs: { top: Object.assign({}, s, { humid: false, Ps: undefined }) } };
+          return { outs: { top: Object.assign({}, s, { humid: false }) } };
       }
       return { outs: {} };
     },
@@ -5553,13 +5645,23 @@ window.PB = window.PB || {};
         const p = ph(s), prod = isProduct(s), like = productLike(s), byp = bypOf(s), loopGas = P.loop && s.c.includes(P.loop.c);
         const allowed = b => (adv ? b.advanced : b.basic) || [];
         const sinkName = k => (S.sinks[k] || S.waste[k]).name.toLowerCase();
+        const rc = (P.recovered || []).find(r => r.c.length === s.c.length && r.c.every(c => s.c.includes(c)));   // v8: a recovered material (recycle optional)
+        if (it.cat === 'sink' && t === 'gastank') {   // v8: one chosen gas, exactly; its pressure limit is the valve rule (like every tank)
+          if (p !== 'G') return { fail: M.gasLiq };
+          if (loopGas) rec.purgeFrom.push({ from, sink: it.id });   // v8 (lead decision): gas stored off the loop is a purge, like a vent or flare (a wrong choice then stops at the tank)
+          const want = it.sp.prod; if (!want) return { fail: M.tankChoose };
+          const ch = P.products.find(q => q.name === want) || (P.recovered || []).find(q => q.name === want), by = P.byproducts.find(q => q.name === want), wc = ch ? ch.c : by ? [by.main] : [];
+          if (wc.length !== s.c.length || !wc.every(c => s.c.includes(c))) return { fail: fmt(M.tankWrong, { want, got: (prod || rc || {}).name || list(s.c) }) };
+          if (prod) (rec.products[prod.name] = rec.products[prod.name] || []).push(it.id);
+          continue;
+        }
         if (it.cat === 'sink' && (t === 'tank' || t === 'refrigtank')) {
           if (p === 'G' || p === 'GL') return { fail: M.sinkGas };
           if (t === 'refrigtank' && s.Tv > X.B.chillCond) return { fail: fmt(M.tankHot, { max: fmtT(X.B.chillCond) }) };
           if (like && !prod) return { fail: fmt(M.notProduct, { why: prodWhy(s) }) };
           if (prod && prod.c.includes('nh3') && t !== 'refrigtank') return { fail: M.nh3Tank };
           if (t === 'tank') {   // v6.2: the tank stores what the student chose, at 50 °C or cooler and below its boiling point
-            const want = it.sp.prod, got = prod ? prod.name : byp ? byp.name : like ? like.name : null;
+            const want = it.sp.prod, got = prod ? prod.name : byp ? byp.name : like ? like.name : rc ? rc.name : null;
             if (!want) return { fail: M.tankChoose };
             if (got && got !== want) return { fail: fmt(M.tankWrong, { want, got }) };
             if (s.Tv > X.B.storeMax || s.c.some(c => C[c].bp != null && s.Tv >= C[c].bp)) return { fail: fmt(M.tankHot, { max: fmtT(X.B.storeMax) }) };
@@ -5569,6 +5671,7 @@ window.PB = window.PB || {};
           if (prod) return { fail: fmt(M.notProduct, { why: prodWhy(s) }) };
           if (byp && allowed(byp).includes('tank')) { rec.byp[byp.name] = true; continue; }
           if (byp) return { fail: fmt(M.wrongSink, { s: byp.name, list: allowed(byp).map(sinkName).join(' or ') }) };
+          if (rc && t === 'tank') continue;
           return { fail: fmt(M.notProduct, { why: 'it is a mixture of ' + list(s.c) + '.' }) };
         }
         if (it.cat === 'sink' && t === 'vent') {
@@ -5602,19 +5705,14 @@ window.PB = window.PB || {};
     /* live card data (v4): evaluate without animating; a node with no state shows "?" */
     preview() { const v = this.evaluate(); this.previewV = v; return v; },
     /* ---------- run + flow animation ---------- */
-    resetRun() { this.running = false; this.complete = false; this.verdict = null; this.firedError = false; this.badId = null; this.finished = null;
+    resetRun() { this.running = false; this.complete = false; this.verdict = null; this.firedError = false; this.badIds = null; this.finished = null;
       if (this.edges) Object.values(this.edges).forEach(e => { e.progress = 0; e.arrived = false; }); },
     run() {
       if (this.running) return this.verdict;
       this.resetRun(); this.start();
       const v = this.verdict = this.evaluate(); this.runs++;
       this.colors = v.colors; this.backIds = v.back; this.layout();
-      this.flow = {}; for (const id in this.edges) { const d = this.edges[id].def;
-        this.flow[id] = d.kind === 'pipe' ? !!v.passes[d.from] && !!v.st[id] : true; }
-      if (!v.ok && v.fail.node) {   // v5: the flow stops at the failing unit: no pipe after it fills
-        const seen = new Set([v.fail.node]), q = [v.fail.node];
-        while (q.length) { const u = q.shift(); for (const e of Object.values(this.edges)) if (e.def.kind === 'pipe' && e.def.from === u) { this.flow[e.id] = false; if (!v.back.has(e.id) && !seen.has(e.def.to)) { seen.add(e.def.to); q.push(e.def.to); } } }
-      }
+      this.flow = {}; for (const id in this.edges) this.flow[id] = this.edges[id].def.kind === 'pipe' ? !!v.flow[id] : true;   // v8: no pipe after a stop fills (per outlet)
       this.running = true; return v;
     },
     tick(dt) {
@@ -5629,18 +5727,16 @@ window.PB = window.PB || {};
         if (e.progress < 1 && !ready(e.def.from)) { pending = true; continue; }
         if (e.progress < 1) { pending = true; e.progress = Math.min(1, e.progress + dt * SPEED / Math.max(1, e.len)); if (e.progress >= 1) e.arrived = true; }
       }
-      const v = this.verdict;
-      if (!v.ok && !this.firedError) {
-        const n = v.fail.node, inb = n ? this.inbound(n).filter(e => e.def.kind === 'pipe') : [], hit = n ? inb.some(e => e.arrived) || !inb.length : !pending;
-        if (hit || !pending) { this.firedError = true; this.badId = n; this.layout(); this.running = false; this.emit('error', v.fail); }
-      } else if (v.ok && !pending && !this.complete) { this.complete = true; this.running = false; this.finished = performance.now(); this.emit('complete', this.result()); }
+      const v = this.verdict; if (pending) return;   // v8: every branch flows to its end first
+      if (!v.ok && !this.firedError) { this.firedError = true; this.badIds = new Set(v.stops.map(f => f.node).filter(Boolean)); this.layout(); this.running = false; this.emit('error', Object.assign({}, v.fail, { stops: v.stops })); }
+      else if (v.ok && !this.complete) { this.complete = true; this.running = false; this.finished = performance.now(); this.emit('complete', this.result()); }
     },
     result() {
       const v = this.verdict;   // v6.3: no stars; the time is the score (deploys are counted for the logs only)
-      return { reference: !!this.usedReference, pens: v.pens, warns: v.warns, deploys: this.runs, time: this.elapsed(), mode: this.mode, proc: this.proc };
+      return { reference: !!this.usedReference, pens: v.pens, warns: v.warns, deploys: this.runs, time: this.elapsed(), mode: this.mode, proc: this.proc, points: v.points };
     },
     /* v7.1: live progress for the class leaderboard, from the last evaluation (after run(), the Deploy's own verdict) */
-    progress() { const v = this.verdict || this.lastEval; return { stage: v ? v.stage : 0, deploys: this.runs, time: this.elapsed(), complete: !!this.complete }; },
+    progress() { const v = this.verdict || this.lastEval || this.evaluate(); return { stage: v.stage, deploys: this.runs, time: this.elapsed(), complete: !!this.complete, points: v.points }; },
 
     /* ---------- save / load ---------- */
     toJSON() { return { v: 1, proc: this.procId, mode: this.mode, seq: this.seq, items: this.order.map(id => this.items[id]), pipes: this.pipes, links: this.links, runs: this.runs, usedReference: !!this.usedReference, elapsed: this.elapsed() }; },
@@ -5699,8 +5795,13 @@ PB.CARD_ICONS = {
   any: 'M4 12h16M12 4v16M6 6l12 12M18 6L6 18', fuel: 'M12 3c3 4 5 6 5 10a5 5 0 0 1-10 0c0-2 1-4 2-5 0 2 1 3 2 3 0-3 1-5 1-8z',
   spec: 'M6 3h9l3 3v15H6zM9 10h6M9 14h6M9 18h4', cat: 'M12 3l8 4.5v9L12 21l-8-4.5v-9z', cool: 'M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9',
   mix: 'M5 4v13a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V4M12 2v12M8 14h8',   // mixing vessel with its stirrer (client choice, v6.4)
+  // v8: Guide pictures (pipe joint, compressor, valve, column, gas storage sphere, recycle loop)
+  joint: 'M3 6h5l4 6h9M3 18h5l4-6', comp: 'M4 6l16 4v4L4 18z', valve: 'M4 7v10l16-10v10zM12 12V5M9 5h6', col: 'M9 3h6v18H9zM9 8h6M9 13h6M15 5h3M15 19h3',
+  gastank: 'M19 11a7 7 0 1 1-14 0a7 7 0 1 1 14 0M8 17l-2 4M16 17l2 4', recycle: 'M4 12a8 8 0 0 1 14-5M20 12a8 8 0 0 1-14 5M18 3v4h-4M6 21v-4h4',
   util: 'M13 2L4 14h7l-1 8 9-12h-7z', waste: 'M12 3c3 4 5 6 5 10a5 5 0 0 1-10 0c0-2 1-4 2-5 0 2 1 3 2 3 0-3 1-5 1-8z', sink: 'M3 21h18M5 21V9l7-5 7 5v12', pur: 'M4 4h16l-6 8v7l-4 2v-9z', tank: 'M5 6c0-3 14-3 14 0v12c0 3-14 3-14 0zM5 6c0 3 14 3 14 0'
 };
+/* v8 review: the milestone icons (Feeds in, Reaction, Products, Works, Recycle), shared by the game's progress bar and the class board */
+PB.MS_ICONS = [PB.CARD_ICONS.In, PB.CARD_ICONS.react, PB.CARD_ICONS.tank, 'M4 13l5 5L20 7', PB.CARD_ICONS.recycle];
 PB.cardHot = s => parseFloat(String(s).replace('−', '-')) >= 100;   // v5: amber for 100 °C and hotter
 /* squeeze an SVG text into max px (no-op before it is rendered) */
 PB.fitText = (el, max) => { try { if (el.getComputedTextLength() > max) { el.setAttribute('textLength', max); el.setAttribute('lengthAdjust', 'spacingAndGlyphs'); } } catch (e) { /* not rendered yet */ } };
@@ -5962,9 +6063,9 @@ PB.IsoView.prototype = {
       base.setAttribute('data-id', id);
     } else {
       this.drawShape(n.def.shape, n.x, n.y, g);
-      const done = n.kind === 'product' && this.g.reached(id);
+      const done = n.kind === 'product' && !n.bad && this.g.reached(id);   // v8 review: a tank where the flow stopped is not stored (no ✓)
       const label = (done ? '✓ ' : '') + n.def.name;
-      tagsG[id] = this.tag(this.tagLayer, n.x, n.y, Math.min(PB.shapeTop(n.def.shape), 2.6) + 0.35, label, 'tag-' + n.kind + (done ? ' tag-done' : ''));
+      tagsG[id] = this.tag(this.tagLayer, n.x, n.y, Math.min(PB.shapeTop(n.def.shape), 2.6) + 0.35, label, n.bad ? 'tag-bad' : 'tag-' + n.kind + (done ? ' tag-done' : ''));
     }
     tagsG[id].setAttribute('data-id', id);   // v6.4: hovering or tapping a name tag means its unit
     // a transparent hit area covering the node
@@ -6018,6 +6119,13 @@ PB.IsoView.prototype = {
     else w = this.P(...this.pipeEls[id].anchor);
     const r = this.svg.getBoundingClientRect(), v = this.vb, s = Math.min(r.width / v.w, r.height / v.h), ox = (r.width - v.w * s) / 2, oy = (r.height - v.h * s) / 2;
     return [r.left + ox + (w[0] - v.x) * s, r.top + oy + (w[1] - v.y) * s];
+  },
+  /* v8: several Deploy stops: the view takes them all in, in the upper part (above the stop message) */
+  centerOnAll(ids) {   // their middle sits a fifth of the way down, all of them in the top 36 % (the stop message sits low)
+    const ps = ids.map(id => this.itemPos(id)).filter(Boolean); if (!ps.length) return;
+    const xs = ps.map(p => p[0]), ys = ps.map(p => p[1]), r = this.svg.getBoundingClientRect(), asp = (r.height || 1) / (r.width || 1);
+    const w = Math.min(this.bounds.w * 1.4, Math.max(this.bounds.w * 0.6, (Math.max(...xs) - Math.min(...xs)) * 1.4, (Math.max(...ys) - Math.min(...ys)) / 0.28 / asp)), h = w * asp;
+    this.anim = { x: (Math.max(...xs) + Math.min(...xs)) / 2 - w / 2, y: (Math.max(...ys) + Math.min(...ys)) / 2 - h * 0.22, w, h };
   },
   applyVB() { const v = this.vb; this.svg.setAttribute('viewBox', `${v.x} ${v.y} ${v.w} ${v.h}`); },
   fit() { this.anim = null; this.vb = Object.assign({}, this.bounds); this.applyVB(); },
@@ -6240,7 +6348,7 @@ window.PB = window.PB || {};
     this.cursor3.add(new T.LineSegments(new T.EdgesGeometry(this.cursor3.geometry), new T.LineBasicMaterial({ color: '#ffffff' })));   // a white outlined cell
     this.cursor3.visible = false; this.S.add(this.cursor3);
     this.halo = new T.Mesh(new T.RingGeometry(1, 1.25, 40).rotateX(-Math.PI / 2), new T.MeshBasicMaterial({ color: '#ff2a1a', transparent: true, opacity: 0.6, depthWrite: false }));   // the Deploy stop, also on small units
-    this.halo.visible = false; this.S.add(this.halo);
+    this.halo.visible = false; this.S.add(this.halo); this.halos = [this.halo];
     this.lights(); this.content(); this.resize();
     this.ro = new ResizeObserver(() => { this.dock(); this.resize(); }); this.ro.observe(this.host); if (this.build) this.ro.observe($('#sb-view'));
     this.input(); this.idleAt = performance.now(); this.last = performance.now(); this.dirty = true;
@@ -6367,8 +6475,8 @@ window.PB = window.PB || {};
       return changed;
     },
     /* desktop: what the board screen is doing (placing, moving, connecting, cards) shown in 3D: the zone, the glowing unit, the cards */
-    highlight(st, bad) {
-      for (const id in this.units) { const kind = id === bad ? 'bad' : id === st.focus ? 'focus' : id === this.hover ? 'hover' : null;
+    highlight(st, bad) {   // v8: bad = the set of stopped units
+      for (const id in this.units) { const kind = bad.has(id) ? 'bad' : id === st.focus ? 'focus' : id === this.hover ? 'hover' : null;
         this.units[id].forEach(m => { m.material = kind ? this.glow(m.userData.base, kind) : m.userData.base; }); }
       for (const z in this.plates) { const m = this.plates[z]; m.material = z === st.zone ? this.glow(m.userData.base, 'focus') : m.userData.base; }
       this.cursor3.visible = !!(st.zone && this.cell); if (this.cell) this.cursor3.position.set(this.cell[0], 0.05, this.cell[1]);
@@ -6383,8 +6491,8 @@ window.PB = window.PB || {};
         this.cards[id] = { el, sm, k, pos: t.pos, w: w * k, h: h * k }; });
     },
     /* Deploy stop: the camera closes in so the unit sits in the upper third of the view, above the stop message (as 2.5D centerOn lifts it) */
-    flyTo(n) {
-      const keep = Object.assign({}, this.o), r = Math.max(8, this.fitR * 0.5), cx = Math.cos(this.o.theta), cz = Math.sin(this.o.theta), p = new this.T.Vector3();
+    flyTo(n, spread) {   // v8: n = the stops' middle; spread = how far the farthest stop lies from it
+      const keep = Object.assign({}, this.o), r = Math.min(this.fitR, Math.max(8, this.fitR * 0.5, 3 * (spread || 0))), cx = Math.cos(this.o.theta), cz = Math.sin(this.o.theta), p = new this.T.Vector3();
       const yAt = d => { Object.assign(this.o, { tx: n.x + d * cx, tz: n.y + d * cz, r }); this.place(); return p.set(n.x, 0.5, n.y).project(this.cam).y; };
       let d = 0; for (let i = 0; i < 8; i++) { const y = yAt(d), g = (yAt(d + 0.1) - y) / 0.1; if (Math.abs(g) < 1e-6) break; d += (0.38 - y) / g; }   // NDC y 0.38: about a third down
       this.o = keep; this.place(); this.anim = { tx: n.x + d * cx, tz: n.y + d * cz, r };
@@ -6417,14 +6525,18 @@ window.PB = window.PB || {};
       if (this.flow()) this.dirty = true;
       if (this.build) {
         if (this.mouse) { const [x, y] = this.mouse; this.mouse = null; this.hover = this.pickNode(x, y); const g = this.ground(x, y); this.cell = g && [Math.round(g[0] * 2) / 2, Math.round(g[1] * 2) / 2]; }
-        const st = this.opts.state() || {}, badN = Object.values(this.g.nodes).find(n => n.bad), bad = badN ? badN.id : null;
+        // v8: a Deploy can stop at several units: every one glows and gets a ground ring; the camera takes them all in
+        const st = this.opts.state() || {}, badNs = Object.values(this.g.nodes).filter(n => n.bad), bads = new Set(badNs.map(n => n.id)), bad = badNs.map(n => n.id).join(',') || null;
         const sig = [st.zone, st.focus, st.cardsOn, st.cardOnly, this.hover, bad, st.zone && this.cell && this.cell.join()].join('|');
-        if (sig !== this.sig) { this.sig = sig; this.highlight(st, bad); this.dirty = true; }
-        if (bad && bad !== this.badSeen) { this.flyTo(badN); this.touched = true; }   // Deploy stopped: fly to the unit
+        if (sig !== this.sig) { this.sig = sig; this.highlight(st, bads); this.dirty = true; }
+        if (bad && bad !== this.badSeen) { const mx = badNs.reduce((a, n) => a + n.x, 0) / badNs.length, my = badNs.reduce((a, n) => a + n.y, 0) / badNs.length;
+          this.flyTo({ x: mx, y: my }, Math.max(...badNs.map(n => Math.hypot(n.x - mx, n.y - my)))); this.touched = true; }   // Deploy stopped: fly to the units
         this.badSeen = bad;
-        const pulse = 0.5 + 0.5 * Math.sin(now / 160); this.halo.visible = !!bad;
+        while (this.halos.length < badNs.length) { const m = new this.T.Mesh(this.halo.geometry, this.halo.material); this.S.add(m); this.halos.push(m); }   // the extra rings share the first ring's geometry and material
+        const pulse = 0.5 + 0.5 * Math.sin(now / 160); this.halos.forEach((m, i) => { m.visible = i < badNs.length; });
         if (bad) { Object.values(this.glows).forEach(m => { if (m.userData.kind === 'bad') m.emissiveIntensity = 0.55 + 0.4 * pulse; });
-          const h = this.plan.hits.find(q => q.id === bad); this.halo.position.set(badN.x, 0.06, badN.y); this.halo.scale.setScalar(Math.max(0.8, h ? h.r : 0.8) * (1 + 0.12 * pulse)); this.halo.material.opacity = 0.45 + 0.4 * pulse; this.dirty = true; }
+          badNs.forEach((n, i) => { const h = this.plan.hits.find(q => q.id === n.id); this.halos[i].position.set(n.x, 0.06, n.y); this.halos[i].scale.setScalar(Math.max(0.8, h ? h.r : 0.8) * (1 + 0.12 * pulse)); });
+          this.halo.material.opacity = 0.45 + 0.4 * pulse; this.dirty = true; }
       }
       if (this.anim) { const a = this.anim; let done = true; ['tx', 'tz', 'r'].forEach(q => { this.o[q] += (a[q] - this.o[q]) * 0.12; if (Math.abs(a[q] - this.o[q]) > 0.02) done = false; }); if (done) this.anim = null; this.dirty = true; }
       if (now - this.idleAt > (this.build ? 30000 : 4000) && !this.drag && !this.anim) { this.o.theta += dt * 0.12; this.dirty = true; }   // slow auto-spin when idle
@@ -6530,16 +6642,16 @@ window.PB = window.PB || {};
   }
 
   /* ---------- open / close ---------- */
-  let opening = 0;
+  let opening = 0, onClose = null;
   async function open(game, opts) {
-    if (V || !supported()) return; const my = ++opening, box = $('#v3d'), msg = $('#v3d-msg');
+    if (V || !supported()) return; const my = ++opening, box = $('#v3d'), msg = $('#v3d-msg'); onClose = opts && opts.onClose;   // v8: the board screen keeps its 3D / 2.5D toggle in step
     box.hidden = false; msg.textContent = PB.T3_TEXT.loading; msg.hidden = false;
     let T;
     try { T = await loadThree(); } catch (e) { if (my === opening) { close(); PB.ui.toast(PB.T3_TEXT.offline, true); } return; }
     if (my !== opening || box.hidden) return;   // closed while loading
     msg.hidden = true; try { V = new View(T, game, opts || {}); } catch (e) { console.error(e); V = null; $('#v3d-view').innerHTML = ''; close(); PB.ui.toast(PB.T3_TEXT.failed, true); }
   }
-  function close() { opening++; if (V) { V.destroy(); V = null; } const box = $('#v3d'); if (box) { box.hidden = true; box.classList.remove('dock'); box.removeAttribute('style'); } }
+  function close() { opening++; if (V) { V.destroy(); V = null; } const box = $('#v3d'); if (box) { box.hidden = true; box.classList.remove('dock'); box.removeAttribute('style'); } const f = onClose; onClose = null; if (f) f(); }
   PB.View3D = { supported, canBuild, open, close, view: () => V };
   if (typeof document.querySelector === 'function' && $('#v3d')) {
     $('#v3d-close').onclick = () => close();
@@ -6567,7 +6679,7 @@ window.PB = window.PB || {};
 
   /* ---------- entry / exit ---------- */
   function enter(hash) {
-    const ex = /^example(?:-([a-z]+))?$/.exec(hash || ''); if (ex) return start(ex[1] && Object.hasOwn(LIB(), ex[1]) ? ex[1] : 'biodiesel', 'basic', 'example');   // v6.4: biodiesel or SAF
+    if (hash === 'example') return start('abc', 'basic', 'example');   // v8: the only Example is A + B → C + D + E
     if (hash === 'competition') return start(COMP[0], COMP[1], 'competition');
     const m = /^sandbox-([a-z]+)-(basic|advanced)$/.exec(hash || '');
     if (m && Object.hasOwn(LIB(), m[1])) start(m[1], m[2], 'sandbox'); else showSetup();
@@ -6595,7 +6707,7 @@ window.PB = window.PB || {};
     $('#sb-mode').textContent = U().smallScreen() && mode === 'advanced' ? 'Adv' : PB.SANDBOX.modes[mode].name;
     $('#sb-mode').hidden = U().smallScreen() && mode !== 'advanced';   // phones: Normal is the default, so only Advanced is marked
     $('#sb-cards').setAttribute('aria-pressed', String(SB.cardsOn));
-    $('#sb-3d').hidden = !PB.View3D.supported();   // v7: no WebGL 2, no 3D button
+    $('#sb-3d').hidden = !PB.View3D.supported(); label3D();   // v7: no WebGL 2, no 3D button
     const who = kind === 'competition' && PB.Board.configured() && PB.Board.session();   // v7.1: the joined nickname; a tap goes back to #join
     $('#sb-who').hidden = !who; if (who) { $('#sb-who').innerHTML = U().esc(who.nickname) + '<span class="who-ch"> · change</span>'; $('#sb-who').setAttribute('aria-label', 'Playing as ' + who.nickname + ': change class or nickname'); }   // phones: the nickname takes the title's place (style.css)
     $('#sb-zones').innerHTML = game.board.zones.map(z => `<button class="sb-zone" data-zone="${z.id}">${U().esc(z.label.replace(' Storage', '').replace('Raw Material', 'Raw materials'))}</button>`).join('');
@@ -6605,9 +6717,11 @@ window.PB = window.PB || {};
     makeView(); status();
     document.documentElement.style.setProperty('--sb-bar-h', ($('#sb-bar').offsetHeight + 10) + 'px');
     if (U().smallScreen()) setTimeout(() => SB && centerZone('proc'), 30);
+    $('#sb-prog').hidden = true;
     if (restored) U().toast('Your saved board is back. Clear it from the ⋯ menu.');
-    else specCard();
+    else specCard(firstGuide);
     loop();
+    if (PB.View3D.supported() && PB.View3D.canBuild()) open3D();   // v8: laptops and desktops start in 3D (the cards open over it); phones and tablets in 2.5D
   }
   function save() { if (!SB || SB.kind === 'example') return; U().store.set(KEY(SB.kind, SB.proc, SB.mode), JSON.stringify(SB.game.toJSON())); }   // store.set swallows blocked storage
   function centerZone(id) { const z = SB.game.zone(id); if (z) SB.view.centerOnBoard(z.x + z.w / 2, z.y + z.d / 2, U().smallScreen() ? 0.42 : 0.6); }
@@ -6686,7 +6800,9 @@ window.PB = window.PB || {};
     $('#sb-sheet-t').textContent = (T.find(t => t[0] === sheetTab) || [0, ''])[1];
     let items = [];
     if (sheetTab === 'raw') items = S.materials.map(m => ({ k: m.id, name: m.name, ph: [PB.sandboxPhase(m.comps[0], { liq: m.ph === 'G' ? [] : m.comps, solid: m.ph === 'S' })], shape: PB.sandboxShape({ cat: 'raw', type: m.id }) }));
-    if (sheetTab.startsWith('g:')) items = S.groups.find(g => 'g:' + g.id === sheetTab).units.map(k => ({ k, name: PB.EQUIP[k].name, split: (S.needsSep[k] || {}).split, ph: ((S.pick[k] || {}).takes || []).map(x => x[0]).filter(x => /^(G|V|L|Lp|Ln|S)$/.test(x)), shape: PB.EQUIP[k].shape }));
+    const unitItem = k => ({ k, name: PB.EQUIP[k].name, split: (S.needsSep[k] || {}).split, ph: ((S.pick[k] || {}).takes || []).map(x => x[0]).filter(x => /^(G|V|L|Lp|Ln|S)$/.test(x)), shape: PB.EQUIP[k].shape });
+    const phi = k => icn(k, /^(G|V|L|Lp|Ln|S)$/.test(k) ? 'ph-' + k : '');
+    if (sheetTab.startsWith('g:')) items = [].concat(...S.groups.find(g => 'g:' + g.id === sheetTab).sub.map(q => [{ head: q.name, icon: q.icon }].concat(q.units.map(unitItem))));   // v8: a sub-heading with its icon, then its units
     if (sheetTab === 'sink') items = Object.keys(S.sinks).filter(k => !(adv && S.sinks[k].basicOnly)).map(k => ({ k, name: S.sinks[k].name, chips: [S.sinks[k].does], shape: S.sinks[k].shape() }));
     if (sheetTab === 'util') items = Object.keys(S.utilities).map(k => ({ k, name: S.utilities[k].name, chips: [S.utilities[k].does], shape: S.utilities[k].shape() }));
     if (sheetTab === 'waste') items = Object.keys(S.waste).map(k => ({ k, name: S.waste[k].name, chips: [S.waste[k].does], shape: S.waste[k].shape() }));
@@ -6695,7 +6811,7 @@ window.PB = window.PB || {};
       : { sink: 'Finished products and by-products are stored in the Product Storage zone.',
           util: 'Utilities serve the process units. Place them in the Utilities zone, then link units to them from each unit card.',
           waste: 'Leftover gases and watery waste are treated in the Waste Treatment zone.' }[sheetTab];
-    $('#sb-grid').innerHTML = items.map(it => `<button class="tray-item" data-k="${it.k}" aria-pressed="false"><span class="icon">${PB.icon(it.shape)}</span><b>${esc(it.name)}</b><span class="tray-ph">${it.split && it.split.length ? it.split.map(pr => `<span class="pair">${icn(pr[0], 'ph-' + pr[0])}<i>${pr[3] || '|'}</i>${icn(pr[1], 'ph-' + pr[1])}</span>`).join('') : (it.ph || []).map(p => icn(p, 'ph-' + p)).join('')}</span></button>`).join('');
+    $('#sb-grid').innerHTML = items.map(it => it.head ? `<p class="tray-sub">${Array.isArray(it.icon) ? `<span class="pair">${phi(it.icon[0])}<i>|</i>${phi(it.icon[1])}</span>` : phi(it.icon)}${esc(it.head)}</p>` : `<button class="tray-item" data-k="${it.k}" aria-pressed="false"><span class="icon">${PB.icon(it.shape)}</span><b>${esc(it.name)}</b><span class="tray-ph">${it.split && it.split.length ? it.split.map(pr => `<span class="pair">${icn(pr[0], 'ph-' + pr[0])}<i>${pr[3] || '|'}</i>${icn(pr[1], 'ph-' + pr[1])}</span>`).join('') : (it.ph || []).map(p => icn(p, 'ph-' + p)).join('')}</span></button>`).join('');
     pickDetail(null);
     $('#sb-sheet').hidden = false; $('#scrim').hidden = false;
   }
@@ -6756,7 +6872,7 @@ window.PB = window.PB || {};
       if (!r.ok) { U().toast(r.msg, true); return; }
       clearAction();
       const it = SB.game.items[r.id];
-      if ((it.cat === 'unit' && PB.SANDBOX.units[it.type].set) || it.type === 'tank') itemCard(r.id); else U().toast(it.name + ' placed. Tap it to connect its outlet.');
+      if ((it.cat === 'unit' && PB.SANDBOX.units[it.type].set) || it.type === 'tank' || it.type === 'gastank') itemCard(r.id); else U().toast(it.name + ' placed. Tap it to connect its outlet.');
       return;
     }
     if (a.kind === 'move') { const r = SB.game.move(a.id, xy[0], xy[1]); if (!r.ok) { U().toast(r.msg, true); return; } clearAction(); U().toast('Moved.'); return; }
@@ -6805,13 +6921,19 @@ window.PB = window.PB || {};
   const unref = s => String(s).replace(/\s*\[\d+(?:,\s*\d+)*\]/g, '');
   const plain = s => U().esc(unref(s));
   const tileGrid = tiles => '<div class="tiles">' + tiles.map(t => U().tileHTML(Object.assign({}, t, { note: t.note ? unref(t.note) : t.note }))).join('') + '</div>';
-  function specCard() {
+  function specCard(then) {
     if (!SB) return; const L = SB.game.proc, c = L.card, ui = U(), esc = ui.esc, li = a => '<ul class="needs">' + a.map(n => `<li>${plain(n)}</li>`).join('') + '</ul>';
     ui.modal({ kicker: 'Spec card · ' + L.title, title: c.title, cls: 'spec-card', html:
       `<p class="spec-intro">${esc(c.intro)}</p>${tileGrid(c.tiles)}<p class="spec-check">${esc(c.check)}</p>` +
       `<p class="eyebrow">How to separate</p>${li(c.sep)}<p class="eyebrow">Product specification</p>${li(c.spec)}` +
       ui.details('Details', li(c.needs)),
-      actions: [{ label: 'Start building', primary: true }] });
+      actions: [{ label: 'Start building', primary: true, fn: then }] });
+  }
+  /* v8: the Guide opens after the spec card the first time a process is opened on this device, and every time in the Example */
+  function firstGuide() {
+    if (!SB) return; const k = 'chpe-guide-' + SB.proc;
+    if (SB.kind !== 'example') { if (U().store.get(k)) return; U().store.set(k, '1'); }   // store swallows blocked storage
+    guide('rules');
   }
   function reactionInfo(type) {
     const nd = PB.sandboxNeeds(SB.proc, type), ui = U(), esc = ui.esc; if (!nd) return '';
@@ -6831,15 +6953,12 @@ window.PB = window.PB || {};
       `<span class="cond-v${PB.cardHot(c.T) ? ' hot' : ''}">${icn('T')}${esc(c.T)}</span><span class="cond-v">${icn('P')}${esc(c.P)}</span>` +
       `<ul>${c.comps.map(m => `<li>${m.pair ? `<span class="pair">${icn(m.pair[0], 'ph-' + m.pair[0])}<i>${m.sign || '|'}</i>${icn(m.pair[1], 'ph-' + m.pair[1])}</span>` : icn(m.ph, 'ph-' + m.ph)}${esc(m.name)}${m.ph !== 'L' && PB.PHASE_WORDS.long[m.ph] ? `<span class="sr"> (${PB.PHASE_WORDS.long[m.ph]})</span>` : ''}</li>`).join('')}</ul></div>`).join('')}</div>`;
   }
+  /* v8: the Example's talking points come from its spec card: what the reactor needs, and how the separators and purifiers work */
   function talkingPoints(it) {
-    if (SB.kind !== 'example' || !it) return [];
-    const L = PB.LEVELS.biodiesel, card = SB.game.proc.card;
-    if (it.cat === 'unit' && PB.SANDBOX.units[it.type].rule === 'react') return card.needs;
-    if (it.cat !== 'unit') return [];
-    if (SB.proc === 'saf') return ['flash', 'column'].includes(it.type) ? card.sep || [] : [];   // v6.4: the SAF example talks from its own spec card
-    if (it.type === 'mixer') return [SB.game.proc.card.needs.find(n => /^Catalyst/.test(n))].concat(PB.SANDBOX.materials.find(m => m.id === 'naoh').info);   // v6: catalyst solution, not a solid hopper
-    const seen = new Set();
-    return [].concat(...L.pads.filter(p => p.accept.includes(it.type)).map(p => p.facts || [])).filter(f => { const k = f.slice(0, 24); if (seen.has(k)) return false; seen.add(k); return true; });
+    if (SB.kind !== 'example' || !it || it.cat !== 'unit') return [];
+    const card = SB.game.proc.card;
+    if (PB.SANDBOX.units[it.type].rule === 'react') return card.needs || [];
+    return PB.SANDBOX.needsSep[it.type] ? card.sep || [] : [];
   }
   /* an unset slider starts at the first value at or above ambient (30 °C) or the lowest pressure */
   function startIdx(sl) { if (sl.key === 'P') return 0; const k = sl.vals.findIndex(x => x >= PB.SANDBOX.basis.ambT); return k < 0 ? 0 : k; }
@@ -6849,7 +6968,7 @@ window.PB = window.PB || {};
     SB.view.focusCard(id);
     let head = '', body = '';
     const card = g.nodes[id] && g.nodes[id].def.card;
-    if (card) { body += `<p class="eyebrow">Conditions now</p><p class="cond-note">${['tank', 'pond', 'refrigtank', 'wwt'].includes(it.type) && it.cat !== 'unit' ? 'What the tank needs and what arrives' : it.cat === 'sink' || it.cat === 'waste' ? 'Inlet stream' : 'Each column is a stream or what the unit needs'}: temperature, pressure, the components and their phase.${it.cat === 'unit' && S.units[it.type].rule === 'react' ? ' Pipes and units lose a little pressure, so the inlet reads a bit below the pump, blower or compressor setting.' : ''}</p>${condHTML(card)}`; }
+    if (card) { body += `<p class="eyebrow">Conditions now</p><p class="cond-note">${['tank', 'gastank', 'pond', 'refrigtank', 'wwt'].includes(it.type) && it.cat !== 'unit' ? 'What the tank needs and what arrives' : it.cat === 'sink' || it.cat === 'waste' ? 'Inlet stream' : 'Each column is a stream or what the unit needs'}: temperature, pressure, the components and their phase.${it.cat === 'unit' && S.units[it.type].rule === 'react' ? ' Pipes and units lose a little pressure, so the inlet reads a bit below the pump, blower or compressor setting.' : ''}</p>${condHTML(card)}`; }
     if (it.cat === 'raw') { const m = S.materials.find(q => q.id === it.type); head = `<b>Storage:</b> ${esc(m.store)}`; body += `<ul class="needs">${m.info.map(s => `<li>${plain(s)}</li>`).join('')}</ul>`; }
     if (it.cat === 'unit') { const u = S.units[it.type]; head = esc(PB.EQUIP[it.skin || it.type].does) + `<span class="req">${(S.chips[it.type] || []).map(c => `<span class="req-chip">${esc(c)}</span>`).join('')}</span>`;
       if (u.rule === 'react') body += reactionInfo(it.type);
@@ -6862,7 +6981,7 @@ window.PB = window.PB || {};
         const inS = it.type === 'pump' && v != null && g.previewV && g.previewV.nodeIn[id];   // v7.1: a pump set below the pressure its liquid already has
         if (inS && v < inS.Pv) body += '<p class="sl-note">The liquid already arrives above this pressure.</p>'; } }
     if (it.cat === 'sink') { const k = S.sinks[it.type]; head = esc(k.does); if (k.info) body += `<ul class="needs">${k.info.map(s => `<li>${plain(s)}</li>`).join('')}</ul>`;
-      if (it.type === 'tank') body = `<p class="eyebrow">Stores</p><div class="sb-store" role="group" aria-label="What this tank stores">${PB.sandboxTankChoices(SB.proc, g.mode).map(n =>
+      if (it.type === 'tank' || it.type === 'gastank') body = `<p class="eyebrow">Stores</p><div class="sb-store" role="group" aria-label="What this tank stores">${PB.sandboxTankChoices(SB.proc, g.mode, it.type).map(n =>   // v8: gas storage chooses its gas too
         `<button class="chip${it.sp.prod === n ? ' on' : ''}" data-store="${esc(n)}" aria-pressed="${it.sp.prod === n}">${esc(n)}</button>`).join('')}</div>` + body; }
     if (it.cat === 'util') { const k = S.utilities[it.type]; head = esc(k.does); const info = k.info.concat(it.type === 'fuel' ? [S.fuelInfoGas] : []); body += `<ul class="needs">${info.map(s => `<li>${plain(s)}</li>`).join('')}</ul>`; }
     if (it.cat === 'waste') { const k = S.waste[it.type]; head = esc(k.does); body += `<ul class="needs">${k.info.map(s => `<li>${plain(s)}</li>`).join('')}</ul>`; }
@@ -6922,27 +7041,48 @@ window.PB = window.PB || {};
     clearAction(); g.run(); save(); makeView(); status('Deploying…'); $('#sb-run').disabled = true;
     if (SB.kind === 'competition') PB.Board.post(g);   // v7.1: every Deploy goes to the class board, also one cut short by an edit (nothing happens without a scoreboard)
   };
-  /* v7.1: a finished plant also posts its finish (done, the final time) */
+  /* v8: the progress bar after each Deploy: the milestones (Feeds in → Reaction → Products → Works, + Recycle where the process has one)
+     and, in the Competition and the Sandbox, the points out of 100 (the unit checklist behind them stays hidden) */
+  function progHTML(noTotal) {   // noTotal: the report shows the points large already
+    const p = SB.game.progress(), L = SB.game.proc, st = p.complete ? 4 : p.stage || 0, pts = SB.kind !== 'example' && p.points;
+    const steps = PB.Board.STAGES.map((w, i) => [w, i, i < st, i === 3 && p.complete]);
+    if (pts && (L.recycle || L.loop)) steps.push(['Recycle', 4, p.points.parts.recycle > 0, p.points.parts.recycle > 0]);
+    return `<div class="sb-prog-in"><div class="ms" style="grid-template-columns:repeat(${steps.length},1fr)" role="img" aria-label="${steps.filter(q => q[2]).map(q => q[0]).join(', ') || 'Not started'}">` +
+      steps.map(([w, i, on, done]) => `<span class="ms-step${on ? ' on' : ''}${done ? ' done' : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${PB.MS_ICONS[i]}"/></svg><b>${w}</b></span>`).join('') +
+      `</div>${pts && !noTotal ? `<b class="pts mono">${Math.round(p.points.total)}<small> / 100</small></b>` : ''}</div>`;
+  }
+  function showProg() { if (!SB) return; $('#sb-prog').innerHTML = progHTML(); $('#sb-prog').hidden = false; }
+  /* v8: a Deploy can stop at several places (each outlet runs on its own); the message still says only where */
   function onError(f) {
-    if (!SB) return; $('#sb-run').disabled = false; save(); const ui = U(); makeView(); if (f.node) { SB.view.flashError(f.node); SB.view.centerOn(f.node, 0.6, 0.25); }   // the stopped unit stays above the message
+    if (!SB) return; $('#sb-run').disabled = false; save(); const ui = U(), g = SB.game; makeView(); showProg();
+    const stops = f.stops && f.stops.length ? f.stops : [f], ids = stops.map(q => q.node).filter(Boolean);
+    ids.forEach(id => SB.view.flashError(id)); if (ids.length) SB.view.centerOnAll(ids);   // the stopped units stay above the message
     status('Find out why, fix it, then deploy again.');
     $('#toast').hidden = true;
-    const where = f.between ? 'The flow stopped between ' + SB.game.name(f.between[0]) + ' and ' + SB.game.name(f.between[1]) : f.node ? 'The flow stopped at ' + SB.game.name(f.node) : 'The flow did not reach the end of your plant';
-    ui.modal({ kicker: 'Deploy stopped', title: where, bad: true,
-      html: '<p>Your plant does not work from here. Check the unit cards to find out why, fix it and deploy again.</p>', actions: [{ label: 'OK', primary: true }] });
+    // review R1-m3: a unit stopped at both outlets is named once per outlet (its port name); the same place is listed once
+    const twice = q => stops.filter(o => !o.between && o.node === q.node).length > 1, port = q => (g.outPorts(q.node).find(p => p[0] === q.port) || [])[2];
+    const at = q => q.between ? 'between ' + g.name(q.between[0]) + ' and ' + g.name(q.between[1]) : q.node ? 'at ' + g.name(q.node) + (twice(q) && port(q) ? ': ' + port(q) : '') : 'before the end of your plant';
+    const list = [...new Set(stops.map(at))], many = list.length > 1;
+    const where = many ? 'The flow stopped at ' + list.length + ' places' : stops[0].node || stops[0].between ? 'The flow stopped ' + list[0] : 'The flow did not reach the end of your plant';
+    ui.modal({ kicker: 'Deploy stopped', title: where, bad: true, cls: 'stop-card',
+      html: (many ? `<ul class="needs stops">${list.map(s => `<li>${ui.esc(s)}</li>`).join('')}</ul>` : '') +
+        `<p>Your plant does not work from ${many ? 'these places' : 'here'}. Check the unit cards to find out why, fix it and deploy again.</p>` + progHTML(), actions: [{ label: 'OK', primary: true }] });
   }
+  /* v7.1: a finished plant also posts its finish (done, the final time) */
   function onComplete(r) {
-    if (!SB) return; $('#sb-run').disabled = false; save(); if (SB.kind === 'competition') PB.Board.post(SB.game); const ui = U(), esc = ui.esc; status('Your plant works!');
+    if (!SB) return; $('#sb-run').disabled = false; save(); showProg(); if (SB.kind === 'competition') PB.Board.post(SB.game); const ui = U(), esc = ui.esc; status('Your plant works!');
     const list = (t, a) => a.length ? `<p class="eyebrow">${t}</p><ul class="needs">${a.map(p => `<li>${plain(p.msg)}</li>`).join('')}</ul>` : '';
-    if (SB.kind === 'example') {
-      ui.modal({ kicker: 'Example process', title: (SB.proc === 'saf' ? 'Bio-jet fuel' : 'Biodiesel') + ' is flowing!', html: '<p>Every stream reaches its place: raw materials, reaction, separation, purification and recycle.</p>' + list('Notes for the class', r.pens) + plantSources(r),
+    if (SB.kind === 'example') {   // v8: the products of the example by name, no points
+      const ns = SB.game.proc.products.map(p => p.name), title = (ns.length > 1 ? ns.slice(0, -1).join(', ') + ' and ' + ns[ns.length - 1] + ' are' : ns[0] + ' is') + ' flowing!';
+      ui.modal({ kicker: 'Example process', title, html: '<p>Every stream reaches its place: raw materials, reaction, separation and storage.</p>' + progHTML() + list('Notes for the class', r.pens) + plantSources(r),
         actions: [{ label: 'Stay here' }, { label: 'QR code for the competition →', primary: true, fn: () => location.hash = '#qr' }] });
       return;
     }
-    // v6.3: no stars and no deploy count; the time is the result (a reference board shows no time)
-    if (r.reference) { ui.modal({ kicker: 'Plant report', title: 'The reference plant works.', html: '<p>This board was built from the reference design. Clear the board and design your own plant.</p>' + list('Tips', r.pens) + plantSources(r), actions: [{ label: 'OK', primary: true }] }); return; }
-    ui.modal({ kicker: 'Plant report', title: 'Your plant works! You can be a chemical engineer.', html: `<p class="report-time"><span class="mono">${esc(PB.fmtTime(r.time))}</span><small>your time</small></p>` +
-      list('Tips', r.pens) + plantSources(r),
+    // v8: points out of 100 and the time (no stars, no deploy count); a reference board shows no time
+    const pts = `<p class="report-time"><span class="mono">${Math.round(r.points ? r.points.total : 0)}<small> / 100</small></span><small>points</small></p>`;
+    if (r.reference) { ui.modal({ kicker: 'Plant report', title: 'The reference plant works.', html: '<p>This board was built from the reference design. Clear the board and design your own plant.</p>' + progHTML() + list('Tips', r.pens) + plantSources(r), actions: [{ label: 'OK', primary: true }] }); return; }
+    ui.modal({ kicker: 'Plant report', title: 'Your plant works! You can be a chemical engineer.', html: `<div class="report-score">${pts}<p class="report-time"><span class="mono">${esc(PB.fmtTime(r.time))}</span><small>your time</small></p></div>` +
+      progHTML(true) + list('Tips', r.pens) + plantSources(r),
       actions: [{ label: 'Keep building' }, { label: 'Get my badge', primary: true, fn: () => badge(r) }] });
   }
   /* v5: after the score — every source behind the numbers and facts of this process, and the stated assumptions */
@@ -6957,13 +7097,42 @@ window.PB = window.PB || {};
   function assumptionsHTML() { const ui = U(), K = { basis: 'Design basis (course instructor)', derived: 'Calculated', estimate: 'Engineering estimate' };
     return '<p class="eyebrow">Assumptions behind the numbers</p><ul class="needs assump">' + PB.ASSUMPTIONS.map(a => `<li><b>${K[a.kind]}.</b> ${ui.refLinks(a.text)}</li>`).join('') + '</ul>'; }
   PB.assumptionsHTML = assumptionsHTML;
-  /* v6.1: the phase key (the only hint): what each icon means and what can be done with it */
-  function legend(back) { const ui = U(), esc = ui.esc;
-    ui.modal({ kicker: 'Key', title: 'What the icons mean', cls: 'unit-card legend-card', html: '<ul class="legend">' + PB.SANDBOX.legend.map(l => `<li>${icn(l.ph, 'ph-' + l.ph)}<div><b>${esc(l.name)}</b><p>${esc(l.text)}</p></div></li>`).join('') + '</ul>',
-      actions: [{ label: 'OK', primary: true, fn: back }] }); }
+  /* v8: the Guide card: tab Rules (a picture per rule, numbers read live from PB.SANDBOX.basis) and tab Icon key (v6.1 phase key) */
+  function ruleText(t) {
+    const B = PB.SANDBOX.basis, val = k => k.split('+').reduce((a, q) => a + q.split('.').reduce((o, x) => o[x], B), 0);
+    return t.replace(/\{([TP]):([\w.+]+)\}/g, (m, u, k) => (u === 'T' ? PB.fmtTemp : PB.fmtPress)(val(k)));
+  }
+  const GPIC = { '>': ['M1 12h11M8 8l4 4-4 4', '', 14], ok: ['M4 12l5 5 11-11', 'ok', 20], x: ['M6 6l12 12M18 6L6 18', 'x', 20],
+    'g+': ['M4 17a8 8 0 1 1 16 0M12 17l5.5-4', 'hot'], g0: ['M4 17a8 8 0 1 1 16 0M12 17V10', 'mid'], 'g-': ['M4 17a8 8 0 1 1 16 0M12 17l-5.5-4', 'cold'],
+    't+': [PB.CARD_ICONS.T + 'M12 15V6', 'hot'], t0: [PB.CARD_ICONS.T + 'M12 15V10', 'mid'], 't-': [PB.CARD_ICONS.T + 'M12 15V13', 'cold'] };
+  /* rows of tokens → one small SVG (a token array is a stack of two, e.g. two inlets) */
+  function rulePic(rows) {
+    const one = (k, x, y, sc) => { const g = GPIC[k], d = g ? g[0] : PB.CARD_ICONS[k], cls = g ? g[1] : /^(G|V|L|Lp|Ln|S)$/.test(k) ? 'ph-' + k : '';
+      return `<g class="${cls}" transform="translate(${x} ${y}) scale(${sc})"><path d="${d}"/></g>`; };
+    let W = 0, out = '';
+    rows.forEach((row, r) => { let x = 0; const y = r * 28 + 2;
+      row.forEach(t => { if (Array.isArray(t)) { out += one(t[0], x + 3, y - 2, 0.6) + one(t[1], x + 3, y + 12, 0.6); x += 24; }
+        else { out += one(t, x, y, 1); x += (GPIC[t] && GPIC[t][2]) || 24; } x += 4; });
+      W = Math.max(W, x); });
+    return `<svg class="gd-pic" viewBox="0 0 ${W} ${rows.length * 28}" width="${Math.round(W * 1.4)}" height="${rows.length * 39}" aria-hidden="true">${out}</svg>`;
+  }
+  function guide(tab, back) {
+    const ui = U(), esc = ui.esc, ex = SB && SB.kind === 'example';
+    const L = SB && SB.game.proc, rec = !!(L && (L.recycle || L.loop));   // review R2-m3: the recycle rule only where a recycle exists (as the progress bar)
+    const rules = PB.SANDBOX.guide.filter(r => !(r.pts && (ex || !rec))).map(r => `<li>${rulePic(r.pic)}<div><b>${esc(r.title)}</b><p>${esc(ruleText(r.text))}</p></div></li>`).join('');
+    const key = PB.SANDBOX.legend.map(l => `<li>${icn(l.ph, 'ph-' + l.ph)}<div><b>${esc(l.name)}</b><p>${esc(l.text)}</p></div></li>`).join('');
+    const tb = (k, n) => `<button class="gd-tab${tab === k ? ' on' : ''}" role="tab" data-gtab="${k}" aria-selected="${tab === k}">${n}</button>`;
+    ui.modal({ kicker: 'Guide', title: tab === 'key' ? 'What the icons mean' : 'How the plant works', cls: 'unit-card guide-card', html:
+      `<div class="gd-tabs" role="tablist">${tb('rules', 'Rules')}${tb('key', 'Icon key')}</div><ul class="gd-rules" data-gpanel="rules"${tab === 'rules' ? '' : ' hidden'}>${rules}</ul><ul class="legend" data-gpanel="key"${tab === 'key' ? '' : ' hidden'}>${key}</ul>`,
+      actions: [{ label: 'OK', primary: true, fn: back }] });
+    $('#modal-b').querySelectorAll('[data-gtab]').forEach(b => b.onclick = () => { const k = b.dataset.gtab;
+      $('#modal-b').querySelectorAll('[data-gtab]').forEach(q => { q.classList.toggle('on', q === b); q.setAttribute('aria-selected', String(q === b)); });
+      $('#modal-b').querySelectorAll('[data-gpanel]').forEach(q => { q.hidden = q.dataset.gpanel !== k; });
+      $('#modal-t').textContent = k === 'key' ? 'What the icons mean' : 'How the plant works'; });
+  }
   function badge(r) {
     $('#b-plant').textContent = KIND[SB.kind] + ' · ' + r.proc.title + ' · ' + PB.SANDBOX.modes[r.mode].name;
-    $('#b-time').textContent = PB.fmtTime(r.time); $('#b-mode').textContent = PB.SANDBOX.modes[r.mode].name;
+    $('#b-time').textContent = PB.fmtTime(r.time); $('#b-pts').textContent = String(Math.round(r.points ? r.points.total : 0)); $('#b-mode').textContent = PB.SANDBOX.modes[r.mode].name;
     $('#b-date').textContent = 'ChPE Open House · ' + new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
     const acts = $('#finish-actions'); acts.innerHTML = '';
     const mk = (label, fn, primary) => { const a = document.createElement('button'); a.className = 'btn' + (primary ? ' primary' : ' ghost'); a.textContent = label; a.onclick = fn; acts.appendChild(a); };
@@ -6978,9 +7147,13 @@ window.PB = window.PB || {};
      unit card without the edit controls ---------- */
   function open3D() {
     if (!SB) return; clearAction();
-    PB.View3D.open(SB.game, PB.View3D.canBuild() ? { build: true, onTap, onTapBoard, state: state3D, cardHTML: c => `<b class="t3-card-t">${U().esc(c.title)}</b>${condHTML(c)}` }
-      : { onLook: id => { if (SB && !U().modalOpen()) card3D(id); } });
+    PB.View3D.open(SB.game, PB.View3D.canBuild() ? { build: true, onTap, onTapBoard, state: state3D, onClose: label3D, cardHTML: c => `<b class="t3-card-t">${U().esc(c.title)}</b>${condHTML(c)}` }
+      : { onLook: id => { if (SB && !U().modalOpen()) card3D(id); }, onClose: label3D });
+    label3D();
   }
+  /* v8: #sb-3d switches between the 3D view and the 2.5D board; its label names the view it goes to */
+  const is3D = () => !$('#v3d').hidden;
+  function label3D() { const on = is3D(), b = $('#sb-3d'); b.textContent = on ? '2.5D' : '3D'; b.setAttribute('aria-label', on ? 'Back to the 2.5D board' : '3D view'); b.setAttribute('aria-pressed', String(on)); }
   function state3D() {
     if (!SB) return {}; const a = SB.action, it = a && a.kind === 'move' && SB.game.items[a.id];
     return { zone: a && a.kind === 'place' ? ZONE_OF[a.cat] : it ? ZONE_OF[it.cat] || 'proc' : null, focus: a ? a.from || a.unit || a.id || null : null, cardsOn: SB.cardsOn, cardOnly: SB.cardOnly };
@@ -6990,13 +7163,13 @@ window.PB = window.PB || {};
     $('#modal-b').querySelectorAll('input, button').forEach(el => { el.disabled = true; });
     $('#modal-actions').querySelectorAll('.btn:not(.primary)').forEach(b => { if (b.textContent !== 'Spec card') b.remove(); });
   }
-  $('#sb-3d').onclick = () => open3D();
+  $('#sb-3d').onclick = () => { if (is3D()) PB.View3D.close(); else open3D(); };
 
   /* ---------- HUD ---------- */
   $('#sb-add').onclick = () => { if (SB) { clearAction(); openSheet(); } };
   $('#sb-card').onclick = () => specCard();
-  $('#sb-key').onclick = () => legend();
-  $('#sb-pick-key').onclick = () => { const tab = sheetTab; closeSheet(); legend(() => openSheet(tab)); };
+  $('#sb-guide').onclick = () => guide('rules');
+  $('#sb-pick-key').onclick = () => { const tab = sheetTab; closeSheet(); guide('key', () => openSheet(tab)); };
   $('#sb-cards').onclick = () => { if (!SB) return; SB.cardsOn = !SB.cardsOn; SB.cardOnly = null; $('#sb-cards').setAttribute('aria-pressed', String(SB.cardsOn)); makeView(); };
   $('#sb-zones').addEventListener('click', e => { const b = e.target.closest('[data-zone]'); if (b && SB) centerZone(b.dataset.zone); });
   $('#sb-who').onclick = () => { location.hash = '#join'; };
@@ -7010,7 +7183,7 @@ window.PB = window.PB || {};
     const teacher = PB.teacher.on(), showRef = SB.kind !== 'competition' || teacher;
     if (teacher) ref.label = 'Show finished plant';
     const acts = [{ label: 'Clear board', cls: 'danger', fn: () => ui.modal({ kicker: 'Clear board', title: 'Remove everything you built?', html: '<p>The fixed reaction units stay. Your time keeps running.</p>', actions: [{ label: 'Keep my board', primary: true }, { label: 'Clear board', cls: 'danger', fn: () => { SB.game.clear(); ui.toast('Board cleared.'); } }] }) }].concat(showRef ? [ref] : [],
-      PB.View3D.supported() ? [{ label: '3D view', fn: () => open3D() }] : [],
+      PB.View3D.supported() && !is3D() ? [{ label: '3D view', fn: () => open3D() }] : [],
       SB.kind === 'competition' && PB.Board.session() ? [{ label: 'Change class or nickname', fn: () => { location.hash = '#join'; } }] : [],
       teacher ? [{ label: 'Leave teacher mode', fn: () => { PB.teacher.set(false); ui.toast('Teacher mode is off.'); } }] : [{ label: 'Teacher mode', fn: () => PB.teacher.ask() }], [{ label: 'OK', primary: true }]);
     ui.modal({ kicker: KIND[SB.kind] + (teacher ? ' · teacher mode' : ''), title: 'Options', html: '<p>Your board is saved on this device only.</p><ul class="needs"><li><b>Clear board</b> removes everything except the fixed reaction units. Your time keeps running.</li>' + (showRef ? '<li><b>' + ref.label + '</b> builds one working plant for this process (it replaces your board).</li>' : '') + '<li>Tap a unit to set it, connect it, move it or remove it.</li></ul>',
@@ -7027,8 +7200,8 @@ window.PB = window.PB || {};
 <script>
 /* ChPE Process Builder — v7.1 class leaderboard (plan-chpe-process-builder-v7.1.md, steps 3 and 6).
    Students join the Competition with a class code and a nickname (#join); every Deploy result is posted to the Apps Script web app
-   through a send queue (the game never waits for the network); the teacher opens a class and watches it live on #board
-   (teacher mode plus the board key, which only the server checks; review R1 2026-10-17).
+   through a send queue (the game never waits for the network); the teacher opens a class (teacher mode plus the board key, which
+   only the server checks; review R1 2026-10-17). v8: anyone with the class code can watch #board read-only; posts carry the points.
    When PB.CONFIG.scoreboardUrl is empty, none of this runs and the game plays exactly as before.
    The pure parts (cleaning, the queue, replies, the join plan, ranking, CSV) take no DOM, so tools/check-board.cjs tests them headless. */
 window.PB = window.PB || {};
@@ -7111,10 +7284,10 @@ window.PB = window.PB || {};
     return { runId: same ? prev.runId : (runs && runs[k]) || runIdNew(), keepBoard: same || refused(prev) };
   }
 
-  /* ---------- ranking: finished plants by time, then the others by milestone (highest first), then by time ---------- */
+  /* ---------- ranking (v8): best points (highest first), then the time they were first reached (the server sends it as seconds), then nickname ---------- */
+  const pts = p => Math.round(Number(p.score) || 0);
   function rank(players) {
-    return players.slice().sort((a, b) => (!!b.done - !!a.done) || (a.done ? 0 : (b.stage || 0) - (a.stage || 0)) || (a.seconds || 0) - (b.seconds || 0) ||
-      String(a.nickname).localeCompare(String(b.nickname)));
+    return players.slice().sort((a, b) => pts(b) - pts(a) || (a.seconds || 0) - (b.seconds || 0) || String(a.nickname).localeCompare(String(b.nickname)));
   }
 
   /* ---------- CSV (client-side); quotes every field that needs it and defuses spreadsheet formulas ---------- */
@@ -7124,8 +7297,8 @@ window.PB = window.PB || {};
     return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
   }
   function toCSV(players, fmtTime) {
-    const head = ['Rank', 'Nickname', 'Milestone', 'Stage', 'Deploys', 'Time', 'Seconds', 'Finished'];
-    const lines = rank(players).map((p, i) => [i + 1, p.nickname, p.done ? STAGES[3] : STAGES[(p.stage || 0) - 1] || 'Joined', p.done ? 4 : p.stage || 0, p.deploys || 0, fmtTime(p.seconds || 0), Math.round(p.seconds || 0), p.done ? 'yes' : 'no']);
+    const head = ['Rank', 'Nickname', 'Points', 'Milestone', 'Stage', 'Deploys', 'Time', 'Seconds', 'Finished'];
+    const lines = rank(players).map((p, i) => [i + 1, p.nickname, pts(p), p.done ? STAGES[3] : STAGES[(p.stage || 0) - 1] || 'Joined', p.done ? 4 : p.stage || 0, p.deploys || 0, fmtTime(p.seconds || 0), Math.round(p.seconds || 0), p.done ? 'yes' : 'no']);
     return [head].concat(lines).map(r => r.map(csvCell).join(',')).join('\r\n') + '\r\n';
   }
 
@@ -7166,7 +7339,7 @@ window.PB = window.PB || {};
   function post(game) {
     const s = session(); if (!configured() || !s || refused(s) || game.usedReference) return;   // a reference board is not a student's plant
     const p = game.progress();
-    Q().add({ game: GAME, classCode: s.classCode, nickname: s.nickname, runId: s.runId, deploy: p.deploys, stage: p.stage, time: Math.round(p.time), done: !!p.complete }, rep => lateReply(rep, s));
+    Q().add({ game: GAME, classCode: s.classCode, nickname: s.nickname, runId: s.runId, deploy: p.deploys, stage: p.complete ? p.stage : Math.min(p.stage, 3), time: Math.round(p.time), done: !!p.complete, score: (p.points && p.points.total) || 0 }, rep => lateReply(rep, s));
   }
   /* the server can refuse after the student started (the join row waited offline): tell them once, after any open message */
   const LATE = {
@@ -7210,7 +7383,7 @@ window.PB = window.PB || {};
     let settled = false;
     const go = () => { if (settled) return; settled = true; setSession(s); if (!plan.keepBoard) PB.SandboxUI.forget('competition'); setJoinBusy(false); location.hash = '#competition'; };
     const wait = setTimeout(go, JOIN_WAIT_MS);   // offline or slow: play now, the join row stays in the queue
-    Q().add({ game: GAME, classCode: s.classCode, nickname: s.nickname, runId: s.runId, deploy: 0, stage: 0, time: 0, done: false }, rep => {
+    Q().add({ game: GAME, classCode: s.classCode, nickname: s.nickname, runId: s.runId, deploy: 0, stage: 0, time: 0, done: false, score: 0 }, rep => {
       if (settled) { lateReply(rep, s); return; }
       clearTimeout(wait);
       const f = replyFlag(rep);
@@ -7219,25 +7392,25 @@ window.PB = window.PB || {};
     });
   }
 
-  /* ---------- #board (teacher mode on this device + the board key, checked by the server) ---------- */
+  /* ---------- #board: public and read-only (v8); the teacher tools need teacher mode on this device + the board key (checked by the server) ---------- */
   const BD = { cls: '', players: [], open: true, timer: null, busy: false, errors: 0, on: false, updated: 0 };
-  const ICO = ['M12 3c3 5 6 8 6 12a6 6 0 0 1-12 0c0-4 3-7 6-12z', 'M4 12h12M12 6l6 6-6 6', 'M6 6c0-3 12-3 12 0v12c0 3-12 3-12 0zM6 6c0 3 12 3 12 0', 'M4 13l5 5L20 7'];
   const boardKey = () => local.get(KKEY) || '';
   const KEY_BAD = 'The server did not accept the board key. Type it again.';
   function bar(p) {
     const st = p.done ? 4 : p.stage || 0;
-    return `<div class="ms" role="img" aria-label="${STAGES.slice(0, st).join(', ') || 'Joined'}">${STAGES.map((w, i) => `<span class="ms-step${i < st ? ' on' : ''}${i === 3 && p.done ? ' done' : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${ICO[i]}"/></svg><b>${w}</b></span>`).join('')}</div>`;
+    return `<div class="ms" role="img" aria-label="${STAGES.slice(0, st).join(', ') || 'Joined'}">${STAGES.map((w, i) => `<span class="ms-step${i < st ? ' on' : ''}${i === 3 && p.done ? ' done' : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${PB.MS_ICONS[i]}"/></svg><b>${w}</b></span>`).join('')}</div>`;
   }
   function renderBoard() {
-    const esc = U().esc, list = rank(BD.players);
+    const esc = U().esc, list = rank(BD.players), tk = tools();
     $('#bd-cls').textContent = BD.cls || '—';
     $('#bd-count').textContent = BD.cls ? list.length + (list.length === 1 ? ' student' : ' students') + ' · ' + list.filter(p => p.done).length + ' finished' : '';
     $('#bd-list').classList.toggle('many', list.length > 10); $('#bd-list').classList.toggle('lots', list.length > 18);   // rows shrink so a class fits the projector
     $('#bd-list').innerHTML = !BD.cls ? '<li class="bd-empty">Type the class code to see the class.</li>'
-      : !BD.open ? '<li class="bd-empty">This class is not open yet. Press <b>Open this class</b>, then students can join.</li>'
+      : !BD.open ? '<li class="bd-empty">This class is not open yet.' + (tk ? ' Press <b>Open this class</b>, then students can join.' : '') + '</li>'
       : !list.length ? '<li class="bd-empty">No one has joined yet. Students open the link and type the class code.</li>'
-      : list.map((p, i) => `<li class="bd-row${p.done ? ' done' : ''}"><span class="bd-rank">${i + 1}</span><span class="bd-nick">${esc(p.nickname)}</span>${bar(p)}<span class="bd-dep">${esc(String(p.deploys || 0))}<small> deploy${p.deploys === 1 ? '' : 's'}</small></span><span class="bd-time mono">${esc(PB.fmtTime(p.seconds || 0))}</span><button class="bd-x" type="button" data-nick="${esc(p.nickname)}" aria-label="Hide ${esc(p.nickname)}" title="Hide this nickname">×</button></li>`).join('');
-    $('#bd-open').hidden = !BD.cls || BD.open;
+      : list.map((p, i) => `<li class="bd-row${p.done ? ' done' : ''}"><span class="bd-rank">${i + 1}</span><span class="bd-nick">${esc(p.nickname)}</span>${bar(p)}<span class="bd-pts"><b>${pts(p)}</b><small> pts</small></span><span class="bd-dep">${esc(String(p.deploys || 0))}<small> deploy${p.deploys === 1 ? '' : 's'}</small></span><span class="bd-time mono">${esc(PB.fmtTime(p.seconds || 0))}</span>${tk ? `<button class="bd-x" type="button" data-nick="${esc(p.nickname)}" aria-label="Hide ${esc(p.nickname)}" title="Hide this nickname">×</button>` : ''}</li>`).join('');
+    $('#bd-open').hidden = !tk || !BD.cls || BD.open;
+    $('#bd-csv').hidden = $('#bd-clear').hidden = !tk;
     $('#bd-csv').disabled = $('#bd-clear').disabled = !BD.cls;
   }
   function boardStatus(t, bad) { $('#bd-status').textContent = t; $('#bd-status').classList.toggle('bad', !!bad); }
@@ -7248,26 +7421,24 @@ window.PB = window.PB || {};
     if (document.hidden) return;   // paused while the tab is hidden; visibilitychange restarts it
     const cls = BD.cls; BD.busy = true;
     try {
-      const r = await api({ action: 'board', game: GAME, classCode: cls, key: boardKey(), t: Date.now() }, BOARD_MS);
+      const r = await api({ action: 'board', game: GAME, classCode: cls, t: Date.now() }, BOARD_MS);   // the public read (v8) sends no secret
       if (cls !== BD.cls) return;
       if (r && r.ok) { BD.players = Array.isArray(r.players) ? r.players : []; BD.open = r.open !== false; BD.errors = 0; BD.updated = Date.now(); renderBoard(); boardStatus((BD.open ? '' : 'Not open: students cannot join. ') + 'Updated ' + new Date(BD.updated).toLocaleTimeString('en-GB'), !BD.open); }
-      else if (r && r.fatal && r.error === 'board key') { BD.errors = 0; forgetKey(KEY_BAD); }
       else if (r && r.fatal) { BD.errors = 0; BD.on = false; boardStatus('The class board refused the request.', true); }   // stops polling until Show is pressed again
       else { BD.errors++; boardStatus('The class board is not answering. Trying again…', true); }
     } catch (e) { BD.errors++; boardStatus('The class board is not answering. Trying again…', true); }
     finally { BD.busy = false; if (BD.on && cls !== BD.cls) refresh(); else nextRefresh(); }   // a class changed during the request loads at once
   }
-  /* teacher mode (this device) and a stored board key are needed before any board request */
-  function gate() {
+  /* the teacher tools (open, clear, hide, CSV) need teacher mode on this device and a stored board key; the board itself does not */
+  function tools() {
     const t = PB.teacher.on(), ok = t && !!boardKey();
-    $('#bd-gate').hidden = t; $('#bd-keygate').hidden = !t || ok; $('#bd-main').hidden = !ok;
-    if (!ok) { BD.on = false; clearTimeout(BD.timer); }
+    $('#bd-unlock').hidden = t; $('#bd-keygate').hidden = !t || ok; $('#bd-forget').hidden = !ok;
     return ok;
   }
   function showBoard() {
     $('#bd-link').textContent = joinLink();
-    if (!gate()) { if (!PB.teacher.on()) askTeacher(); else setTimeout(() => $('#bd-key').focus(), 60); return; }
     BD.on = true; $('#bd-class-in').value = BD.cls; renderBoard(); refresh();
+    if (PB.teacher.on() && !boardKey()) setTimeout(() => $('#bd-key').focus(), 60);
   }
   function askTeacher() { PB.teacher.ask(() => { if (location.hash === '#board') showBoard(); }); }
   function leaveBoard() { BD.on = false; clearTimeout(BD.timer); }
@@ -7277,7 +7448,7 @@ window.PB = window.PB || {};
     if (!v) { keyMsg('Type the board key.'); return; }
     local.set(KKEY, v); $('#bd-key').value = ''; keyMsg(''); showBoard();
   }
-  function forgetKey(msg) { local.del(KKEY); gate(); keyMsg(msg || ''); }
+  function forgetKey(msg) { local.del(KKEY); renderBoard(); keyMsg(msg || ''); }
   function setClass() {
     const c = checkClass($('#bd-class-in').value);
     if (!c.ok) { boardStatus(c.msg, true); return; }
@@ -7439,7 +7610,7 @@ window.PB = window.PB || {};
     const h = (location.hash || '#home').slice(1);
     if (h === 'competition' && PB.Board.configured() && !PB.Board.session()) { location.replace('#join'); return; }   // v7.1: with a class board the Competition starts after joining
     if ((h === 'join' || h === 'board') && !PB.Board.configured()) { location.replace(h === 'join' ? '#competition' : '#home'); return; }
-    const key = screens[h] ? h : /^sandbox-/.test(h) ? 'sandbox' : /^example-/.test(h) ? 'example' : 'home';
+    const key = screens[h] ? h : /^sandbox-/.test(h) ? 'sandbox' : 'home';   // v8: one Example (#example), no #example-<process>
     document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === screens[key]));
     $('#finish').hidden = true; closeModal();
     if (screens[key] === 's-sandbox') PB.SandboxUI.enter(h); else PB.SandboxUI.leave();
