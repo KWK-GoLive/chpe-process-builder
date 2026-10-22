@@ -159,6 +159,7 @@ button { font: inherit; color: inherit; }
 .tag text { fill: var(--fg); font: 600 13.5px var(--f-body); text-anchor: middle; }
 .tag-feed rect { stroke: #3a8fd0; } .tag-product rect { stroke: #d39a1f; }
 .tag-done rect { fill: #fff3d4; } .tag-bad rect { fill: var(--bad-soft); stroke: var(--bad); }
+.tag-warn rect { fill: #fff3d4; stroke: var(--amber); } .tag-i { stroke: var(--amber); stroke-width: 2.4; }   /* v8.1: the pump ⚠ */
 
   
  
@@ -351,6 +352,7 @@ details.more[open] summary { margin-bottom: 6px; }
 .ucard-c { fill: var(--text-2); font: 500 9.5px var(--f-body); }
 .ucard-div { stroke: #e8ece8; stroke-width: 1; }
 .ucard-lead { stroke: #5b6960; stroke-width: 1.2; stroke-dasharray: 3 3; }
+.ucard-noz { fill: #fff; stroke: #2f3a34; stroke-width: 1.2; }   /* v8.1: the nozzle end of a split card's leader */
 /* the same look in the tapped-open card */
 .modal-card.sb-card[class*="g-"] { border-top: 5px solid var(--gc); }
 .ci { width: 15px; height: 15px; flex: none; fill: none; stroke: var(--muted); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -2px; }
@@ -462,9 +464,19 @@ details.more[open] summary { margin-bottom: 6px; }
 .sb-slider { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px auto; align-items: center; gap: 8px; margin: 2px 0 12px; }
 .sb-slider input[type=range] { width: 100%; accent-color: var(--accent); height: 32px; }
 .sb-slider .icon-btn { width: 44px; height: 44px; font: 700 20px var(--f-display); }
-.sb-slider output { min-width: 84px; text-align: right; font: 700 20px var(--f-display); color: var(--fg); }
-.sb-slider output.unset { color: var(--bad); font-size: 15px; }
+.sb-slider .sl-in { display: flex; align-items: baseline; gap: 4px; }   /* v8.1: the readout is a number box (type a value) and its unit */
+.sb-slider .sl-in input { width: 84px; min-height: 44px; padding: 4px 6px; text-align: right; font: 700 20px var(--f-display); color: var(--fg); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; -moz-appearance: textfield; }
+.sb-slider .sl-in input::-webkit-inner-spin-button, .sb-slider .sl-in input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.sb-slider .sl-in input.unset { color: var(--bad); font-size: 15px; }
+.sb-slider .sl-in span { font: 600 15px var(--f-display); color: var(--muted); }
+.sl-clamp { margin: -8px 0 10px; font-size: .86em; color: var(--bad); }
+@media (max-width: 560px) { .sb-slider .sl-in input { width: 68px; } }
 .cond-note { margin: -4px 0 8px; font-size: 13px; color: var(--muted); }
+/* v8.1: the pump ⚠ and the compressor stage count under the conditions (unit card, 3D card); 2.5D board card foot */
+.cond-warn, .cond-stg { display: flex; gap: 6px; align-items: flex-start; margin: -4px 0 12px; font-size: 14px; font-weight: 600; } .cond-stg { color: var(--muted); }
+.cond-warn { color: var(--amber); background: #fff3d4; border: 1px solid #f0d9a8; border-radius: 10px; padding: 7px 10px; } .cond-warn .ci { stroke: var(--amber); flex: none; }
+.ucard-warn { fill: var(--amber); font: 600 9.5px var(--f-body); } .ucard-i.ucard-warn-i { stroke: var(--amber); stroke-width: 2.4; }
+.t3-tag.warn { background: #fff3d4; border-color: var(--amber); } .t3-tag.warn .ci { width: 14px; height: 14px; margin: 0 4px -2px 0; stroke: var(--amber); }
 .linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
 .tm-l { display: block; font-weight: 600; margin-bottom: 6px; }
 .tm-in { width: 100%; height: 46px; border-radius: 10px; border: 1px solid var(--line); padding: 0 12px; font: 600 18px var(--f-mono); }
@@ -518,6 +530,7 @@ details.more[open] summary { margin-bottom: 6px; }
 .t3-card.sm .t3-card-t { font-size: 11px; padding: 2px 7px 1px; } .t3-card.sm .cond-col { font-size: 10.5px; padding: 3px 6px 4px; min-width: 76px; gap: 2px; } .t3-card.sm .cond-col .io-h { font-size: 9px; } .t3-card.sm .cond-col ul { padding-top: 3px; }
 .t3-card { position: absolute; left: 0; top: 0; pointer-events: none; width: max-content; max-width: 420px; background: #fff; border: 1px solid var(--line); border-top: 4px solid var(--gc); border-radius: 10px; box-shadow: 0 6px 18px rgba(23,32,26,.14); }
 .t3-card-t { display: block; padding: 4px 9px 3px; font: 600 13px var(--f-display); }
+.t3-card .cond-warn, .t3-card .cond-stg { margin: 0; padding: 4px 9px 6px; font-size: 11.5px; max-width: 210px; border: 0; border-top: 1px solid #e8ece8; } .t3-card .cond-warn { border-radius: 0 0 10px 10px; }   /* v8.1 */
 .t3-card .cond { margin: 0; border: 0; border-radius: 0 0 10px 10px; } .t3-card .cond-col { font-size: 12px; padding: 5px 9px 7px; min-width: 96px; } .t3-card .cond-col .io-h { font-size: 10px; }
 .modal-card.ro [data-out], .modal-card.ro [data-unpipe], .modal-card.ro [data-unlink], .modal-card.ro [data-link] { display: none; }
 @media (max-width: 560px) { #sb-3d { padding-inline: 10px; } }
@@ -609,6 +622,7 @@ html:not(.teacher) .teacher-only, html:not(.board-on) .teacher-only { display: n
 .modal-card .sb-prog-in { margin: 4px 0 12px; }
 .sb-prog .ms-step { padding: 3px 4px; }
 @media (max-width: 560px) { .sb-prog-in .ms-step b { display: none; } .sb-prog-in .ms-step { padding: 4px 2px; } .modal-card .sb-prog-in .ms-step b { display: inline; font-size: 10px; } .modal-card .sb-prog-in .ms-step { flex-direction: column; gap: 2px; } }
+.modal-card .sb-prog-in .ms.many { grid-template-columns: repeat(4, 1fr) !important; }   /* v8.1: six or seven steps take two rows in the report (review R3-1: at every width) */
 .report-score { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; }
 .report-time .mono small { font-size: 16px; color: var(--muted); }
 .b-stats { grid-template-columns: repeat(3, 1fr); }
@@ -3211,6 +3225,8 @@ PB.REFS = {
   36: 'Zhang, Y. <i>Design and Economic Assessment of Biodiesel Production from Waste Cooking Oil</i>. M.A.Sc. Thesis, University of Ottawa, Ottawa, ON, 2002. https://ruor.uottawa.ca/items/1380f7c6-e5b2-4bb0-8242-e6ab6c97d28d (accessed 2026-10-17).',
   /* v8 (2026-10-21): the A + B → C + D + E teaching example */
   37: 'Department of Chemical Engineering, Chulalongkorn University. <i>Chemical Process Operation: Chemical Production Process and Major Unit Operations — Chemical Process Synthesis</i> (course slides 37, 41, 56). Course material provided by the instructor.',
+  /* v8.1 (2026-10-22): heat of compression */
+  38: 'Lemmon, E. W.; Bell, I. H.; Huber, M. L.; McLinden, M. O. Thermophysical Properties of Fluid Systems. In <i>NIST Chemistry WebBook, NIST Standard Reference Database Number 69</i>; Linstrom, P. J., Mallard, W. G., Eds.; National Institute of Standards and Technology: Gaithersburg, MD. https://webbook.nist.gov/chemistry/fluid/ (accessed 2026-10-22).',
 };
 
 PB.STAGES = [
@@ -3338,7 +3354,7 @@ PB.EQUIP = {
              {t:'cyl',axis:'z',x:0,y:0,z:1.0,r:0.52,h:0.1,c:'accent',ring:1},
              {t:'cyl',axis:'z',x:0,y:0,z:1.35,r:0.5,r2:0.15,h:0.2,c:'poly'},
              {t:'box',x:0,y:0,z:1.55,w:0.26,d:0.26,h:0.26,c:'motor'} ] },   // v6.4: agitator (unit-models 6.5)
-  compressor: { name: 'Compressor', does: 'Squeezes gases to high pressure. (It does not work on liquids.)',
+  compressor: { name: 'Compressor', does: 'Squeezes gases to high pressure, which heats them. A big pressure rise is done in stages with coolers between them. (It does not work on liquids.)',
     /* v6.4, redrawn: motor (junction box) and coupling, then the barrel casing; suction (large) and discharge nozzles on top, where the pipes connect */
     nozzles: { in: { up: [0, 0, 1.02], xdir: -1 }, out: { up: [0.5, 0, 0.98], xdir: 1 } },
     shape: [ {t:'box',x:-0.03,y:0,z:0,w:1.3,d:0.8,h:0.18,c:'concrete'},
@@ -3400,6 +3416,43 @@ PB.EQUIP = {
              {t:'box',x:0,y:0,z:1.2,w:0.9,d:0.7,h:0.25,c:'steelDark'},
              {t:'cyl',axis:'z',x:0,y:0,z:1.45,r:0.16,h:1.2,c:'steelDark'} ] }
 };
+
+/* v8.1: a multi-stage compressor train (client-approved prototype). One motor on a common shaft drives n casings in a
+   row; between consecutive casings a small cooling-water intercooler sits behind the train (-y) on legs, with a crossover from
+   the casing's discharge stub to the cooler and back down into the next casing's suction. Inlet on top of the first casing,
+   outlet on top of the last. n = 1 keeps today's compressor. Every compressor reserves the 4-stage footprint (sandbox-engine fp). */
+PB.compressorTrain = function (n) {
+  if (n <= 1) return PB.EQUIP.compressor;
+  const LM = 0.46, LCP = 0.1, LC = 0.4, GAP = 0.17, RC = 0.28, ZA = 0.5, ZX = 1.0, YC = -0.55, YB = -0.2, RX = 0.15;
+  // v8.1: [shift, suction x, discharge x]: the main nozzles stand on the half-unit grid (a pipe stub straight out of them) and on their casings
+  const G = { 2: [0, 0, 0.5], 3: [-0.25, -0.5, 0.5], 4: [0, -0.5, 1] }[n];
+  const total = LM + LCP + n * LC + (n - 1) * GAP, x0 = -total / 2 + G[0], xm = x0, xs = i => x0 + LM + LCP + i * (LC + GAP);
+  const tp = i => ZA + RC - i * 0.03, top = tp(0), sh = [
+    {t:'box',x:G[0],y:-0.17,z:0,w:total + 0.12,d:1.16,h:0.18,c:'concrete'},
+    {t:'cyl',axis:'x',x:xm,y:0,z:0.48,r:0.24,h:LM,c:'motor'}, {t:'box',x:xm + 0.23,y:0,z:0.68,w:0.18,d:0.16,h:0.1,c:'motor'},
+    {t:'cyl',axis:'x',x:xm + LM,y:0,z:0.48,r:0.09,h:LCP,c:'steelDark'} ];
+  for (let i = 0; i < n; i++) {
+    const r = tp(i) - ZA;   // later (higher-pressure) stages a little smaller
+    sh.push({t:'cyl',axis:'x',x:xs(i),y:0,z:ZA,r,h:LC,c:'steel'});
+    if (i < n - 1) sh.push({t:'cyl',axis:'x',x:xs(i) + LC,y:0,z:ZA,r:0.06,h:GAP,c:'steelDark'}, {t:'cyl',axis:'x',x:xs(i) + LC + GAP / 2 - 0.03,y:0,z:ZA,r:0.1,h:0.06,c:'motor'});   // shaft and coupling hub
+  }
+  // main suction (first casing) and discharge (last casing) stubs, as on the single compressor
+  sh.push({t:'cyl',axis:'z',x:G[1],y:0,z:top - 0.02,r:0.12,h:0.24,c:'steelDark'});
+  sh.push({t:'cyl',axis:'z',x:G[2],y:0,z:tp(n - 1) - 0.04,r:0.09,h:top + 0.18 - tp(n - 1) + 0.04,c:'steelDark'});
+  for (let i = 0; i < n - 1; i++) {
+    const xd = xs(i) + LC - 0.1, xn = xs(i + 1) + 0.1, c0 = xd - 0.06, L = xn - xd + 0.12;
+    // v8.1: the crossovers rise from the back of the casings (y = YB), clear of the main suction and discharge stubs on top
+    sh.push({t:'cyl',axis:'z',x:xd,y:YB,z:ZA,r:0.055,h:ZX - ZA,c:'steelDark'}, {t:'cyl',axis:'y',x:xd,y:YC,z:ZX,r:0.055,h:YB - YC,c:'steelDark'});
+    sh.push({t:'cyl',axis:'z',x:xn,y:YB,z:ZA,r:0.055,h:ZX - ZA,c:'steelDark'}, {t:'cyl',axis:'y',x:xn,y:YC,z:ZX,r:0.055,h:YB - YC,c:'steelDark'});
+    sh.push({t:'box',x:c0 + 0.06,y:YC,z:0,w:0.05,d:0.05,h:ZX - RX,c:'steelDark'}, {t:'box',x:c0 + L - 0.06,y:YC,z:0,w:0.05,d:0.05,h:ZX - RX,c:'steelDark'});
+    sh.push({t:'cyl',axis:'x',x:c0 + 0.05,y:YC,z:ZX,r:RX,h:L - 0.1,c:'cw'}, {t:'cyl',axis:'x',x:c0,y:YC,z:ZX,r:RX + 0.02,h:0.05,c:'steelDark'}, {t:'cyl',axis:'x',x:c0 + L - 0.05,y:YC,z:ZX,r:RX + 0.02,h:0.05,c:'steelDark'});   // intercooler shell (cooling-water look) with a channel head at each end
+    sh.push({t:'cyl',axis:'z',x:c0 + L / 2,y:YC,z:ZX + RX - 0.02,r:0.035,h:0.1,c:'cw'});   // cooling-water stub
+  }
+  return { name: 'Compressor', does: PB.EQUIP.compressor.does, stages: n,
+    nozzles: { in: { up: [G[1], 0, top + 0.22], xdir: -1 }, out: { up: [G[2], 0, top + 0.18], xdir: 1 } },
+    shape: sh };
+};
+[2, 3, 4].forEach(n => PB.EQUIP['compressor' + n] = PB.compressorTrain(n));
 
 /* Fixed items (feeds, products, utilities, waste) use these shapes */
 PB.FIXED = {
@@ -4159,6 +4212,9 @@ PB.LEVELS.bioethanol = {
                 xd: { P: 2, top: 50, bot: 80, liqTop: 1, src: 'abc' } },   // v8: the A + B column, course slides [37]
       flashMax: 150,         // v7.1 review R2-2: a liquid flash (biodiesel methanol recovery) is fed at 150 °C or cooler [36]
       oilCond: 50,           // SAF oils are liquid at the 50 °C phase separation (course slides [31])   // P cited [3] / [9]; T derived (NIST Antoine)
+      // v8.1: compressors (PB.ASSUMPTIONS 'stages', 'gamma'): at most a ratio of 4 per stage [30]; intercoolers to 50 °C (instructor
+      // design basis); gamma = Cp/Cv at 303.15 K and 1.01325 bar from NIST fluid data [38] (calc workbook), for the gases the game can compress
+      compress: { maxRatio: 4, interT: 50, gamma: { co2: 1.29, h2: 1.4, n2: 1.4, o2: 1.4, nh3: 1.31, so2: 1.28 } },
     },
 
     /* ---------------- process units (the Process zone) ----------------
@@ -4167,7 +4223,7 @@ PB.LEVELS.bioethanol = {
     units: {
       joint:      { ins: [['in', 'low', 'Inlets']], multi: 1, outs: [['out', 'low', 'Outlet']], rule: 'joint' },
       splitter:   { ins: [['in', 'low', 'Inlet']], outs: [['a', 'low', 'Outlet A'], ['b', 'low', 'Outlet B']], rule: 'splitter' },
-      valve:      { ins: [['in', 'low', 'Inlet']], outs: [['out', 'low', 'Outlet']], set: 'P', rule: 'valve' },
+      valve:      { ins: [['in', 'end', 'Inlet']], outs: [['out', 'end', 'Outlet']], ends: { in: { axis: 'x', r: 0.38, z: 0.3 }, out: { axis: 'x', r: 0.38, z: 0.3 } }, set: 'P', rule: 'valve' },   // v8.1: piped at the body ends
       pump:       { ins: [['in', 'end', 'Suction']], ends: { in: { axis: 'x', side: 1, r: 0.34, z: 0.44 } }, outs: [['out', 'top', 'Discharge']], motor: 1, rule: 'pump' },
       compressor: { ins: [['in', 'low', 'Inlet']], outs: [['out', 'low', 'Outlet']], set: 'P', motor: 1, rule: 'compressor' },
       hx:         { ins: [['in', 'end', 'Inlet']], outs: [['out', 'end', 'Outlet']], ends: { in: { axis: 'x', r: 0.97, z: 0.62 }, out: { axis: 'x', r: 0.97, z: 0.62 } }, set: 'T', rule: 'hx' },
@@ -4232,19 +4288,20 @@ PB.LEVELS.bioethanol = {
       { title: 'Pipe joint', text: 'Every inlet component comes out. The outlet takes the lowest inlet pressure and the average inlet temperature.', pic: [[['g+', 'g-'], '>', 'joint', '>', 'g-'], [['t+', 't-'], '>', 'joint', '>', 't0']] },
       { title: 'Mixer: liquids only', text: 'A mixer takes liquids. Gas with liquid, or gases, join at a pipe joint.', pic: [[['L', 'L'], '>', 'mix', 'ok'], [['G', 'L'], '>', 'mix', 'x'], [['G', 'L'], '>', 'joint', 'ok']] },
       { title: 'Pump, compressor, valve', text: 'A pump pushes a liquid and a compressor a gas to the pressure you set. A valve lowers the pressure.', pic: [['L', '>', 'press', '>', 'g+'], ['G', '>', 'comp', '>', 'g+'], ['g+', '>', 'valve', '>', 'g-']] },
+      { title: 'Pressure and temperature', text: 'Compressing a gas heats it. Real compressors work in stages with coolers between them, so you see the last stage\'s heating. Pumping a liquid hardly warms it: pump it cool, then heat it.', pic: [['G', '>', 'comp', '>', 't+'], ['comp', '>', 'cool', '>', 'comp', '>', 't+'], ['L', '>', 'press', '>', 'temp', '>', 't+']] },   // v8.1
       { title: 'Every outlet goes somewhere', text: 'Each outlet feeds one pipe. Connect every outlet, or the flow stops there.', pic: [['sep', '>', 'tank', 'ok'], ['sep', '>', 'x']] },
       { title: 'Pressure drops', text: 'Heat exchanger {P:dP.hx}, reactor {P:dP.reactor}, flash drum {P:dP.flash}, pipe joint {P:dP.tee}. The pressure never falls below {P:atmP}.', pic: [['g+', '>', 'temp', '>', 'g0']] },
       { title: 'Heating limit', text: 'A heat exchanger heats up to {T:hotOilMax} with steam or hot oil. Hotter needs a fired heater.', pic: [['temp', '>', 't0', 'ok'], ['fuel', '>', 't+', 'ok']] },
-      { title: 'Big pressure drop: valve', text: 'A drop of more than {P:valveDrop} into a column, a tank, Gas storage, the vent or the flare needs a pressure-reducing valve. Feeds meeting at a pipe joint, and gas feeds into a reactor, must be set within {P:valveDrop} of each other; a higher one needs a pressure-reducing valve.', pic: [['g+', '>', 'valve', '>', 'col', 'ok'], ['g+', '>', 'col', 'x']] },
+      { title: 'Big pressure drop: valve', text: 'A drop of more than {P:valveDrop} into a column, a tank, the vent or the flare needs a pressure-reducing valve. Feeds meeting at a pipe joint, and gas feeds into a reactor, must be set within {P:valveDrop} of each other; a higher one needs a pressure-reducing valve.', pic: [['g+', '>', 'valve', '>', 'col', 'ok'], ['g+', '>', 'col', 'x']] },
       { title: 'Match the NEEDS', text: 'Reactors, separators and purifiers work only when what arrives matches their NEEDS: components, temperature and pressure.', pic: [['In', '>', 'Needs', 'ok']] },
-      { title: 'Storage', text: 'Tanks take liquid at {T:storeMax} or cooler and {P:atmP+valveDrop} or lower; the refrigerated tank takes chilled liquid. Gas products go to Gas storage; leftover gases go to Gas storage, the vent or the flare.', pic: [[['L', 't-'], '>', 'tank', 'ok'], ['G', '>', 'gastank', 'ok']] },
-      { title: 'Recycle earns points', text: 'A recycle is optional. Sending unreacted material back to the reactor earns extra points.', pts: 1, pic: [['react', '>', 'sep', '>', 'recycle', '>', 'react']] },
+      { title: 'Storage', text: 'Tanks take liquid at {T:storeMax} or cooler and {P:atmP+valveDrop} or lower; the refrigerated tank takes chilled liquid. Gas storage takes gas at any pressure (compressed gas storage is normal): gas products go there; leftover gases go to Gas storage, the vent or the flare.', pic: [[['L', 't-'], '>', 'tank', 'ok'], ['G', '>', 'gastank', 'ok']] },
+      { title: 'Recycle earns points', text: 'Points come for feeds in, reaction, separation, purification, products and a working plant. A recycle is optional: sending unreacted material back to the reactor earns extra points. A recycle joins a process line (a pipe joint or a mixer), never a storage tank.', pts: 1, pic: [['react', '>', 'sep', '>', 'recycle', '>', 'react']] },
       { title: 'Two outlets, two flows', text: 'Each outlet of a unit runs on its own: one can stop while the other flows on.', pic: [['sep', 'Top', '>', 'x'], ['sep', 'Bottom', '>', 'tank', 'ok']] } ],
     /* v5 unit picker (Picker B): what each unit takes, what the student sets, what it gives — icon + a few words, no numbers.
        Icons are PB.CARD_ICONS keys (G gas, L liquid, S solid, T, P, Top, Bottom, no = not allowed). */
     pick: {
-      pump:       { takes: [['L', 'Liquid only'], ['noG', 'No gas']], set: [['P', 'Outlet pressure']], gives: [['L', 'Liquid, pushed on']] },
-      compressor: { takes: [['G', 'Gas only'], ['noL', 'No liquid']], set: [['P', 'Outlet pressure']], gives: [['G', 'Gas at higher pressure']] },
+      pump:       { takes: [['L', 'Liquid only'], ['noG', 'No gas']], set: [['P', 'Outlet pressure']], gives: [['L', 'Liquid, pushed on'], ['T', 'Hardly warms the liquid; pump it cool']] },   // v8.1
+      compressor: { takes: [['G', 'Gas only'], ['noL', 'No liquid']], set: [['P', 'Outlet pressure']], gives: [['G', 'Gas at higher pressure'], ['T', 'The gas hotter (stages with coolers between)']] },   // v8.1
       valve:      { takes: [['any', 'Any stream under pressure']], set: [['P', 'Outlet pressure (lower)']], gives: [['any', 'Same stream, lower pressure']] },
       joint:      { takes: [['G', 'Gas pipes'], ['L', 'or liquid pipes, or both'], ['P', 'Takes the lowest pressure']], gives: [['Out', 'One pipe']] },
       splitter:   { takes: [['In', 'One pipe']], gives: [['Out', 'Outlet A'], ['Out', 'Outlet B (same stream)']] },
@@ -4302,7 +4359,7 @@ PB.LEVELS.bioethanol = {
                        {t:'cyl',axis:'z',x:0,y:0,z:0.75,r:1.02,h:0.05,c:'refrig',ring:1}, {t:'cyl',axis:'z',x:0,y:0,z:1.55,r:1.02,h:0.05,c:'refrig',ring:1},
                        {t:'cyl',axis:'z',x:0,y:0,z:2.3,r:1.0,r2:0.8,h:0.2,c:'steelLight'}, {t:'cyl',axis:'z',x:0,y:0,z:2.5,r:0.8,r2:0.2,h:0.28,c:'steelLight'} ],   // v6.4: insulated shell (bands) and a shallow domed roof (unit-models 7.4)
         info: [ 'Product: liquid ammonia, stored fully refrigerated at -33 °C in atmospheric tanks. [13]' ] },
-      gastank: { name: 'Gas storage', does: 'Stores one gas (a product, a by-product or leftover gas) at low pressure. Choose what it stores.', shape: () => PB.FIXED.sphere(0.85, 'steelDark') },   // v8: both modes
+      gastank: { name: 'Gas storage', does: 'Stores one gas (a product, a by-product or leftover gas) at any pressure. Choose what it stores.', shape: () => PB.FIXED.sphere(0.85, 'steelDark') },   // v8: both modes
       vent: { name: 'Vent stack', basicOnly: 1, does: 'Releases leftover gas high above the ground.', shape: () => PB.FIXED.stack('co2') },
       pond: { name: 'Effluent pond', basicOnly: 1, does: 'Collects watery by-products for treatment or reuse.', shape: () => PB.FIXED.pond('water') }
     },
@@ -4359,6 +4416,7 @@ PB.LEVELS.bioethanol = {
       mixOne: 'This mixer has only one stream coming in, so it has nothing to blend.',
       setT: 'Choose a temperature for {u}: tap it and move the slider.',
       setP: 'Choose a pressure for {u}: tap it and move the slider.',
+      pumpBoil: '{u}: the liquid may boil in the pump (cavitation). Pump it cool, then heat it.',   // v8.1: a tip, not a stop
       noop: '{u} does nothing here: the stream is already at that temperature or pressure.',
       firedCool: 'A fired heater can only heat. Use a heat exchanger with cooling water to cool.',
       wrongReactor: 'This process does not use a {u}. Check the spec card.',
@@ -4402,9 +4460,8 @@ PB.LEVELS.bioethanol = {
       notDryP: 'it is still wet.',
       noProduct: 'No {p} reaches a product tank yet.',
       wrongSink: '{s} should go to: {list}.',
-      rawBack: 'Only the same pure material can go back into the {m} tank.',
       noPurge: 'The recycle loop has no purge. Send a small purge stream from the recycle gas to a {sink}.',
-      recLoopComp: 'Recycle gas loses pressure on the way round. It needs a compressor before it joins the feed again.',
+      recLoopComp: 'Recycle gas loses pressure on the way round. It needs a compressor somewhere in its loop.',
       recPump: 'Missing pump on the {s} recycle: a liquid does not move back by itself.',
       missPump: 'The liquid from {a} cannot reach {b}: a liquid does not move to the next unit by itself.',
       yeastWaste: 'The yeast is still alive and useful: clean it and send it back to the fermenter instead.',
@@ -4451,7 +4508,7 @@ PB.SANDBOX.solutions = {
     basic: { place: [
       ['CO2', 'raw', 'co2', 3, 1.5], ['H2', 'raw', 'h2', 3, 6.5],
       ['C1', 'unit', 'compressor', 7.5, 1.5, { P: 75 }], ['C2', 'unit', 'compressor', 7.5, 6.5, { P: 75 }],
-      ['J', 'unit', 'joint', 10, 6.5], ['H', 'unit', 'hx', 11, 4, { T: 250 }], ['R', 'unit', 'reactor', 14, 4], ['K', 'unit', 'hx', 17, 4, { T: 50 }], ['F', 'unit', 'flash', 20, 4],
+      ['J', 'unit', 'joint', 10.5, 6.5], ['H', 'unit', 'hx', 11, 4, { T: 250 }], ['R', 'unit', 'reactor', 14, 4], ['K', 'unit', 'hx', 17, 4, { T: 50 }], ['F', 'unit', 'flash', 20, 4],
       ['RC', 'unit', 'compressor', 20, 1.5, { P: 75 }], ['V', 'unit', 'valve', 17, 7.5, { P: 1.2 }], ['COL', 'unit', 'column', 20, 8.5],
       ['CT', 'unit', 'hx', 23, 6.5, { T: 50 }], ['CW', 'unit', 'hx', 23, 11.5, { T: 50 }],
       ['MEOHT', 'sink', 'tank', 27, 9, { prod: 'Methanol' }], ['POND', 'sink', 'pond', 27, 12] ],
@@ -4481,7 +4538,7 @@ PB.SANDBOX.solutions = {
       ['H2', 'raw', 'h2', 3, 1.5], ['N2', 'raw', 'n2', 3, 6.5],
       ['C1', 'unit', 'compressor', 7.5, 1.5, { P: 100 }], ['C2', 'unit', 'compressor', 7.5, 6.5, { P: 100 }],
       ['H', 'unit', 'hx', 11, 4, { T: 180 }], ['CV', 'unit', 'converter', 14, 4], ['K', 'unit', 'hx', 17, 4, { T: 50 }], ['CH', 'unit', 'hx', 17, 7, { T: -10 }],
-      ['F', 'unit', 'flash', 21, 7], ['SP', 'unit', 'splitter', 21, 4.5], ['RC', 'unit', 'compressor', 21, 2, { P: 100 }], ['J', 'unit', 'joint', 10, 6.5], ['V', 'unit', 'valve', 22, 10, { P: 1.01 }], ['VP', 'unit', 'valve', 23, 3, { P: 1.01 }],
+      ['F', 'unit', 'flash', 21, 7], ['SP', 'unit', 'splitter', 21, 4.5], ['RC', 'unit', 'compressor', 20, 1.5, { P: 100 }], ['J', 'unit', 'joint', 10.5, 6.5], ['V', 'unit', 'valve', 22, 10, { P: 1.01 }], ['VP', 'unit', 'valve', 23, 3, { P: 1.01 }],
       ['NH3', 'sink', 'refrigtank', 27, 8], ['VENT', 'sink', 'vent', 27, 2] ],
       pipes: [ ['H2', 'out', 'C1'], ['N2', 'out', 'C2'], ['C1', 'out', 'J'], ['C2', 'out', 'J'], ['RC', 'out', 'J'], ['J', 'out', 'H'], ['H', 'out', 'CV'], ['CV', 'out', 'K'], ['K', 'out', 'CH'], ['CH', 'out', 'F'],
         ['F', 'top', 'SP'], ['SP', 'a', 'RC'], ['SP', 'b', 'VP'], ['VP', 'out', 'VENT'], ['F', 'bot', 'V'], ['V', 'out', 'NH3'] ], recycle: ['SP', 'RC'] },
@@ -4549,7 +4606,7 @@ PB.ASSUMPTIONS = [
   { id: 'cwmin', kind: 'basis', text: 'The closest a cooling-water cooler gets is about 45 °C; colder needs refrigeration (chilled water).' },
   { id: 'hotoil', kind: 'basis', text: 'Hot oil heats streams up to about 350 °C (thermal fluids can serve up to 750 °F [22]); most steam systems only up to about 400 °F (≈ 204 °C) [22]; hotter heating uses a fired heater.' },
   { id: 'atm', kind: 'derived', text: 'Atmospheric pressure: 1 atm = 1.01 bar.' },
-  { id: 'phase', kind: 'estimate', text: 'Whether a part is gas or liquid is judged by its normal boiling point, except that ammonia condenses when chilled to 0 °C or colder under loop pressure and a column\'s bottoms stay liquid at their boiling point at the column pressure. Compressors are cooled so the gas leaves at the temperature it came in.' },
+  { id: 'phase', kind: 'estimate', text: 'Whether a part is gas or liquid is judged by its normal boiling point, except that ammonia condenses when chilled to 0 °C or colder under loop pressure and a column\'s bottoms stay liquid at their boiling point at the column pressure.' },
   { id: 'dp', kind: 'estimate', text: 'Pressure drops: heat exchanger 0.5 bar (within the 3–9 psi rule of thumb [30]), reactor 1 bar, flash drum 0.2 bar, pipe joint 0.1 bar. A flash drum fed with only liquid lets it down to 1.01 bar. Pressure never falls below 1.01 bar.' },
   { id: 'pump', kind: 'estimate', text: 'A pump starts at 3 bar: enough to push a liquid through the next units.' },
   { id: 'blow', kind: 'estimate', text: 'Air for the sulfur burner is blown in at 1.2 bar, just above atmospheric pressure.' },
@@ -4567,7 +4624,9 @@ PB.ASSUMPTIONS = [
   { id: 'span', kind: 'basis', text: 'A reactor accepts its spec pressure ± 5 bar: methanol 75 bar → 70–80 bar; SAF 70 bar → 65–75 bar; A + B 10 bar → 5–15 bar.' },
   { id: 'valve', kind: 'basis', text: 'A pressure drop of more than 2 bar into a low-pressure unit needs a pressure-reducing valve (control valves need a drop of at least 10 psi to control well [30]). So a stream let down into a tank at 1.01 bar may arrive at up to 3.01 bar without a valve, and a column takes its feed from its own pressure up to 2 bar above it: methanol column 1.2–3.2 bar, ethanol column 2.03–4.03 bar, SAF columns 1.01–3.01 bar, A + B column 2–4 bar.' },
   { id: 'loop', kind: 'estimate', text: 'The fermenter cooling loop uses cooling water: the cooler is set to 45 °C and takes away the heat the fermenting broth keeps making, so the broth goes back at 45 °C.' },
-  { id: 'abc', kind: 'basis', text: 'The A + B → C + D + E example follows the course slides [37] as a teaching example: the flash drum runs below 10 bar (after the pressure drops), and the products are stored at up to 3.01 bar like every tank, which covers the 1–2 bar products on the slides.' },
+  { id: 'stages', kind: 'basis', text: 'A compressor uses the fewest stages that keep the compression ratio of each stage at about 4 or less, with the same ratio in every stage [30]. Between stages, intercoolers cool the gas to 50 °C, or leave it as it is if it is already colder.' },
+  { id: 'gamma', kind: 'derived', text: 'A compressed gas leaves at the temperature of the last stage: T2 = T1 (P2/P1)^a with a = (k − 1)/k, k = Cp/Cv and absolute temperatures [30]. Here P2/P1 is the pressure ratio of one stage, and T1 is the temperature entering the last stage (50 °C after an intercooler, the inlet temperature for a single stage). k at 30 °C and 1.01 bar from NIST [38]: CO₂ 1.29, H₂ 1.4, N₂ 1.4, O₂ 1.4, NH₃ 1.31, SO₂ 1.28. A mixture takes the simple average of the gases that have a value; if no gas in the stream has a value, its temperature is shown unchanged. Example: CO₂ from 1.01 to 75 bar takes 4 stages with a ratio of 2.94 each and leaves at about 139 °C. In the reference plants: H₂ from 1.01 to 75 bar leaves at about 166 °C; H₂ or N₂ from 1.01 to 100 bar at about 176 °C; the methanol recycle gas from 72.7 to 75 bar at about 53 °C; air blown to 1.2 bar at about 45 °C. A pump hardly warms a liquid, so its temperature stays the same.' },
+  { id: 'abc', kind: 'basis', text: 'The A + B → C + D + E example follows the course slides [37] as a teaching example: the flash drum runs below 10 bar (after the pressure drops), and the liquid products are stored at up to 3.01 bar like every tank, which covers the 1–2 bar products on the slides.' },
 ];
 
 </script>
@@ -4875,12 +4934,27 @@ window.PB = window.PB || {};
   const inRange = (R, v) => v != null && R.in.P.some(r => Array.isArray(r) ? v >= r[0] && v <= r[1] : v === r);
   const pOk = (R, s) => !R.in.P || (R.in.P === 'blown' ? !!s.blown : inRange(R, s.Pset));   // v8: the merged setting (the lowest feed setting); a feed with no setting fails
   const tOk = (R, Tv) => !R.in.T || R.in.T.some(v => Math.abs(Tv - v) < 0.01);
+  // v8.1: a typed setpoint: any number within its slider's range, to 1 decimal (outside → the nearest limit; not a number → unset)
+  const spVal = (type, key, val) => { if (val == null || String(val).trim() === '' || !Number.isFinite(+val)) return undefined;   // R1-1: a blank entry is unset, not 0
+    const sl = SBX().sliders[type]; if (!sl || sl.key !== key) return +val;
+    if (sl.vals.includes(+val)) return +val;   // a slider value stays exact (1.01, 2.03 bar)
+    const lo = Math.min(...sl.vals), hi = Math.max(...sl.vals); if (+val <= lo) return lo; if (+val >= hi) return hi;   // clamped: the slider end exactly (1.01 bar, not 1.0)
+    return Math.min(hi, Math.max(lo, Math.round(+val * 10) / 10)); };   // 1.04 bar on the valve rounds to 1.0: still at least 1.01
+  PB.sandboxSetpoint = spVal;
+  // v8.1: a compressor uses the fewest stages whose equal ratio per stage is at most B.compress.maxRatio [30]; intercoolers cool the
+  // gas to B.compress.interT between stages (R1-2: a colder gas is left as it is); the gas leaves at the last stage's isentropic T2 = T1·r^((γ−1)/γ) (absolute T), γ = the
+  // simple average of the NIST Cp/Cv of the components that have one (none: the temperature is unchanged)
+  PB.compressorStages = (P1, P2) => { const max = BS().compress.maxRatio; let n = 1; while (P2 > P1 && Math.pow(P2 / P1, 1 / n) > max + 1e-9) n++; return n; };
+  PB.compressorOutT = (c, Tin, P1, P2) => { const CB = BS().compress, gs = c.map(k => CB.gamma[k]).filter(g => g != null), n = PB.compressorStages(P1, P2);
+    if (!gs.length || P2 <= P1) return Tin; const g = gs.reduce((a, b) => a + b, 0) / gs.length, f = Math.pow(Math.pow(P2 / P1, 1 / n), (g - 1) / g);
+    let T = Tin + 273.15; for (let i = 1; i < n; i++) T = Math.min(CB.interT + 273.15, T * f);   // each stage heats by f; the intercooler cools to interT, never heats
+    return T * f - 273.15; };
 
   /* ---------- what each kind of item is ---------- */
   function spec(cat, type) {
     const S = SBX();
     if (cat === 'unit') { const u = S.units[type], eq = PB.EQUIP[type]; return { name: eq.name, ins: u.ins, outs: u.outs, multi: !!u.multi, zone: 'proc' }; }
-    if (cat === 'raw') { const m = S.materials.find(q => q.id === type); return { name: m.name, ins: [['in', 'top', 'Return (recycle)']], outs: [['out', 'low', 'Outlet']], multi: true, zone: 'raw' }; }
+    if (cat === 'raw') { const m = S.materials.find(q => q.id === type); return { name: m.name, ins: [], outs: [['out', 'low', 'Outlet']], multi: true, zone: 'raw' }; }   // v8.1 (client): no inlet: nothing goes back into storage
     if (cat === 'sink') return { name: S.sinks[type].name, ins: [['in', type === 'vent' ? 'low' : 'top', 'Inlet']], outs: [], multi: true, zone: 'prod' };   // v6.4: a vent stack is fed near its base
     if (cat === 'waste') return { name: S.waste[type].name, ins: [['in', 'low', 'Inlet']], outs: [], multi: true, zone: 'waste' };
     if (cat === 'util') return { name: S.utilities[type].name, ins: [], outs: [], multi: true, zone: 'util' };
@@ -4913,14 +4987,14 @@ window.PB = window.PB || {};
     return P.products.filter(p => p.sink.includes(t)).map(p => p.name).concat(P.byproducts.filter(b => (adv ? b.advanced : b.basic).includes(t)).map(b => b.name),
       (P.recovered || []).filter(r => (r.ph === 'G') === (t === 'gastank')).map(r => r.name));
   };
-  PB.sandboxStoreNeeds = function (proc, type, prod) {
+  PB.sandboxStoreNeeds = function (proc, type, prod) {   // v8.1: gas storage at any pressure
     const S = SBX(), B = BS(), P = S.library[proc], gas = type === 'gastank', one = c => ({ name: S.comps[c].name, ph: phCode(c, { liq: gas ? [] : [c] }) });
     if (type === 'refrigtank') return { T: '≤ ' + fmtT(B.chillCond), P: '≤ ' + fmtP(B.atmP + B.valveDrop), comps: [one('nh3')] };
     const tP = '≤ ' + fmtP(B.atmP + B.valveDrop);   // a tank at 1.01 bar: up to 2 bar above it needs no valve (PB.ASSUMPTIONS 'valve')
     if (type === 'pond' || type === 'wwt') return { T: '≤ ' + fmtT(B.storeMax), P: tP, comps: [{ name: 'Watery liquid', ph: 'Lp' }] };
     if (type !== 'tank' && !gas) return null;
     const pr = P.products.find(p => p.name === prod), by = P.byproducts.find(b => b.name === prod), rc = (P.recovered || []).find(r => r.name === prod);
-    return { T: gas ? S.cardWords.anyT : '≤ ' + fmtT(B.storeMax), P: tP, comps: pr ? bpSort(pr.c).map(one) : by ? [Object.assign(one(by.main), { name: by.name })] : rc ? bpSort(rc.c).map(one) : [{ name: 'Tap to choose', ph: '' }] };
+    return { T: gas ? S.cardWords.anyT : '≤ ' + fmtT(B.storeMax), P: gas ? S.cardWords.anyP : tP, comps: pr ? bpSort(pr.c).map(one) : by ? [Object.assign(one(by.main), { name: by.name })] : rc ? bpSort(rc.c).map(one) : [{ name: 'Tap to choose', ph: '' }] };
   };
   PB.sandboxSepNeeds = function (proc, type) {
     const S = SBX(), B = BS(), W = S.cardWords, N = S.needsSep[type]; if (!N) return null;
@@ -4950,7 +5024,7 @@ window.PB = window.PB || {};
   PB.sandboxSinkCard = function (type, cat, s) {
     const c = PB.sandboxCard(s); if (!c) return null;
     if (type === 'refrigtank') c.T = fmtT(BS().refrigT);
-    c.P = fmtP(BS().atmP);   // tanks, stacks and treatment units are at atmospheric pressure
+    if (type !== 'gastank') c.P = fmtP(BS().atmP);   // tanks, stacks and treatment units are at atmospheric pressure (v8.1: gas storage keeps the gas pressure)
     return c;
   };
   /* v6.1 phase codes: G gas (stays gas), V vapour (condenses when cooled), Lp polar liquid, Ln oily liquid, S solid or cells */
@@ -5000,7 +5074,7 @@ window.PB = window.PB || {};
     elapsed() { return this.started ? ((this.finished || performance.now()) - this.started) / 1000 : 0; },
     spec(id) { const it = this.items[id]; return it && spec(it.cat, it.type); },
     zone(id) { return this.board.zones.find(z => z.id === id); },
-    fp(it) { return PB.footprint(shapeOf(it), it.x, it.y); },
+    fp(it) { return PB.footprint(it.cat === 'unit' && it.type === 'compressor' ? PB.EQUIP.compressor4.shape : shapeOf(it), it.x, it.y); },   // v8.1: a compressor always reserves the 4-stage footprint
     name(id) { const it = this.items[id]; return !it ? id : it.cat === 'sink' && it.sp && it.sp.prod ? it.sp.prod + (it.type === 'gastank' ? ' storage' : ' tank') : it.name; },   // v8: gas storage too
 
     placeFixed() {
@@ -5018,7 +5092,7 @@ window.PB = window.PB || {};
       if ((cat === 'util' || cat === 'waste') && this.mode !== 'advanced') return { ok: false, msg: 'Utilities and waste treatment are part of Advanced mode.' };
       if (cat === 'sink' && SBX().sinks[type].basicOnly && this.mode === 'advanced') return { ok: false, msg: 'In Advanced mode, leftover gases and watery waste go to the Waste Treatment zone.' };
       const z = this.zone(sp.zone); if (!z) return { ok: false, msg: 'This board has no ' + sp.zone + ' zone.' };
-      const f = PB.footprint(shapeOf({ cat, type, x, y, skin: this.skinOf(cat, type) }), x, y);
+      const f = this.fp({ cat, type, x, y, skin: this.skinOf(cat, type) });
       if (f.x0 < z.x - 0.05 || f.x1 > z.x + z.w + 0.05 || f.y0 < z.y - 0.05 || f.y1 > z.y + z.d + 0.05) return { ok: false, msg: 'Place it inside the ' + z.label + ' zone (the highlighted area).' };
       const gp = 0.95;
       for (const id of this.order) { if (id === ignore) continue; const o = this.items[id], g = this.fp(o);
@@ -5050,7 +5124,7 @@ window.PB = window.PB || {};
       const c = this.canPlace(it.cat, it.type, x, y, id); if (!c.ok) return c;
       it.x = x; it.y = y; this.changed(); return { ok: true };
     },
-    setpoint(id, key, val) { const it = this.items[id]; if (!it) return; it.sp[key] = val == null ? undefined : +val; this.changed(); },
+    setpoint(id, key, val) { const it = this.items[id]; if (!it) return; it.sp[key] = spVal(it.type, key, val); this.changed(); },   // v8.1: typed values too
     store(id, prod) { const it = this.items[id]; if (!it || !['tank', 'gastank'].includes(it.type)) return; it.sp.prod = prod || undefined; this.changed(); },   // v6.2: what a product tank stores (v8: or a gas storage)
     inPorts(id) { const s = this.spec(id); return s ? s.ins : []; },
     outPorts(id) { const s = this.spec(id); return s ? s.outs : []; },
@@ -5059,7 +5133,7 @@ window.PB = window.PB || {};
       if (from === to) return { ok: false, msg: 'A pipe cannot go back into the same unit.' };
       const outs = this.outPorts(from), ins = this.inPorts(to);
       if (!outs.find(o => o[0] === port)) return { ok: false, msg: A.name + ' has no such outlet.' };
-      if (!ins.length) return { ok: false, msg: B.name + ' does not take pipes. Utilities are linked from the unit card.' };
+      if (!ins.length) return { ok: false, msg: B.cat === 'raw' ? B.name + ' is a storage tank: nothing goes back into it. A recycle joins a process line with a pipe joint or a mixer.' : B.name + ' does not take pipes. Utilities are linked from the unit card.' };   // v8.1
       if (!inPort) { if (ins.length > 1) return { ok: false, needPort: true, msg: 'Choose which inlet.' }; inPort = ins[0][0]; }
       if (!ins.find(o => o[0] === inPort)) return { ok: false, msg: B.name + ' has no such inlet.' };
       if (this.pipes.find(p => p.from === from && p.port === port && p.to === to)) return { ok: false, msg: 'These two are already connected.' };
@@ -5116,7 +5190,8 @@ window.PB = window.PB || {};
         const it = this.items[id];
         if (it.cat === 'unit') {
           const needSet = !!S.units[it.type].set, isSet = it.sp.T != null || it.sp.P != null;
-          const def = { id, x: it.x, y: it.y, name: it.name, tagText: it.name + (needSet && !isSet ? ' · set ?' : '') };
+          if (it.type === 'compressor') it.skin = it.stages > 1 ? 'compressor' + Math.min(it.stages, 4) : undefined;   // v8.1: the train model (more than 4 stages: the 4-stage model)
+          const def = { id, x: it.x, y: it.y, name: it.name, tagText: it.name + (it.stages > 1 ? ' · ' + it.stages + ' stages' : '') + (needSet && !isSet ? ' · set ?' : '') };
           pads.push(def); this.nodes[id] = { id, def, kind: 'pad', x: it.x, y: it.y, unit: it.type, skin: it.skin, flipX: it.flipX, bad: !!(this.badIds && this.badIds.has(id)) };
         } else {
           const def = { id, kind: kindOf[it.cat], name: this.name(id), x: it.x, y: it.y, shape: shapeOf(it) };   // v7 review: a product tank shows what it stores
@@ -5318,9 +5393,9 @@ window.PB = window.PB || {};
       // Follow the flow from the raw tanks: a unit is evaluated once all its feeds have arrived. When every remaining
       // unit waits on a loop, the loop is cut where an engineer would see the recycle join: at the waiting unit whose
       // feeds have mostly arrived (fresh feed meets the return stream), preferring a non-reactor; its missing feeds are
-      // the recycles. Pipes into raw tanks are always returns. This does not depend on the order things were built in.
+      // the recycles. This does not depend on the order things were built in.
       const pipes = this.pipes, outP = id => pipes.filter(p => p.from === id), inP = id => pipes.filter(p => p.to === id);
-      const back = new Set(pipes.filter(p => items[p.to].cat === 'raw').map(p => p.id));
+      const back = new Set();
       const isReact = id => items[id].cat === 'unit' && S.units[items[id].type].rule === 'react';
       const done = new Set(), topo = [];
       let left = this.order.filter(id => items[id].cat !== 'util');
@@ -5350,8 +5425,8 @@ window.PB = window.PB || {};
       // v8: pass 0 runs without the recycles; when the plant has any, pass 1 runs again with each recycle carrying what pass 0 sent
       // round, so every unit sees it through the same merge (one tear pass, presence only)
       const pass = seeded => {
-        fails = []; pens = []; warns = []; outs = {}; passes = {}; this.duty = {};
-        rec = { loopHx: new Set(), yeastNoop: [], loopGas: false, purgeFrom: [], recPipes: new Set(), ferm: [], loopOK: {}, products: {}, byp: {} };
+        fails = []; pens = []; warns = []; outs = {}; passes = {}; this.duty = {}; this.stg = {};   // v8.1: compressor stages
+        rec = { warnNodes: new Set(), loopHx: new Set(), yeastNoop: [], loopGas: false, purgeFrom: [], recPipes: new Set(), ferm: [], loopOK: {}, products: {}, byp: {} };
         for (const p of pipes) if (!back.has(p.id)) delete st[p.id];
         for (const id of topo) {
           const it = items[id], ins = inP(id).filter(p => !back.has(p.id) || (seeded && st[p.id]));
@@ -5388,12 +5463,14 @@ window.PB = window.PB || {};
           if (it.cat !== 'unit' || !['pump', 'compressor', 'valve', 'hx', 'firedheater', 'acidtank', 'joint', 'splitter'].includes(it.type)) return false;
           const ins = inP(cur).filter(p => !back.has(p.id)); if (ins.length !== 1) return false; cur = ins[0].from; }
         return false; };
+      // v8.1: the loop of a return pipe = units downstream of where it joins that also lead back to where it leaves (forward pipes)
+      const reach = (id, nxt) => { const seen = new Set([id]), q = [id]; while (q.length) nxt(q.shift()).forEach(n => { if (!seen.has(n)) { seen.add(n); q.push(n); } }); return seen; };
+      const loopHas = (p, want) => { const up = reach(p.from, id => inP(id).filter(r => !back.has(r.id)).map(r => r.from));
+        return [...reach(p.to, id => outP(id).filter(r => !back.has(r.id)).map(r => r.to))].some(id => up.has(id) && items[id].cat === 'unit' && items[id].type === want); };
       for (const p of pipes.filter(q => back.has(q.id))) {
         const s = (outs[p.from] || {})[p.port]; st[p.id] = s && s.c.length ? s : null; if (!st[p.id]) continue;
         const T = items[p.to], prodIn = P.products.some(pr => pr.c.some(c => s.c.includes(c)));
-        if (T.cat === 'raw') { const m = matOf(p.to); const ok = s.c.length === m.comps.length && m.comps.every(c => s.c.includes(c)) && ph(s) !== 'G';
-          if (!ok) fail(p.to, fmt(M.rawBack, { m: m.name.toLowerCase() }), { pipe: p.id }); else rec.recPipes.add(p.id); }   // v8: a pure return to its own tank is a recycle; a wrong one stops only that return pipe
-        if (ph(s) === 'G' && T.cat === 'unit' && !upChain(p.from, 'compressor')) fail(p.to, M.recLoopComp);
+        if (ph(s) === 'G' && T.cat === 'unit' && !loopHas(p, 'compressor') && !upChain(p.from, 'compressor')) fail(p.to, M.recLoopComp, { pipe: p.id });   // v8.1: a compressor anywhere in the loop; only the return pipe stops
         if (P.loop && s.c.includes(P.loop.c) && ph(s) === 'G' && feedSide.has(p.to) && !prodIn) { rec.loopGas = true; rec.recPipes.add(p.id); }
         if (P.recycle && s.c.includes(P.recycle.c) && feedSide.has(p.to) && !prodIn && (P.recycle.c !== 'yeast' || s.treated)) rec.recPipes.add(p.id);
         // the fermenter loop: broth cooled with cooling water (no colder than it reaches, no warmer than the fermenter) comes back (v6.2)
@@ -5432,15 +5509,15 @@ window.PB = window.PB || {};
       // ---- v6: a drop of more than 2 bar into a low-pressure unit needs a pressure-reducing valve
       for (const p of pipes) {
         const s = st[p.id]; if (!s) continue; const A = items[p.from], Bt = items[p.to];
-        if (back.has(p.id) && Bt.cat !== 'raw') continue;   // recycles into a raw tank are checked too
-        const into = Bt.cat === 'sink' || Bt.cat === 'waste' || Bt.cat === 'raw' ? B.atmP : Bt.cat === 'unit' && Bt.type === 'column' ? this.colP(s) : null;
+        if (back.has(p.id)) continue;   // v8.1: recycles join a process line (raw tanks take no pipes)
+        const into = Bt.cat === 'sink' && Bt.type === 'gastank' ? null : Bt.cat === 'sink' || Bt.cat === 'waste' ? B.atmP : Bt.cat === 'unit' && Bt.type === 'column' ? this.colP(s) : null;   // v8.1: gas storage takes gas at any pressure
         if (into == null) continue;
-        if (A.cat === 'unit' && A.type === 'valve') { if (A.sp.P != null && Math.min(A.sp.P, s.Pv) - into > B.valveDrop) fail(p.to, fmt(M.missValve, { a: A.name, b: Bt.name }), { between: [p.from, p.to], pipe: back.has(p.id) ? p.id : undefined }); continue; }   // a valve set too high (v8: a return into a raw tank stops only that pipe)
+        if (A.cat === 'unit' && A.type === 'valve') { if (A.sp.P != null && Math.min(A.sp.P, s.Pv) - into > B.valveDrop) fail(p.to, fmt(M.missValve, { a: A.name, b: Bt.name }), { between: [p.from, p.to] }); continue; }   // a valve set too high
         if (A.cat === 'unit' && A.type === 'pump') {   // a pump's own push needs no valve, but a pump is no let-down valve: check what reaches it
           const pin = inP(p.from).filter(q => !back.has(q.id)).map(q => st[q.id]).filter(Boolean), up = inP(p.from).find(q => !back.has(q.id));
           if (pin.length && Math.max(...pin.map(x => x.Pv)) - into > B.valveDrop) fail(p.from, fmt(M.missValve, { a: items[up.from].name, b: A.name }), { between: [up.from, p.from] });
           continue; }
-        if (s.Pv - into > B.valveDrop) fail(p.to, fmt(M.missValve, { a: A.name, b: Bt.name }), { between: [p.from, p.to], pipe: back.has(p.id) ? p.id : undefined });
+        if (s.Pv - into > B.valveDrop) fail(p.to, fmt(M.missValve, { a: A.name, b: Bt.name }), { between: [p.from, p.to] });
       }
       // ---- v8 (client decisions R2-M1, round 2): at a pipe joint (any feed) or a catalytic reactor (reactor, converter; its gas feeds), a feed more than 2 bar above
       // the lowest one needs a valve; when the lowest feed is below the reactor's pressure window, the reactor's wrong-pressure stop names the place
@@ -5504,14 +5581,20 @@ window.PB = window.PB || {};
       const madeAt = r => live(r) && !whole.has(r) && outs[r] && Object.values(outs[r]).some(Boolean);
       const stored = P.products.filter(pr => (rec.products[pr.name] || []).some(id => live(id) && !whole.has(id))).length;
       const stage = ok ? 4 : stored === P.products.length ? 3 : reactIds.some(madeAt) ? 2 : reactIds.some(live) ? 1 : 0;
-      // v8 points (out of 100): the reference plant's unit types placed and reached 40, milestones 45, a working recycle 15 (the pass
-      // takes those 15 where no recycle is possible)
+      // v8 points (out of 100): the reference plant's unit types placed and reached 30, milestones 55, a working recycle 15 (the pass
+      // takes those 15 where no recycle is possible). v8.1: Separation and Purification 5 each, when a separator / purifier type of the
+      // checklist is reached, passes and has no stopped outlet; a step the reference does not have is hidden and its 5 go to the checklist
       const chk = PB.sandboxChecklist(this.procId, this.mode), noRec = !P.recycle && !P.loop;   // v8 review: the recycle points need the whole plant working
-      const parts = { units: 40 * chk.filter(t => this.order.some(id => items[id].cat === 'unit' && items[id].type === t && reached(id) && passes[id])).length / (chk.length || 1),
-        feeds: reactIds.some(live) ? 10 : 0, reaction: reactIds.some(madeAt) ? 10 : 0, products: 10 * stored / P.products.length,
-        pass: ok ? (noRec ? 30 : 15) : 0, recycle: ok && !noRec && pipes.some(p => rec.recPipes.has(p.id) && flow[p.id]) ? 15 : 0 };
-      const points = { total: Math.round(Object.values(parts).reduce((a, b) => a + b, 0)), parts };
-      return this.lastEval = { ok, fail: stops[0] || null, stops, flow, points, fails, pens, warns, passes, st, back, colors, ph, outs, nodeIn, stage, describe: s => this.describe(s, ph) };
+      const grp = g => S.groups.find(x => x.id === g).units.filter(t => chk.includes(t)), sepT = grp('sep'), purT = grp('pur');
+      const stepOK = ts => this.order.some(id => items[id].cat === 'unit' && ts.includes(items[id].type) && reached(id) && passes[id] && !stops.some(f => f.node === id));
+      const parts = { units: (30 + (sepT.length ? 0 : 5) + (purT.length ? 0 : 5)) * chk.filter(t => this.order.some(id => items[id].cat === 'unit' && items[id].type === t && reached(id) && passes[id])).length / (chk.length || 1),
+        feeds: reactIds.some(live) ? 10 : 0, reaction: reactIds.some(madeAt) ? 10 : 0, sep: sepT.length && stepOK(sepT) ? 5 : 0, pur: purT.length && stepOK(purT) ? 5 : 0,
+        products: 10 * stored / P.products.length, pass: ok ? (noRec ? 30 : 15) : 0, recycle: ok && !noRec && pipes.some(p => rec.recPipes.has(p.id) && flow[p.id]) ? 15 : 0 };
+      const points = { total: Math.round(Object.values(parts).reduce((a, b) => a + b, 0)), parts, has: { sep: !!sepT.length, pur: !!purT.length, recycle: !noRec } };   // v8.1: has = the steps the progress bar shows
+      let restage = false; for (const id of this.order) { const it = items[id]; if (it.cat !== 'unit' || it.type !== 'compressor') continue;   // v8.1: the stage count draws the model and the tag
+        const n = this.stg[id] || 1; if (it.stages !== n) { it.stages = n; restage = true; } }
+      if (restage) this.layout();
+      return this.lastEval = { ok, fail: stops[0] || null, stops, flow, points, fails, pens, warns, warnNodes: rec.warnNodes, passes, st, back, colors, ph, outs, nodeIn, stage, describe: s => this.describe(s, ph) };
     },
     describe(s, ph) {
       if (!s) return 'No flow yet.'; const C = SBX().comps, p = ph(s);
@@ -5530,6 +5613,8 @@ window.PB = window.PB || {};
         case 'pump':
           if (!['L', 'LL'].includes(p)) return { fail: fmt(M.pumpGas, { ph: phName[p] || p }) };
           if (it.sp.P == null) return { fail: fmt(M.setP, { u: name }) };   // pumps in a row are normal: no 'does nothing' penalty
+          { const bps = s.liq.filter(c => C[c].bp != null).map(c => C[c].bp);   // v8.1: a tip, not a stop: a liquid at 1.01 bar at or above its lightest part's normal boiling point may boil in the pump
+            if (bps.length && s.Pv <= B.atmP + 1e-9 && s.Tv >= Math.min(...bps)) { pen(fmt(M.pumpBoil, { u: name }), it.id); rec.warnNodes.add(it.id); } }
           return { outs: { out: Object.assign({}, s, { Pv: Math.max(s.Pv, it.sp.P), Pset: it.sp.P }) } };
         case 'splitter':
           return { outs: { a: s, b: s } };
@@ -5542,7 +5627,8 @@ window.PB = window.PB || {};
           if (it.sp.P == null) return { fail: fmt(M.setP, { u: name }) };
           if (it.sp.P < s.Pv) return { fail: M.compDown };   // v8 final review: a compressor never lets the pressure down
           if (it.sp.P === s.Pv) pen(fmt(M.noop, { u: name }), it.id);
-          return { outs: { out: Object.assign({}, s, { Pv: it.sp.P, Pset: it.sp.P, blown: true }) } };
+          this.stg[it.id] = PB.compressorStages(s.Pv, it.sp.P);   // v8.1: multi-stage with intercoolers; the outlet T is the last stage's rise
+          return { outs: { out: Object.assign({}, s, { Pv: it.sp.P, Pset: it.sp.P, blown: true, Tv: PB.compressorOutT(s.c, s.Tv, s.Pv, it.sp.P) }) } };
         case 'hx': {
           if (it.sp.T == null) return { fail: fmt(M.setT, { u: name }) };
           const T = it.sp.T, heat = T > s.Tv;
@@ -5646,7 +5732,7 @@ window.PB = window.PB || {};
         const allowed = b => (adv ? b.advanced : b.basic) || [];
         const sinkName = k => (S.sinks[k] || S.waste[k]).name.toLowerCase();
         const rc = (P.recovered || []).find(r => r.c.length === s.c.length && r.c.every(c => s.c.includes(c)));   // v8: a recovered material (recycle optional)
-        if (it.cat === 'sink' && t === 'gastank') {   // v8: one chosen gas, exactly; its pressure limit is the valve rule (like every tank)
+        if (it.cat === 'sink' && t === 'gastank') {   // v8: one chosen gas, exactly (v8.1: at any pressure)
           if (p !== 'G') return { fail: M.gasLiq };
           if (loopGas) rec.purgeFrom.push({ from, sink: it.id });   // v8 (lead decision): gas stored off the loop is a purge, like a vent or flare (a wrong choice then stops at the tank)
           const want = it.sp.prod; if (!want) return { fail: M.tankChoose };
@@ -5744,8 +5830,8 @@ window.PB = window.PB || {};
       if (!o || o.proc !== this.procId || o.mode !== this.mode) return false;
       const S = SBX(), known = it => it && typeof it.id === 'string' && /^\w+$/.test(it.id) && ({ unit: S.units, sink: S.sinks, waste: S.waste, util: S.utilities }[it.cat] || {}).hasOwnProperty(it.type) || (it && it.cat === 'raw' && typeof it.id === 'string' && /^\w+$/.test(it.id) && S.materials.some(m => m.id === it.type));
       const own = id => typeof id === 'string' && Object.hasOwn(this.items, id), ok = q => q && typeof q.id === 'string' && /^\w+$/.test(q.id);
-      this.items = {}; this.order = []; (Array.isArray(o.items) ? o.items : []).filter(known).forEach(it => { it.sp = it.sp || {}; it.skin = this.skinOf(it.cat, it.type); this.items[it.id] = it; this.order.push(it.id); });
-      this.pipes = (Array.isArray(o.pipes) ? o.pipes : []).filter(p => ok(p) && own(p.from) && own(p.to)); this.links = (Array.isArray(o.links) ? o.links : []).filter(l => ok(l) && own(l.unit) && own(l.util)); this.seq = o.seq || 0; this.runs = o.runs || 0; this.usedReference = !!o.usedReference; if (o.elapsed) this.started = performance.now() - o.elapsed * 1000;
+      this.items = {}; this.order = []; (Array.isArray(o.items) ? o.items : []).filter(known).forEach(it => { it.sp = it.sp || {}; delete it.stages; for (const k of ['T', 'P']) if (it.sp[k] != null) it.sp[k] = spVal(it.type, k, it.sp[k]); it.skin = this.skinOf(it.cat, it.type); this.items[it.id] = it; this.order.push(it.id); });
+      this.pipes = (Array.isArray(o.pipes) ? o.pipes : []).filter(p => ok(p) && own(p.from) && own(p.to) && this.inPorts(p.to).some(q => q[0] === p.inPort)); this.links = (Array.isArray(o.links) ? o.links : []).filter(l => ok(l) && own(l.unit) && own(l.util)); this.seq = o.seq || 0; this.runs = o.runs || 0; this.usedReference = !!o.usedReference; if (o.elapsed) this.started = performance.now() - o.elapsed * 1000;   // v8.1: a pipe into a missing inlet (an old return into a raw tank) is dropped
       this.placeFixed(); this.changed(); return true;
     },
     clear() { this.items = {}; this.order = []; this.pipes = []; this.links = []; this.usedReference = false; this.placeFixed(); this.changed(); },   // deploys and time are kept (fair scoring)
@@ -5788,7 +5874,7 @@ PB.CARD_ICONS = {
   // unit-group badges: reactor, pump, heater, mixer, drum, filter, tank
   react: 'M7 7.5a5 5 0 0 1 10 0v9a5 5 0 0 1-10 0zM7 9h10M7 15h10', press: 'M16 14a6 6 0 1 1-12 0a6 6 0 1 1 12 0M10 8V4h9M4 21h12',
   temp: 'M3 12h3l2-5 4 10 4-10 2 5h3',
-  sep: 'M8 6a4 4 0 0 1 8 0v12a4 4 0 0 1-8 0zM8 14h8',
+  sep: 'M9 9.5a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0zM9 13h6M12 5.5V2M10 4l2-2 2 2M12 18.5V22M10 20l2 2 2-2',   // v8.1 review R3-2: a drum with vapour up and liquid down (unlike the reactor)
   // v5 picker icons
   noG: 'M11.5 15a3.5 3.5 0 1 1-7 0a3.5 3.5 0 1 1 7 0M18 8.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0M4 4l16 16',
   noL: 'M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11zM4 4l16 16',
@@ -5798,10 +5884,12 @@ PB.CARD_ICONS = {
   // v8: Guide pictures (pipe joint, compressor, valve, column, gas storage sphere, recycle loop)
   joint: 'M3 6h5l4 6h9M3 18h5l4-6', comp: 'M4 6l16 4v4L4 18z', valve: 'M4 7v10l16-10v10zM12 12V5M9 5h6', col: 'M9 3h6v18H9zM9 8h6M9 13h6M15 5h3M15 19h3',
   gastank: 'M19 11a7 7 0 1 1-14 0a7 7 0 1 1 14 0M8 17l-2 4M16 17l2 4', recycle: 'M4 12a8 8 0 0 1 14-5M20 12a8 8 0 0 1-14 5M18 3v4h-4M6 21v-4h4',
+  warn: 'M12 9v4M10.4 3.6l-8.1 13.5a1.9 1.9 0 0 0 1.6 2.9h16.2a1.9 1.9 0 0 0 1.6-2.9L13.6 3.6a1.9 1.9 0 0 0-3.2 0zM12 16.5v.5',   // v8.1: the pump ⚠ (Tabler alert-triangle)
   util: 'M13 2L4 14h7l-1 8 9-12h-7z', waste: 'M12 3c3 4 5 6 5 10a5 5 0 0 1-10 0c0-2 1-4 2-5 0 2 1 3 2 3 0-3 1-5 1-8z', sink: 'M3 21h18M5 21V9l7-5 7 5v12', pur: 'M4 4h16l-6 8v7l-4 2v-9z', tank: 'M5 6c0-3 14-3 14 0v12c0 3-14 3-14 0zM5 6c0 3 14 3 14 0'
 };
-/* v8 review: the milestone icons (Feeds in, Reaction, Products, Works, Recycle), shared by the game's progress bar and the class board */
-PB.MS_ICONS = [PB.CARD_ICONS.In, PB.CARD_ICONS.react, PB.CARD_ICONS.tank, 'M4 13l5 5L20 7', PB.CARD_ICONS.recycle];
+/* v8 review: the milestone icons (Feeds in, Reaction, Products, Works, Recycle), shared by the game's progress bar and the class board;
+   v8.1: + Separation (the separator badge) and Purification (the column) for the game's progress bar */
+PB.MS_ICONS = [PB.CARD_ICONS.In, PB.CARD_ICONS.react, PB.CARD_ICONS.tank, 'M4 13l5 5L20 7', PB.CARD_ICONS.recycle, PB.CARD_ICONS.sep, PB.CARD_ICONS.col];
 PB.cardHot = s => parseFloat(String(s).replace('−', '-')) >= 100;   // v5: amber for 100 °C and hotter
 /* squeeze an SVG text into max px (no-op before it is rendered) */
 PB.fitText = (el, max) => { try { if (el.getComputedTextLength() > max) { el.setAttribute('textLength', max); el.setAttribute('lengthAdjust', 'spacingAndGlyphs'); } } catch (e) { /* not rendered yet */ } };
@@ -5820,6 +5908,18 @@ PB.shapeTop = function (shape) {
   let top = 0;
   shape.forEach(p => { const t = p.t === 'sph' ? p.z + p.r : p.t === 'box' ? p.z + p.h : (p.axis === 'z' ? p.z + p.h : p.z + Math.max(p.r, p.r2 || 0)); top = Math.max(top, t); });
   return top;
+};
+
+/* v8.1: the board point (x, y, z) of each split card's nozzle (card.parts, sandbox-ui cardFor): a connected pipe's end (paths =
+   PB.bridgedPaths), else by the port kind: a top nozzle at the shape top, a low/bottom one at the base, any other at the mid-side */
+PB.splitAnchors = function (game, id, paths) {
+  const n = game.nodes[id], shape = PB.nodeShape(game, id), top = Math.min(PB.shapeTop(shape), 2.6), r = PB.shapeSupport(shape, -0.7071, 0.7071) * 0.7071;
+  return n.def.card.parts.map(q => {
+    const pipe = game.pipes.find(p => q.dir === 'in' ? p.to === id && p.inPort === q.port : p.from === id && p.port === q.port), P = pipe && paths[pipe.id];
+    if (P) return (q.dir === 'in' ? P[P.length - 1] : P[0]).slice(0, 3);
+    const kind = ((q.dir === 'in' ? game.inPorts(id) : game.outPorts(id)).find(p => p[0] === q.port) || [])[1];
+    return kind === 'top' ? [n.x, n.y, top] : kind === 'low' || kind === 'bottom' ? [n.x, n.y, 0.15] : [n.x - r, n.y + r, top / 2];
+  });
 };
 
 PB.IsoView = function (container, game, handlers) {
@@ -6020,13 +6120,14 @@ PB.IsoView.prototype = {
     }
     this.pipeEls[e.id] = { segs, rec, len: s0, anchor, state: null, p: -1, sv: null };
   },
-  tag(parent, x, y, z, text, cls) {
+  tag(parent, x, y, z, text, cls, ico) {
     const p = this.P(x, y, z);
     const g = this.el('g', { class: 'tag ' + (cls || ''), transform: `translate(${p[0].toFixed(1)},${p[1].toFixed(1)})` }, parent);
     g._bx = p[0]; g._by = p[1]; this.tagDirty = true;
     const r = this.el('rect', { rx: 6, ry: 6, y: -19, height: 24 }, g);
-    const t = this.el('text', { y: -2.5 }, g); t.textContent = text;
-    const w = Math.max(22, text.length * 7.6 + 14); r.setAttribute('x', -w / 2); r.setAttribute('width', w); g._w = w;
+    const t = this.el('text', { y: -2.5, x: ico ? 8 : 0 }, g); t.textContent = text;
+    const w = Math.max(22, text.length * 7.6 + 14 + (ico ? 16 : 0)); r.setAttribute('x', -w / 2); r.setAttribute('width', w); g._w = w;
+    if (ico) this.cardIcon(ico, -w / 2 + 5, -15, 14, 'tag-i', g);   // v8.1: an icon before the name (the pump ⚠)
     return g;
   },
   /* push overlapping labels apart (reactor first, then units, then stream tags) */
@@ -6059,7 +6160,7 @@ PB.IsoView.prototype = {
       const base = this.padEls[id] = this.el('polygon', { class: 'pad-base' + (this.focus === id ? ' focus' : '') + (n.bad ? ' bad' : ''), points: this.poly([P(-s, -s), P(s, -s), P(s, s), P(-s, s)]) }, this.padLayer);
       const eq = PB.EQUIP[n.skin || n.unit];
       this.drawShape(PB.unitShape(n), n.x, n.y, g);
-      tagsG[id] = this.tag(this.tagLayer, n.x, n.y, Math.min(PB.shapeTop(eq.shape), 2.6) + (/^(settler|flash)$/.test(n.unit) ? 0.85 : 0.35), n.def.tagText, n.bad ? 'tag-bad' : 'tag-unit');
+      tagsG[id] = this.tag(this.tagLayer, n.x, n.y, Math.min(PB.shapeTop(eq.shape), 2.6) + (/^(settler|flash)$/.test(n.unit) ? 0.85 : 0.35), n.def.tagText, n.bad ? 'tag-bad' : 'tag-unit' + (n.def.card && n.def.card.warn ? ' tag-warn' : ''), n.def.card && n.def.card.warn ? 'warn' : null);   // v8.1: the pump ⚠
       base.setAttribute('data-id', id);
     } else {
       this.drawShape(n.def.shape, n.x, n.y, g);
@@ -6203,6 +6304,25 @@ PB.IsoView.prototype = {
     const g = this.el('g', { transform: `translate(${x},${y}) scale(${size / 24})` }, parent);
     this.el('path', { class: 'ucard-i ' + (cls || ''), d: PB.CARD_ICONS[name] || PB.CARD_ICONS.Out }, g); return g;
   },
+  /* v8.1: the three cards of a two-outlet separator or purifier (single view): Needs + Inlet beside the inlet nozzle, the outlets beside
+     theirs (a top nozzle: above it), pushed apart if they overlap, kept on screen; one scale so the three fit across the screen */
+  splitCards(n, todo) {
+    const r = this.svg.getBoundingClientRect(), s = Math.min(r.width / this.vb.w, r.height / this.vb.h) || 1, v = this.vb, m = 12 / s, gap = 24 / s;
+    const shape = PB.nodeShape(this.g, n.id), ctr = this.P(n.x, n.y, Math.min(PB.shapeTop(shape), 2.6) / 2), anc = PB.splitAnchors(this.g, n.id, this.paths || {});
+    const L = n.def.card.parts.map((q, i) => { const c = q.card, rows = Math.max(...c.cols.map(k => k.comps.length));
+      return { q, c, w: Math.max(96 * c.cols.length + 8, 30 + c.title.length * 6.6), h: 64 + rows * 13, a: this.P(...anc[i]) }; });
+    const k = Math.min(Math.max(1, 1.3 / s), (r.width - 48) / s / (L[0].w + Math.max(L[1].w, L[2].w)), (r.height - 48) / s / (L[0].h + L[1].h + L[2].h) * 1.6);
+    const sideIn = Math.sign(L[0].a[0] - ctr[0]) || -1, placed = [];
+    L.forEach((p, i) => { const W = p.w * k, H = p.h * k, a = p.a, up = p.q.dir === 'out' && a[1] < ctr[1] - 4 && Math.abs(a[0] - ctr[0]) < 24;   // a nozzle on the top head: the card sits above it
+      const sd = i ? (Math.abs(a[0] - ctr[0]) > 4 ? Math.sign(a[0] - ctr[0]) : -sideIn) : sideIn;
+      let x = up ? a[0] - W / 2 : sd < 0 ? a[0] - gap - W : a[0] + gap, y = up ? a[1] - gap - H : a[1] - H / 2;
+      if (!i) { const zt = Math.min(PB.shapeTop(shape), 2.6), bx = [[1, 0], [-1, 0], [0, 1], [0, -1]].flatMap(([dx, dy]) => { const R = PB.shapeSupport(shape, dx, dy); return [0, zt].map(z => this.P(n.x + dx * R, n.y + dy * R, z)[0]); });
+        x = sd < 0 ? Math.min(x, Math.min(...bx) - gap - W) : Math.max(x, Math.max(...bx) + gap); }   // review R3-3: Needs + Inlet beside the unit body, not over it (the clamp below wins when there is no room)
+      for (let t = 0; t < 6; t++) { const o = placed.find(b => x < b.x + b.W + 4 / s && x + W + 4 / s > b.x && y < b.y + b.H + 4 / s && y + H + 4 / s > b.y); if (!o) break; y = up ? o.y - H - 6 / s : o.y + o.H + 6 / s; }
+      x = Math.max(v.x + m, Math.min(x, v.x + v.w - W - m)); y = Math.max(v.y + m, Math.min(y, v.y + v.h - H - m));
+      placed.push({ x, y, W, H }); todo.push({ n, c: p.c, base: a, w: p.w, h: p.h, k, x, y, anchor: a }); });
+    if (this.tagEls && this.tagEls[n.id]) this.tagEls[n.id].style.display = 'none';
+  },
   drawCards(only) {   // a card has at most PB.CARD_MAX_COLS columns (a fermenter: needs, in, broth, gas)
     if (this.cardLayer) this.cardLayer.remove();
     const layer = this.cardLayer = this.el('g', { class: 'card-layer' }, this.world);
@@ -6211,8 +6331,9 @@ PB.IsoView.prototype = {
     const todo = [];
     for (const n of Object.values(this.g.nodes)) {
       const c = n.def.card; if (!c || (only && only !== n.id)) continue;
+      if (only && c.parts) { this.splitCards(n, todo); continue; }   // v8.1: three cards by the nozzles
       const shape = n.kind === 'pad' ? PB.unitShape(n) : n.def.shape, base = this.P(n.x, n.y, Math.min(PB.shapeTop(shape), 2.6) + 0.55);
-      const rows = Math.max(...c.cols.slice(0, PB.CARD_MAX_COLS).map(k => k.comps.length)), w = Math.max(96 * Math.min(PB.CARD_MAX_COLS, c.cols.length) + 8, 30 + c.title.length * 6.6), h = 64 + rows * 13;   // a long title widens the card
+      const rows = Math.max(...c.cols.slice(0, PB.CARD_MAX_COLS).map(k => k.comps.length)), w = Math.max(96 * Math.min(PB.CARD_MAX_COLS, c.cols.length) + 8, 30 + c.title.length * 6.6 + (c.stages ? 62 : 0), c.warn ? 214 : 0), h = 64 + rows * 13 + (c.warn ? 30 : 0);   // a long title widens the card (v8.1: + the stage count, the pump ⚠ line)
       const r = this.svg.getBoundingClientRect(), s = Math.min(r.width / this.vb.w, r.height / this.vb.h) || 1;
       const k = only ? Math.min(Math.max(1, 1.3 / s), (r.width - 32) / s / w) : 1;   // final review: card text about 11 px, never wider than the screen
       const m = 16 / s, x0 = base[0] - w * k / 2, xc = only ? Math.max(this.vb.x + m, Math.min(x0, this.vb.x + this.vb.w - w * k - m)) : x0;   // a single card stays on screen
@@ -6221,17 +6342,19 @@ PB.IsoView.prototype = {
     }
     todo.sort((a, b) => b.base[1] - a.base[1]);
     const placed = [];
-    for (const k of todo) {
+    for (const k of todo) { if (k.anchor) continue;   // v8.1: split cards are placed already
       for (let i = 0; i < 12; i++) { const hit = placed.find(r => k.x < r.x + r.w + 3 && k.x + k.w + 3 > r.x && k.y < r.y + r.h + 3 && k.y + k.h + 3 > r.y); if (!hit) break; k.y = hit.y - k.h - 4; }
       placed.push(k);
     }
     const leads = this.el('g', {}, layer);
-    for (const { n, c, base, w, h, k, x, y } of todo) {
-      if (y + h + 6 < base[1] - 2) this.el('line', { class: 'ucard-lead', x1: base[0], y1: base[1], x2: base[0], y2: y + h }, leads);
+    todo.forEach(({ n, c, base, w, h, k, x, y, anchor }, ti) => {
+      if (anchor) { const a = anchor, ex = Math.max(x, Math.min(x + w * k, a[0])), ey = Math.max(y, Math.min(y + h * k, a[1]));   // v8.1: a short leader from the card's nearest edge to its nozzle
+        this.el('line', { class: 'ucard-lead', x1: a[0], y1: a[1], x2: ex, y2: ey }, leads); this.el('circle', { class: 'ucard-noz', cx: a[0], cy: a[1], r: 2.2 }, leads); }
+      else if (y + h + 6 < base[1] - 2) this.el('line', { class: 'ucard-lead', x1: base[0], y1: base[1], x2: base[0], y2: y + h }, leads);
       const colW = 96, rowH = 13, cols = c.cols.slice(0, PB.CARD_MAX_COLS);
       const g = this.el('g', { class: 'ucard g-' + (c.grp || 'unit') + (n.bad ? ' bad' : '') + (this.cardFocus === n.id ? ' on' : ''), 'data-id': n.id, transform: `translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${k.toFixed(3)})` }, layer);
       g.addEventListener('pointerenter', () => layer.appendChild(g));   // v6: the card under the pointer comes to the front (and turns solid in CSS)
-      const clip = 'ucc-' + n.id;
+      const clip = 'ucc-' + n.id + '-' + ti;
       const cp = this.el('clipPath', { id: clip }, g); this.el('rect', { width: w, height: h, rx: 7 }, cp);
       const body = this.el('g', { 'clip-path': `url(#${clip})` }, g);
       this.el('rect', { class: 'ucard-bg', width: w, height: h }, body);
@@ -6242,6 +6365,10 @@ PB.IsoView.prototype = {
       this.cardIcon(PB.CARD_ICONS[c.grp] ? c.grp : 'tank', 7, 8, 10, 'ucard-bi', g);
       const t = this.el('text', { class: 'ucard-title', x: 24, y: 17 }, g); t.textContent = c.title;
       if (c.cat) { this.cardIcon('cat', w - 92, 8, 9, 'ucard-li', g); const ct = this.el('text', { class: 'ucard-lab', x: w - 80, y: 15.5 }, g); ct.textContent = 'Catalyst inside'; }
+      if (c.stages) { this.cardIcon('comp', w - 60, 8, 9, 'ucard-li', g); const st = this.el('text', { class: 'ucard-lab', x: w - 48, y: 15.5 }, g); st.textContent = c.stages + ' stages'; }   // v8.1: a multi-stage compressor
+      if (c.warn) { const yb = h - 30, ln = c.warn.split(/(?<=:) /);   // v8.1: the pump ⚠ line across the card foot
+        this.el('line', { class: 'ucard-div', x1: 0, y1: yb, x2: w, y2: yb }, g); this.cardIcon('warn', 7, yb + 6, 13, 'ucard-warn-i', g);
+        ln.forEach((q, j) => { const tx = this.el('text', { class: 'ucard-warn', x: 25, y: yb + 12 + j * 11 }, g); tx.textContent = q; PB.fitText(tx, w - 32); }); }
       PB.fitText(t, w - 30);
       this.el('line', { class: 'ucard-div', x1: 0, y1: 23, x2: w, y2: 23 }, g);
       cols.forEach((k, i) => {
@@ -6261,9 +6388,9 @@ PB.IsoView.prototype = {
           const tx = this.el('text', { class: 'ucard-c', x: x0 + (m.pair ? 22 : 12), y }, g); tx.textContent = m.name;
           PB.fitText(tx, colW - 20);
         });
-        if (i) this.el('line', { class: 'ucard-div', x1: x0 - 5, y1: 23, x2: x0 - 5, y2: h }, g);
+        if (i) this.el('line', { class: 'ucard-div', x1: x0 - 5, y1: 23, x2: x0 - 5, y2: h - (c.warn ? 30 : 0) }, g);
       });
-    }
+    });
     if (only) this.focusCard(only);   // v6.4: a single card (hover or a first tap) is solid, not see-through
   },
   focusCard(id) { this.cardFocus = id; if (!this.cardLayer) return; this.cardLayer.querySelectorAll('.ucard').forEach(c => { const on = c.getAttribute('data-id') === id; c.classList.toggle('on', on); if (on) this.cardLayer.appendChild(c); }); },
@@ -6301,7 +6428,7 @@ window.PB = window.PB || {};
         if (!kind || bad.length) out.unknown.push(n.def.name + ': ' + JSON.stringify(p)); else out.parts.push({ id: n.id, kind, p, ox: n.x, oy: n.y }); });
       const top = PB.shapeTop(shape), R = Math.max(0.5, ...[[1, 0], [-1, 0], [0, 1], [0, -1]].map(([dx, dy]) => PB.shapeSupport(shape, dx, dy)));
       out.hits.push({ id: n.id, x: n.x, y: n.y, r: Math.min(R, 1.3), h: Math.max(0.6, top) });
-      out.tags.push({ id: n.id, text: n.def.name, x: n.x, y: n.y, z: Math.min(top, 2.6) + (n.kind === 'pad' && /^(settler|flash)$/.test(n.unit) ? 0.85 : 0.35) });
+      out.tags.push({ id: n.id, text: n.def.name, warn: !!(n.def.card && n.def.card.warn), x: n.x, y: n.y, z: Math.min(top, 2.6) + (n.kind === 'pad' && /^(settler|flash)$/.test(n.unit) ? 0.85 : 0.35) });   // v8.1: + the pump ⚠ flag (no stage count: the 3D layer shows no digits)
     }
     const paths = PB.bridgedPaths(game);
     for (const e of Object.values(game.edges)) {
@@ -6453,7 +6580,8 @@ window.PB = window.PB || {};
       this.hits = plan.hits.map(h => { const m = new T.Mesh(new T.CylinderGeometry(h.r, h.r, h.h, 12), this.hitMat); m.position.set(h.x, h.h / 2, h.y); m.updateMatrixWorld(true); m.userData.id = h.id; return m; });
       this.tagLayer.innerHTML = ''; this.cards = {};
       this.leads = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); this.leads.setAttribute('class', 't3-leads'); this.tagLayer.appendChild(this.leads);   // card leader lines
-      this.tags = plan.tags.map(t => { const el = document.createElement('div'); el.className = 't3-tag'; el.textContent = t.text; el.setAttribute('data-id', t.id);
+      this.tags = plan.tags.map(t => { const el = document.createElement('div'); el.className = 't3-tag' + (t.warn ? ' warn' : ''); el.textContent = t.text; el.setAttribute('data-id', t.id);
+        if (t.warn) el.insertAdjacentHTML('afterbegin', `<svg class="ci" viewBox="0 0 24 24" aria-label="Warning"><path d="${PB.CARD_ICONS.warn}"/></svg>`);   // v8.1: the pump ⚠
         this.tagLayer.appendChild(el); return { id: t.id, el, pos: new T.Vector3(t.x, t.z, t.y), w: 0 }; });
       this.dirty = true;
     },
@@ -6482,13 +6610,19 @@ window.PB = window.PB || {};
       this.cursor3.visible = !!(st.zone && this.cell); if (this.cell) this.cursor3.position.set(this.cell[0], 0.05, this.cell[1]);
       const show = st.cardsOn ? Object.keys(this.g.nodes).filter(id => this.g.nodes[id].def.card) : [this.hover || st.cardOnly].filter(id => id && this.g.nodes[id] && this.g.nodes[id].def.card);
       const sm = !!st.cardsOn;   // all cards: the compact size
-      for (const id in this.cards) if (!show.includes(id) || this.cards[id].sm !== sm) { this.cards[id].el.remove(); delete this.cards[id]; }
-      show.forEach(id => { if (this.cards[id]) return; const c = this.g.nodes[id].def.card, el = document.createElement('div');
+      // v8.1: a single two-outlet separator or purifier shows three cards (Needs + Inlet, and each outlet), each led to its nozzle
+      const T = this.T, list = []; show.forEach(id => { const c = this.g.nodes[id].def.card;
+        if (sm || !c.parts) { list.push({ key: id, id, c, pos: this.tags.find(q => q.id === id).pos }); return; }
+        const anc = PB.splitAnchors(this.g, id, Object.fromEntries(this.plan.pipes.map(pp => [pp.id, pp.path])));
+        c.parts.forEach((q, i) => list.push({ key: id + '#' + i, id, c: q.card, pos: new T.Vector3(anc[i][0], anc[i][2], anc[i][1]), noz: true, part: i })); });
+      for (const key in this.cards) if (!list.some(q => q.key === key) || this.cards[key].sm !== sm) { this.cards[key].el.remove(); delete this.cards[key]; }
+      list.forEach(({ key, id, c, pos, noz, part }) => { if (this.cards[key]) return; const el = document.createElement('div');
         el.className = 't3-card g-' + (c.grp || 'unit') + (sm ? ' sm' : ''); el.innerHTML = this.opts.cardHTML(c); this.tagLayer.appendChild(el);   // the card data of the 2.5D board, nothing more
         // v7.1: a single card (hover, or the one being worked on) is drawn larger, its smallest text 12 px, never larger than the view
-        const t = this.tags.find(q => q.id === id), w = el.offsetWidth, h = el.offsetHeight, k = sm ? 1 : Math.max(1, Math.min(1.2, (this.w - 8) / w, (this.h - 8) / h));
+        const w = el.offsetWidth, h = el.offsetHeight, k = sm || noz ? 1 : Math.max(1, Math.min(1.2, (this.w - 8) / w, (this.h - 8) / h));
         if (k !== 1) el.style.transformOrigin = '50% 100%';
-        this.cards[id] = { el, sm, k, pos: t.pos, w: w * k, h: h * k }; });
+        const hb = noz && this.plan.hits.find(q => q.id === id);   // v8.1: a nozzle card keeps off its unit's body (its tap cylinder)
+        this.cards[key] = { el, sm, k, pos, w: w * k, h: h * k, id, part, body: hb && [-1, 1].flatMap(a => [-1, 1].flatMap(b => [0, hb.h].map(y => new T.Vector3(hb.x + a * hb.r, y, hb.y + b * hb.r)))) }; });
     },
     /* Deploy stop: the camera closes in so the unit sits in the upper third of the view, above the stop message (as 2.5D centerOn lifts it) */
     flyTo(n, spread) {   // v8: n = the stops' middle; spread = how far the farthest stop lies from it
@@ -6548,17 +6682,28 @@ window.PB = window.PB || {};
        hides until zoomed in (laid out only when the picture changed) */
     placeLabels() {
       const v = new this.T.Vector3(), items = [], at = (pos, el) => { v.copy(pos).project(this.cam); if (v.z >= 1 || Math.abs(v.x) > 1.2 || Math.abs(v.y) > 1.2) { el.style.display = 'none'; return null; } el.style.display = ''; return [(v.x + 1) / 2 * this.w, (1 - v.y) / 2 * this.h]; };
-      for (const id in this.cards) { const c = this.cards[id], p = at(c.pos, c.el); if (p) items.push({ el: c.el, x: p[0], y: p[1], w: c.w, h: c.h, k: c.k, card: true }); }
-      this.tags.forEach(t => { if (this.cards[t.id]) { t.el.style.display = 'none'; return; } const p = at(t.pos, t.el); if (!p) return; if (!t.w) t.w = t.el.offsetWidth || 60; items.push({ el: t.el, x: p[0], y: p[1], w: t.w, h: 22 }); });
-      items.sort((a, b) => (!!b.card - !!a.card) || (a.card ? b.w * b.h - a.w * a.h : 0) || (b.y - a.y)); const placed = [];
+      const proj = q => { v.copy(q).project(this.cam); return [(v.x + 1) / 2 * this.w, (1 - v.y) / 2 * this.h]; };
+      for (const key in this.cards) { const c = this.cards[key], p = at(c.pos, c.el); if (!p) continue;
+        const bp = c.body && c.body.map(proj), body = bp && [Math.min(...bp.map(q => q[0])), Math.min(...bp.map(q => q[1])), Math.max(...bp.map(q => q[0])), Math.max(...bp.map(q => q[1]))];
+        items.push({ el: c.el, x: p[0], y: p[1], w: c.w, h: c.h, k: c.k, card: true, body, part: c.part }); }
+      const carded = new Set(Object.values(this.cards).map(c => c.id));
+      this.tags.forEach(t => { if (carded.has(t.id)) { t.el.style.display = 'none'; return; } const p = at(t.pos, t.el); if (!p) return; if (!t.w) t.w = t.el.offsetWidth || 60; items.push({ el: t.el, x: p[0], y: p[1], w: t.w, h: 22 }); });
+      items.sort((a, b) => (!!b.card - !!a.card) || (a.part != null && b.part != null ? a.part - b.part : 0) || (a.card ? b.w * b.h - a.w * a.h : 0) || (b.y - a.y)); const placed = [];
+      let inSide = -1;   // v8.1: the side of its unit the Needs + Inlet card took
       const over = (q, y) => placed.find(r => Math.abs(r.x - q.x) < (r.w + q.w) / 2 + 2 && y > r.y - r.h - 1 && y - q.h < r.y + 1);   // a label spans [y - h, y]
       let lines = '';
       items.forEach(q => { let y = q.y, x = q.x, hit;
         if (q.card) {   // the nearest free spot inside the view: above the unit first, then beside it, then below it; v7.1 (visual review
           // R3): never over its own unit (the top of the unit and the body under it stay clear), and placed before every name tag
           const inside = (x, y) => y - q.h >= 4 && y <= this.h - 4 && x - q.w / 2 >= 4 && x + q.w / 2 <= this.w - 4, free = (x, y) => !placed.some(r => Math.abs(r.x - x) < (r.w + q.w) / 2 + 2 && y > r.y - r.h - 1 && y - q.h < r.y + 1);
-          const clear = (x, y) => Math.abs(x - q.x) >= q.w / 2 + 24 || y <= q.y - 8 || y - q.h >= q.y + 48;
-          const cand = []; for (let dy = -720; dy <= 480; dy += 12) for (const dx of [0, -(q.w / 2 + 30), q.w / 2 + 30, -1.1 * q.w, 1.1 * q.w]) cand.push([dx, dy, Math.abs(dy) + (dy > 0 ? 60 : 0) + Math.abs(dx) * 0.8]);
+          const B = q.body, clear = (x, y) => (Math.abs(x - q.x) >= q.w / 2 + 24 || y <= q.y - 8 || y - q.h >= q.y + 48) &&
+            (!B || x + q.w / 2 < B[0] - 6 || x - q.w / 2 > B[2] + 6 || y < B[1] - 6 || y - q.h > B[3] + 6);   // v8.1: a nozzle card never covers its unit
+          // v8.1: a nozzle card goes beside its unit on the nozzle's side (a nozzle on the top head: above it; the second outlet card
+          // takes the side away from the inlet card when its nozzle is in the middle)
+          let pen = () => 0; if (B) { const cx = (B[0] + B[2]) / 2, mid = Math.abs(q.x - cx) < (B[2] - B[0]) * 0.2, sd = mid ? (q.part ? -inSide : -1) : Math.sign(q.x - cx);
+            const up = q.part && q.y < B[1] + (B[3] - B[1]) * 0.3 && mid; if (!q.part) inSide = sd;
+            pen = (dx, dy) => (up ? (dy > -8 ? 400 : 0) : dx * sd <= 0 ? 400 : 0) + (q.part === 2 && dy < 0 ? 120 : 0); }   // the bottom outlet's card prefers to sit low
+          const cand = []; for (let dy = -720; dy <= 480; dy += 12) for (const dx of [0, -(q.w / 2 + 30), q.w / 2 + 30, -1.1 * q.w, 1.1 * q.w]) cand.push([dx, dy, Math.abs(dy) + (dy > 0 ? 60 : 0) + Math.abs(dx) * 0.8 + pen(dx, dy)]);
           const best = cand.sort((a, b) => a[2] - b[2]).find(([dx, dy]) => inside(q.x + dx, q.y + dy) && free(q.x + dx, q.y + dy) && clear(q.x + dx, q.y + dy));
           if (best) { x = q.x + best[0]; y = q.y + best[1]; } else { y = Math.min(this.h - 4, Math.max(q.h + 4, y)); x = Math.min(this.w - q.w / 2 - 4, Math.max(q.w / 2 + 4, x)); }
           if (Math.hypot(x - q.x, y - q.y) > 6) { const ey = Math.min(y, Math.max(y - q.h, q.y)), ex = Math.min(x + q.w / 2, Math.max(x - q.w / 2, q.x)); lines += `<line x1="${q.x.toFixed(1)}" y1="${q.y.toFixed(1)}" x2="${ex.toFixed(1)}" y2="${ey.toFixed(1)}"/>`; } }
@@ -6748,9 +6893,17 @@ window.PB = window.PB || {};
       return { title: it.name, grp, cat: !!(nd && nd.cat), cols: needs.concat([col(v.nodeIn[id], 'Inlet')], ports.map(p => col(outs[p[0]], ports.length > 1 ? PORT[p[0]] : 'Outlet'))) };
     }
     const ns = PB.sandboxSepNeeds(SB.proc, it.type), needs = ns ? [{ label: 'Needs', T: ns.T, P: ns.P, comps: ns.comps }, col(v.nodeIn[id], 'Inlet')] : [];   // v6.1: separators and purifiers show what they need (v6.2: numbers per process)
-    if (ports.length > 1) return { title: it.name, grp, cols: needs.concat(ports.slice(0, 2).map(p => col(outs[p[0]], PORT[p[0]] || p[2]))) };
-    return { title: it.name, grp, cols: needs.concat([col(outs[ports[0][0]], 'Outlet')]) };
+    if (ports.length > 1) { const cols = needs.concat(ports.slice(0, 2).map(p => col(outs[p[0]], PORT[p[0]] || p[2])));
+      // v8.1: the single-card view (hover / first tap) splits a two-outlet separator or purifier into three cards, each by its nozzle:
+      // Needs + Inlet by the inlet (absorber: the gas inlet), then one card per outlet titled with the outlet's name
+      const parts = ns && [{ dir: 'in', port: it.type === 'absorber' ? 'gas' : g.inPorts(id)[0][0], card: { title: it.name, grp, cols: cols.slice(0, 2) } }]
+        .concat(ports.slice(0, 2).map((p, i) => ({ dir: 'out', port: p[0], card: { title: p[2], grp, cols: [Object.assign({}, cols[2 + i], p[0] === 'out' ? { label: p[2] } : {})] } })));
+      return { title: it.name, grp, cols, parts: parts || undefined }; }
+    const warn = it.type === 'pump' && v.warnNodes && v.warnNodes.has(id) ? PUMP_WARN : undefined, stages = it.type === 'compressor' && it.stages >= 2 ? it.stages : undefined;   // v8.1: the pump ⚠ and a multi-stage compressor (engine data)
+    const inl = it.type === 'compressor' || it.type === 'pump' ? [col(v.nodeIn[id], 'Inlet')] : [];   // v8.1 (Fable): inlet beside the outlet, so the heating across a compressor shows
+    return { title: it.name, grp, warn, stages, cols: needs.concat(inl, [col(outs[ports[0][0]], 'Outlet')]) };
   }
+  const PUMP_WARN = 'May boil in the pump (cavitation): pump it cool, then heat it.';   // v8.1: no numbers
   /* v4.1: the card colour follows the unit-picker group (reactors, separators, ...); tanks share one colour */
   function groupOf(it) {
     if (it.cat !== 'unit') return it.cat === 'raw' ? 'raw' : it.cat === 'waste' ? 'waste' : 'tank';
@@ -6951,7 +7104,8 @@ window.PB = window.PB || {};
     if (!card) return ''; const esc = U().esc;
     return `<div class="cond g-${card.grp || 'unit'}${card.cols.length > 3 ? ' cond-2x2' : ''}" style="--n:${card.cols.length > 3 ? 2 : card.cols.length}">${card.cols.map(c => `<div class="cond-col${c.label === 'Needs' ? ' needs' : ''}"><span class="io-h">${icn(c.label || 'Out')}${esc(c.label || 'Out')}</span>` +
       `<span class="cond-v${PB.cardHot(c.T) ? ' hot' : ''}">${icn('T')}${esc(c.T)}</span><span class="cond-v">${icn('P')}${esc(c.P)}</span>` +
-      `<ul>${c.comps.map(m => `<li>${m.pair ? `<span class="pair">${icn(m.pair[0], 'ph-' + m.pair[0])}<i>${m.sign || '|'}</i>${icn(m.pair[1], 'ph-' + m.pair[1])}</span>` : icn(m.ph, 'ph-' + m.ph)}${esc(m.name)}${m.ph !== 'L' && PB.PHASE_WORDS.long[m.ph] ? `<span class="sr"> (${PB.PHASE_WORDS.long[m.ph]})</span>` : ''}</li>`).join('')}</ul></div>`).join('')}</div>`;
+      `<ul>${c.comps.map(m => `<li>${m.pair ? `<span class="pair">${icn(m.pair[0], 'ph-' + m.pair[0])}<i>${m.sign || '|'}</i>${icn(m.pair[1], 'ph-' + m.pair[1])}</span>` : icn(m.ph, 'ph-' + m.ph)}${esc(m.name)}${m.ph !== 'L' && PB.PHASE_WORDS.long[m.ph] ? `<span class="sr"> (${PB.PHASE_WORDS.long[m.ph]})</span>` : ''}</li>`).join('')}</ul></div>`).join('')}</div>` +
+      (card.stages ? `<p class="cond-stg">${icn('comp')}${card.stages} stages</p>` : '') + (card.warn ? `<p class="cond-warn" role="note">${icn('warn')}${esc(card.warn)}</p>` : '');   // v8.1
   }
   /* v8: the Example's talking points come from its spec card: what the reactor needs, and how the separators and purifiers work */
   function talkingPoints(it) {
@@ -6961,6 +7115,8 @@ window.PB = window.PB || {};
     return PB.SANDBOX.needsSep[it.type] ? card.sep || [] : [];
   }
   /* an unset slider starts at the first value at or above ambient (30 °C) or the lowest pressure */
+  function nearIdx(sl, v) { let b = 0; sl.vals.forEach((q, j) => { if (Math.abs(q - v) < Math.abs(sl.vals[b] - v)) b = j; }); return b; }   // v8.1: the slider step nearest a typed value
+  let slNote = '';   // v8.1: the note under a typed value that was clamped (shown once, when the card redraws)
   function startIdx(sl) { if (sl.key === 'P') return 0; const k = sl.vals.findIndex(x => x >= PB.SANDBOX.basis.ambT); return k < 0 ? 0 : k; }
   function itemCard(id) {
     const g = SB.game, it = g.items[id], S = PB.SANDBOX, ui = U(), esc = ui.esc; if (!it) return;
@@ -6973,11 +7129,13 @@ window.PB = window.PB || {};
     if (it.cat === 'unit') { const u = S.units[it.type]; head = esc(PB.EQUIP[it.skin || it.type].does) + `<span class="req">${(S.chips[it.type] || []).map(c => `<span class="req-chip">${esc(c)}</span>`).join('')}</span>`;
       if (u.rule === 'react') body += reactionInfo(it.type);
       const sl = S.sliders[it.type];
-      if (sl) { const v = it.sp[sl.key], i = v == null ? -1 : sl.vals.indexOf(v), fmtv = sl.key === 'P' ? PB.fmtPress : PB.fmtTemp;
-        body += `<p class="eyebrow">${sl.key === 'P' ? 'Outlet pressure' : 'Outlet temperature'}</p>` +
+      if (sl) { const v = it.sp[sl.key], i = v == null ? -1 : nearIdx(sl, v), fmtv = sl.key === 'P' ? PB.fmtPress : PB.fmtTemp, what = sl.key === 'P' ? 'Outlet pressure' : 'Outlet temperature';
+        // v8.1: the readout is a number box: any value between the slider's ends can be typed (the thumb shows the nearest step)
+        body += `<p class="eyebrow">${what}</p>` +
           `<div class="sb-slider" data-key="${sl.key}"><button class="icon-btn sm" data-step="-1" aria-label="Lower">−</button>` +
-          `<input type="range" id="sb-sl" min="0" max="${sl.vals.length - 1}" step="1" value="${i < 0 ? startIdx(sl) : i}" aria-label="${sl.key === 'P' ? 'Outlet pressure' : 'Outlet temperature'}" aria-valuetext="${i < 0 ? 'not set' : esc(fmtv(v))}">` +
-          `<button class="icon-btn sm" data-step="1" aria-label="Higher">+</button><output id="sb-sl-v" class="${i < 0 ? 'unset' : ''}">${i < 0 ? 'not set' : esc(fmtv(v))}</output></div>`;
+          `<input type="range" id="sb-sl" min="0" max="${sl.vals.length - 1}" step="1" value="${i < 0 ? startIdx(sl) : i}" aria-label="${what}" aria-valuetext="${i < 0 ? 'not set' : esc(fmtv(v))}">` +
+          `<button class="icon-btn sm" data-step="1" aria-label="Higher">+</button><label class="sl-in"><input type="number" id="sb-sl-v" inputmode="decimal" step="any" min="${sl.vals[0]}" max="${sl.vals[sl.vals.length - 1]}" value="${v == null ? '' : v}" placeholder="not set" class="${i < 0 ? 'unset' : ''}" aria-label="${what} in ${esc(sl.unit)}"><span>${esc(sl.unit)}</span></label></div>` +
+          (slNote ? `<p class="sl-clamp" role="status">${esc(slNote)}</p>` : ''); slNote = '';
         const inS = it.type === 'pump' && v != null && g.previewV && g.previewV.nodeIn[id];   // v7.1: a pump set below the pressure its liquid already has
         if (inS && v < inS.Pv) body += '<p class="sl-note">The liquid already arrives above this pressure.</p>'; } }
     if (it.cat === 'sink') { const k = S.sinks[it.type]; head = esc(k.does); if (k.info) body += `<ul class="needs">${k.info.map(s => `<li>${plain(s)}</li>`).join('')}</ul>`;
@@ -7013,11 +7171,25 @@ window.PB = window.PB || {};
     if (SB.cardOnly === id) makeView();
     const b = $('#modal-b');
     const sb = b.querySelector('.sb-slider');
-    if (sb) { const sl = S.sliders[it.type], r = sb.querySelector('input'), out = sb.querySelector('output'), fmtv = sl.key === 'P' ? PB.fmtPress : PB.fmtTemp;
-      const show = () => { out.textContent = fmtv(sl.vals[+r.value]); out.classList.remove('unset'); r.setAttribute('aria-valuetext', out.textContent); };
-      const commit = () => { const keep = $('#modal-card').scrollTop; g.setpoint(id, sl.key, sl.vals[+r.value]); itemCard(id); setTimeout(() => { $('#modal-card').scrollTop = keep; }, 45); };
-      r.addEventListener('input', show); r.addEventListener('change', commit);
-      sb.querySelectorAll('[data-step]').forEach(x => x.onclick = () => { r.value = Math.max(0, Math.min(sl.vals.length - 1, +r.value + (it.sp[sl.key] == null ? 0 : +x.dataset.step))); show(); commit(); }); }
+    if (sb) { const sl = S.sliders[it.type], r = sb.querySelector('#sb-sl'), num = sb.querySelector('#sb-sl-v'), fmtv = sl.key === 'P' ? PB.fmtPress : PB.fmtTemp;
+      const show = () => { num.value = sl.vals[+r.value]; num.classList.remove('unset'); r.setAttribute('aria-valuetext', fmtv(sl.vals[+r.value])); };
+      const commit = val => { const keep = $('#modal-card').scrollTop; g.setpoint(id, sl.key, val); itemCard(id); setTimeout(() => { $('#modal-card').scrollTop = keep; }, 45); };
+      // v8.1 review: a touch that opened this card (the tap on the unit) can end on the slider under the finger and set it, late on a
+      // slow phone (after the card's 400 ms tap guard); the slider only moves after a touch or key that starts on it
+      let armed = false; const i0 = r.value; ['pointerdown', 'keydown'].forEach(ev => r.addEventListener(ev, () => { armed = true; }));
+      r.addEventListener('input', () => { if (armed) show(); else r.value = i0; }); r.addEventListener('change', () => { if (armed) commit(sl.vals[+r.value]); else r.value = i0; });
+      // v8.1: −/+ step through the list from the value now (an off-list value goes to the next step below / above it)
+      sb.querySelectorAll('[data-step]').forEach(x => x.onclick = () => { const cur = it.sp[sl.key], d = +x.dataset.step;
+        const j = cur == null ? +r.value : d > 0 ? sl.vals.findIndex(q => q > cur + 0.05) : sl.vals.length - 1 - sl.vals.slice().reverse().findIndex(q => q < cur - 0.05);   // ± half a decimal step
+        commit(sl.vals[j < 0 || j >= sl.vals.length ? (d > 0 ? sl.vals.length - 1 : 0) : j]); });
+      // v8.1: a typed value: clamped to the slider's ends (with a short note), a list value kept exact (1.01 bar), any other to 1 decimal.
+      // The card redraws a moment later, so a tap on OK that took the focus away still lands (the card is closed by then)
+      num.addEventListener('keydown', ev => { if (ev.key === 'Enter') num.blur(); });
+      num.addEventListener('change', () => { const t = parseFloat(num.value); if (isNaN(t)) { num.value = it.sp[sl.key] == null ? '' : it.sp[sl.key]; return; }
+        const val = PB.sandboxSetpoint(it.type, sl.key, t);   // review R1-4: the engine's rule (clamp, list value exact, else 1 decimal)
+        if (t < sl.vals[0] || t > sl.vals[sl.vals.length - 1]) slNote = (t < val ? 'The lowest setting is ' : 'The highest setting is ') + fmtv(val) + '.';   // clamped: val is the exact slider end (1.01 bar)
+        g.setpoint(id, sl.key, val); num.value = val; r.value = nearIdx(sl, val);
+        setTimeout(() => { if (SB && !$('#modal').hidden && sb.isConnected) { const keep = $('#modal-card').scrollTop; itemCard(id); setTimeout(() => { $('#modal-card').scrollTop = keep; }, 45); } else slNote = ''; }, 300); }); }
     b.querySelectorAll('[data-out]').forEach(el => el.onclick = () => { ui.closeModal(); SB.action = { kind: 'connect', from: id, port: el.dataset.out };
       banner('Tap where the ' + g.outPorts(id).find(o => o[0] === el.dataset.out)[2].toLowerCase() + ' of ' + it.name + ' goes.'); SB.view.setFocus(id); });
     b.querySelectorAll('[data-unpipe]').forEach(el => el.onclick = () => { g.disconnect(el.dataset.unpipe); itemCard(id); });
@@ -7046,8 +7218,12 @@ window.PB = window.PB || {};
   function progHTML(noTotal) {   // noTotal: the report shows the points large already
     const p = SB.game.progress(), L = SB.game.proc, st = p.complete ? 4 : p.stage || 0, pts = SB.kind !== 'example' && p.points;
     const steps = PB.Board.STAGES.map((w, i) => [w, i, i < st, i === 3 && p.complete]);
+    // v8.1: Separation and Purification sit between Reaction and Products (lit when their points are earned; hidden where the
+    // process has no separator / purifier). The class board keeps its four steps (board.js)
+    const pp = p.points || {}, has = pp.has || {}, part = pp.parts || {};
+    steps.splice(2, 0, ...[['Separation', 5, 'sep'], ['Purification', 6, 'pur']].filter(q => has[q[2]]).map(([w, i, k]) => [w, i, part[k] > 0, false]));
     if (pts && (L.recycle || L.loop)) steps.push(['Recycle', 4, p.points.parts.recycle > 0, p.points.parts.recycle > 0]);
-    return `<div class="sb-prog-in"><div class="ms" style="grid-template-columns:repeat(${steps.length},1fr)" role="img" aria-label="${steps.filter(q => q[2]).map(q => q[0]).join(', ') || 'Not started'}">` +
+    return `<div class="sb-prog-in"><div class="ms${steps.length > 5 ? ' many' : ''}" style="grid-template-columns:repeat(${steps.length},1fr)" role="img" aria-label="${steps.filter(q => q[2]).map(q => q[0]).join(', ') || 'Not started'}">` +
       steps.map(([w, i, on, done]) => `<span class="ms-step${on ? ' on' : ''}${done ? ' done' : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${PB.MS_ICONS[i]}"/></svg><b>${w}</b></span>`).join('') +
       `</div>${pts && !noTotal ? `<b class="pts mono">${Math.round(p.points.total)}<small> / 100</small></b>` : ''}</div>`;
   }
