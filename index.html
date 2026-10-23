@@ -160,6 +160,8 @@ button { font: inherit; color: inherit; }
 .tag-feed rect { stroke: #3a8fd0; } .tag-product rect { stroke: #d39a1f; }
 .tag-done rect { fill: #fff3d4; } .tag-bad rect { fill: var(--bad-soft); stroke: var(--bad); }
 .tag-warn rect { fill: #fff3d4; stroke: var(--amber); } .tag-i { stroke: var(--amber); stroke-width: 2.4; }   /* v8.1: the pump ⚠ */
+.tag.tag-pass { pointer-events: none; opacity: 1; } .tag-pass rect { fill: #fdeee6; stroke: #c2410c; stroke-width: 1.5; } .tag-pass text { fill: #7c2d12; }   /* v8.1.1: the loop pass badge (reactor group colour) */
+.lap-bead { fill: #fffbe0; stroke: #ffd23f; stroke-width: 3; filter: drop-shadow(0 0 5px #ffd23f); pointer-events: none; }
 
   
  
@@ -476,6 +478,7 @@ details.more[open] summary { margin-bottom: 6px; }
 .cond-warn, .cond-stg { display: flex; gap: 6px; align-items: flex-start; margin: -4px 0 12px; font-size: 14px; font-weight: 600; } .cond-stg { color: var(--muted); }
 .cond-warn { color: var(--amber); background: #fff3d4; border: 1px solid #f0d9a8; border-radius: 10px; padding: 7px 10px; } .cond-warn .ci { stroke: var(--amber); flex: none; }
 .ucard-warn { fill: var(--amber); font: 600 9.5px var(--f-body); } .ucard-i.ucard-warn-i { stroke: var(--amber); stroke-width: 2.4; }
+.t3-tag.t3-pass { background: #fdeee6; border-color: #c2410c; color: #7c2d12; opacity: 1; font-size: 14px; }   /* v8.1.1: the loop pass badge */
 .t3-tag.warn { background: #fff3d4; border-color: var(--amber); } .t3-tag.warn .ci { width: 14px; height: 14px; margin: 0 4px -2px 0; stroke: var(--amber); }
 .linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
 .tm-l { display: block; font-weight: 600; margin-bottom: 6px; }
@@ -3992,16 +3995,16 @@ PB.LEVELS.bioethanol = {
 
   PB.SANDBOX = {
     boards: {
-      basic: { W: 30, H: 14, zones: [
+      basic: { W: 36, H: 14, zones: [   // v8.1.1 (client): Process 6 cells longer (18 → 24), Product storage moved over
         { id: 'raw', label: 'Raw Material Storage', x: 0.3, y: 0.3, w: 5.4, d: 13.4 },
-        { id: 'proc', label: 'Process', x: 6.0, y: 0.3, w: 18.0, d: 13.4 },
-        { id: 'prod', label: 'Product Storage', x: 24.3, y: 0.3, w: 5.4, d: 13.4 } ] },
-      advanced: { W: 30, H: 22, shift: 4, zones: [
-        { id: 'util', label: 'Utilities', x: 0.3, y: 0.3, w: 29.4, d: 3.4 },
+        { id: 'proc', label: 'Process', x: 6.0, y: 0.3, w: 24.0, d: 13.4 },
+        { id: 'prod', label: 'Product Storage', x: 30.3, y: 0.3, w: 5.4, d: 13.4 } ] },
+      advanced: { W: 36, H: 22, shift: 4, zones: [
+        { id: 'util', label: 'Utilities', x: 0.3, y: 0.3, w: 35.4, d: 3.4 },
         { id: 'raw', label: 'Raw Material Storage', x: 0.3, y: 4.3, w: 5.4, d: 13.4 },
-        { id: 'proc', label: 'Process', x: 6.0, y: 4.3, w: 18.0, d: 13.4 },
-        { id: 'prod', label: 'Product Storage', x: 24.3, y: 4.3, w: 5.4, d: 13.4 },
-        { id: 'waste', label: 'Waste Treatment', x: 0.3, y: 18.3, w: 29.4, d: 3.4 } ] }
+        { id: 'proc', label: 'Process', x: 6.0, y: 4.3, w: 24.0, d: 13.4 },
+        { id: 'prod', label: 'Product Storage', x: 30.3, y: 4.3, w: 5.4, d: 13.4 },
+        { id: 'waste', label: 'Waste Treatment', x: 0.3, y: 18.3, w: 35.4, d: 3.4 } ] }
     },
     modes: {
       basic: { name: 'Normal', does: 'Raw materials, process and product storage.' },
@@ -4065,7 +4068,8 @@ PB.LEVELS.bioethanol = {
           out: { out: { c: ['meoh', 'water', 'co2', 'h2'], ph: 'G', T: 250, est: 'meohT' } } } ],
         products: [ { c: ['meoh'], name: 'Methanol', sink: ['tank'] } ],
         byproducts: [ { main: 'water', name: 'Water', basic: ['pond'], advanced: ['wwt'] } ],
-        loop: { c: 'h2', name: 'unreacted gas', noPurge: 1 }, recovered: [ { c: ['co2', 'h2'], name: 'Unreacted gas', ph: 'G' } ] },   // v6: no impurities, so the whole loop recycles
+        loop: { c: 'h2', name: 'unreacted gas', noPurge: 1 }, recovered: [ { c: ['co2', 'h2'], name: 'Unreacted gas', ph: 'G' } ],   // v6: no impurities, so the whole loop recycles
+        flashT: 50 },   // v8.1.1 (client): the flash takes its feed at 50 °C or cooler, instructor basis (PB.ASSUMPTIONS cw)
 
       bioethanol: { id: 'bioethanol', title: 'Bioethanol', subtitle: 'Sugarcane molasses → fuel ethanol', levelId: 'bioethanol', color: '#2e8b4f',
         card: Object.assign({}, R_FER, {
@@ -4291,6 +4295,7 @@ PB.LEVELS.bioethanol = {
       { title: 'Pressure and temperature', text: 'Compressing a gas heats it. Real compressors work in stages with coolers between them, so you see the last stage\'s heating. Pumping a liquid hardly warms it: pump it cool, then heat it.', pic: [['G', '>', 'comp', '>', 't+'], ['comp', '>', 'cool', '>', 'comp', '>', 't+'], ['L', '>', 'press', '>', 'temp', '>', 't+']] },   // v8.1
       { title: 'Every outlet goes somewhere', text: 'Each outlet feeds one pipe. Connect every outlet, or the flow stops there.', pic: [['sep', '>', 'tank', 'ok'], ['sep', '>', 'x']] },
       { title: 'Pressure drops', text: 'Heat exchanger {P:dP.hx}, reactor {P:dP.reactor}, flash drum {P:dP.flash}, pipe joint {P:dP.tee}. The pressure never falls below {P:atmP}.', pic: [['g+', '>', 'temp', '>', 'g0']] },
+      { title: 'Gas loop: compressor', text: 'Gas loses a little pressure in every unit, so after one trip round a loop it is lower than where it started and cannot get back in by itself. A compressor in the loop brings it back up.', pic: [['g+', '>', 'temp', '>', 'g-', '>', 'g-', 'x'], ['g-', '>', 'comp', '>', 'g+', 'ok']] },   // v8.1.1 (client): the Deploy shows the run-down lap by lap
       { title: 'Heating limit', text: 'A heat exchanger heats up to {T:hotOilMax} with steam or hot oil. Hotter needs a fired heater.', pic: [['temp', '>', 't0', 'ok'], ['fuel', '>', 't+', 'ok']] },
       { title: 'Big pressure drop: valve', text: 'A drop of more than {P:valveDrop} into a column, a tank, the vent or the flare needs a pressure-reducing valve. Feeds meeting at a pipe joint, and gas feeds into a reactor, must be set within {P:valveDrop} of each other; a higher one needs a pressure-reducing valve.', pic: [['g+', '>', 'valve', '>', 'col', 'ok'], ['g+', '>', 'col', 'x']] },
       { title: 'Match the NEEDS', text: 'Reactors, separators and purifiers work only when what arrives matches their NEEDS: components, temperature and pressure.', pic: [['In', '>', 'Needs', 'ok']] },
@@ -4460,8 +4465,8 @@ PB.LEVELS.bioethanol = {
       notDryP: 'it is still wet.',
       noProduct: 'No {p} reaches a product tank yet.',
       wrongSink: '{s} should go to: {list}.',
-      noPurge: 'The recycle loop has no purge. Send a small purge stream from the recycle gas to a {sink}.',
       recLoopComp: 'Recycle gas loses pressure on the way round. It needs a compressor somewhere in its loop.',
+      noPurge: 'The recycle loop has no purge. Send a small purge stream from the recycle gas to a {sink}.',
       recPump: 'Missing pump on the {s} recycle: a liquid does not move back by itself.',
       missPump: 'The liquid from {a} cannot reach {b}: a liquid does not move to the next unit by itself.',
       yeastWaste: 'The yeast is still alive and useful: clean it and send it back to the fermenter instead.',
@@ -4498,7 +4503,7 @@ PB.SANDBOX.solutions = {
       ['PR', 'unit', 'pump', 16.5, 4], ['S', 'unit', 'settler', 19.5, 4], ['PL', 'unit', 'pump', 19.5, 1.5], ['F', 'unit', 'flash', 22.5, 1.5],
       ['C', 'unit', 'hx', 16.5, 1.5, { T: 50 }], ['PP', 'unit', 'pump', 13.5, 1.5],
       ['CG', 'unit', 'hx', 23, 6.5, { T: 50 }], ['CB', 'unit', 'hx', 23, 9, { T: 50 }],
-      ['BIO', 'sink', 'tank', 27, 9, { prod: 'Biodiesel' }], ['GLY', 'sink', 'tank', 27, 4, { prod: 'Glycerol' }] ],
+      ['BIO', 'sink', 'tank', 33, 9, { prod: 'Biodiesel' }], ['GLY', 'sink', 'tank', 33, 4, { prod: 'Glycerol' }] ],
       pipes: [ ['OIL', 'out', 'P1'], ['P1', 'out', 'H1'], ['H1', 'out', 'R'], ['MEOH', 'out', 'PM'], ['PM', 'out', 'MX'], ['NAOH', 'out', 'PN'], ['PN', 'out', 'MX'],
         ['MX', 'out', 'PX'], ['PX', 'out', 'HM'], ['HM', 'out', 'R'], ['R', 'out', 'PR'], ['PR', 'out', 'S'], ['S', 'bot', 'CG'], ['CG', 'out', 'GLY'], ['S', 'top', 'PL'], ['PL', 'out', 'F'],
         ['F', 'bot', 'CB'], ['CB', 'out', 'BIO'], ['F', 'top', 'C'], ['C', 'out', 'PP'], ['PP', 'out', 'MX'] ], recycle: ['C', 'PP'] },   // v8: units only on the recycle (not in the points checklist)
@@ -4511,7 +4516,7 @@ PB.SANDBOX.solutions = {
       ['J', 'unit', 'joint', 10.5, 6.5], ['H', 'unit', 'hx', 11, 4, { T: 250 }], ['R', 'unit', 'reactor', 14, 4], ['K', 'unit', 'hx', 17, 4, { T: 50 }], ['F', 'unit', 'flash', 20, 4],
       ['RC', 'unit', 'compressor', 20, 1.5, { P: 75 }], ['V', 'unit', 'valve', 17, 7.5, { P: 1.2 }], ['COL', 'unit', 'column', 20, 8.5],
       ['CT', 'unit', 'hx', 23, 6.5, { T: 50 }], ['CW', 'unit', 'hx', 23, 11.5, { T: 50 }],
-      ['MEOHT', 'sink', 'tank', 27, 9, { prod: 'Methanol' }], ['POND', 'sink', 'pond', 27, 12] ],
+      ['MEOHT', 'sink', 'tank', 33, 9, { prod: 'Methanol' }], ['POND', 'sink', 'pond', 33, 12] ],
       pipes: [ ['CO2', 'out', 'C1'], ['H2', 'out', 'C2'], ['C1', 'out', 'J'], ['C2', 'out', 'J'], ['RC', 'out', 'J'], ['J', 'out', 'H'], ['H', 'out', 'R'], ['R', 'out', 'K'], ['K', 'out', 'F'],
         ['F', 'top', 'RC'], ['F', 'bot', 'V'], ['V', 'out', 'COL'], ['COL', 'top', 'CT'], ['CT', 'out', 'MEOHT'], ['COL', 'bot', 'CW'], ['CW', 'out', 'POND'] ], recycle: ['RC'] },
     advanced: { drop: ['POND'],
@@ -4526,7 +4531,7 @@ PB.SANDBOX.solutions = {
       ['QV', 'unit', 'pump', 19.5, 4.5], ['CEN', 'unit', 'centrifuge', 22.5, 4.5], ['AT', 'unit', 'acidtank', 22.5, 7.5], ['QY', 'unit', 'pump', 19.5, 7.5],
       ['QF', 'unit', 'pump', 22.5, 1.5], ['COL', 'unit', 'column', 19.5, 1.5], ['SH', 'unit', 'hx', 16.5, 1.5, { T: 120 }], ['SV', 'unit', 'sieve', 13.5, 1.5], ['CD', 'unit', 'hx', 10.5, 1.5, { T: 50 }],
       ['CV', 'unit', 'hx', 23, 11, { T: 50 }],
-      ['ETOH', 'sink', 'tank', 27, 4.5, { prod: 'Fuel ethanol' }], ['VIN', 'sink', 'tank', 27, 10, { prod: 'Vinasse' }], ['VENT', 'sink', 'vent', 27, 1.5] ],
+      ['ETOH', 'sink', 'tank', 33, 4.5, { prod: 'Fuel ethanol' }], ['VIN', 'sink', 'tank', 33, 10, { prod: 'Vinasse' }], ['VENT', 'sink', 'vent', 33, 1.5] ],
       pipes: [ ['MOL', 'out', 'Q1'], ['WAT', 'out', 'QW'], ['Q1', 'out', 'MX'], ['QW', 'out', 'MX'], ['MX', 'out', 'QM'], ['QM', 'out', 'FER'], ['FER', 'gas', 'VENT'],
         ['FER', 'out', 'QV'], ['QV', 'out', 'FS'], ['FS', 'a', 'QC'], ['QC', 'out', 'FER'], ['FS', 'b', 'CEN'], ['CEN', 'cream', 'AT'], ['AT', 'out', 'QY'], ['QY', 'out', 'FER'],
         ['CEN', 'out', 'QF'], ['QF', 'out', 'COL'], ['COL', 'top', 'SH'], ['SH', 'out', 'SV'], ['SV', 'out', 'CD'], ['CD', 'out', 'ETOH'], ['COL', 'bot', 'CV'], ['CV', 'out', 'VIN'] ], recycle: ['AT', 'QY'] },
@@ -4539,7 +4544,7 @@ PB.SANDBOX.solutions = {
       ['C1', 'unit', 'compressor', 7.5, 1.5, { P: 100 }], ['C2', 'unit', 'compressor', 7.5, 6.5, { P: 100 }],
       ['H', 'unit', 'hx', 11, 4, { T: 180 }], ['CV', 'unit', 'converter', 14, 4], ['K', 'unit', 'hx', 17, 4, { T: 50 }], ['CH', 'unit', 'hx', 17, 7, { T: -10 }],
       ['F', 'unit', 'flash', 21, 7], ['SP', 'unit', 'splitter', 21, 4.5], ['RC', 'unit', 'compressor', 20, 1.5, { P: 100 }], ['J', 'unit', 'joint', 10.5, 6.5], ['V', 'unit', 'valve', 22, 10, { P: 1.01 }], ['VP', 'unit', 'valve', 23, 3, { P: 1.01 }],
-      ['NH3', 'sink', 'refrigtank', 27, 8], ['VENT', 'sink', 'vent', 27, 2] ],
+      ['NH3', 'sink', 'refrigtank', 33, 8], ['VENT', 'sink', 'vent', 33, 2] ],
       pipes: [ ['H2', 'out', 'C1'], ['N2', 'out', 'C2'], ['C1', 'out', 'J'], ['C2', 'out', 'J'], ['RC', 'out', 'J'], ['J', 'out', 'H'], ['H', 'out', 'CV'], ['CV', 'out', 'K'], ['K', 'out', 'CH'], ['CH', 'out', 'F'],
         ['F', 'top', 'SP'], ['SP', 'a', 'RC'], ['SP', 'b', 'VP'], ['VP', 'out', 'VENT'], ['F', 'bot', 'V'], ['V', 'out', 'NH3'] ], recycle: ['SP', 'RC'] },
     advanced: { drop: ['VENT'], rename: { VENT: 'FLARE' },
@@ -4552,7 +4557,7 @@ PB.SANDBOX.solutions = {
       ['BU', 'unit', 'burner', 10.5, 4.5], ['WHB', 'unit', 'hx', 14, 4.5, { T: 400 }], ['CV', 'unit', 'converter', 17, 4.5], ['EC', 'unit', 'hx', 20, 4.5, { T: 190 }],
       ['AB', 'unit', 'absorber', 22.5, 8], ['WP', 'unit', 'pump', 7.5, 11.5], ['AP', 'unit', 'pump', 22.5, 11],
       ['CA', 'unit', 'hx', 22.5, 13, { T: 50 }],
-      ['ACID', 'sink', 'tank', 27, 11, { prod: 'Sulfuric acid' }], ['VENT', 'sink', 'vent', 27, 4.5] ],
+      ['ACID', 'sink', 'tank', 33, 11, { prod: 'Sulfuric acid' }], ['VENT', 'sink', 'vent', 33, 4.5] ],
       pipes: [ ['AIR', 'out', 'BL'], ['BL', 'out', 'DT'], ['DT', 'top', 'BU'], ['SUL', 'out', 'SP'], ['SP', 'out', 'BU'], ['BU', 'out', 'WHB'], ['WHB', 'out', 'CV'],
         ['CV', 'out', 'EC'], ['EC', 'out', 'AB', 'gas'], ['WAT', 'out', 'WP'], ['WP', 'out', 'AB', 'liq'], ['AB', 'bot', 'AP'], ['AP', 'out', 'CA'], ['CA', 'out', 'ACID'], ['AB', 'top', 'VENT'] ] },
     advanced: { drop: ['VENT'], rename: { VENT: 'SCRUB' },
@@ -4566,7 +4571,7 @@ PB.SANDBOX.solutions = {
       ['K', 'unit', 'hx', 17, 4, { T: 50 }], ['F', 'unit', 'flash', 20, 4], ['RC', 'unit', 'compressor', 20, 1.5, { P: 70 }],
       ['VL', 'unit', 'valve', 15.5, 8.5, { P: 1.01 }], ['C1', 'unit', 'column', 18.5, 10.5], ['C2', 'unit', 'column', 22, 7.5],
       ['CH', 'unit', 'hx', 22.5, 12, { T: 50 }],
-      ['LIGHT', 'sink', 'tank', 27, 2, { prod: 'Light oil' }], ['JET', 'sink', 'tank', 27, 6.5, { prod: 'Bio-jet fuel' }], ['HEAVY', 'sink', 'tank', 27, 11, { prod: 'Heavy oil' }] ],
+      ['LIGHT', 'sink', 'tank', 33, 2, { prod: 'Light oil' }], ['JET', 'sink', 'tank', 33, 6.5, { prod: 'Bio-jet fuel' }], ['HEAVY', 'sink', 'tank', 33, 11, { prod: 'Heavy oil' }] ],
       pipes: [ ['H2', 'out', 'VH'], ['VH', 'out', 'J'], ['RC', 'out', 'J'], ['J', 'out', 'HH'], ['HH', 'out', 'R'], ['PALM', 'out', 'PP'], ['PP', 'out', 'HP'], ['HP', 'out', 'R'],
         ['R', 'out', 'K'], ['K', 'out', 'F'], ['F', 'top', 'RC'], ['F', 'bot', 'VL'], ['VL', 'out', 'C1'], ['C1', 'top', 'LIGHT'], ['C1', 'bot', 'C2'],
         ['C2', 'top', 'JET'], ['C2', 'bot', 'CH'], ['CH', 'out', 'HEAVY'] ], recycle: ['RC', 'J'] },
@@ -4580,7 +4585,7 @@ PB.SANDBOX.solutions = {
       ['VB', 'unit', 'valve', 7.5, 6.5, { P: 10 }], ['HB', 'unit', 'hx', 11, 6.5, { T: 95 }], ['R', 'unit', 'reactor', 14, 4],
       ['K', 'unit', 'hx', 17, 4, { T: 50 }], ['F', 'unit', 'flash', 20, 4], ['VC', 'unit', 'valve', 20, 1.5, { P: 2 }], ['VL', 'unit', 'valve', 15.5, 9.5, { P: 2 }],
       ['COL', 'unit', 'column', 20, 8.5], ['KE', 'unit', 'hx', 23, 11.5, { T: 50 }],
-      ['CT', 'sink', 'gastank', 27, 1.5, { prod: 'C' }], ['DT', 'sink', 'tank', 27, 7, { prod: 'D' }], ['ET', 'sink', 'tank', 27, 11.5, { prod: 'E' }] ],
+      ['CT', 'sink', 'gastank', 33, 1.5, { prod: 'C' }], ['DT', 'sink', 'tank', 33, 7, { prod: 'D' }], ['ET', 'sink', 'tank', 33, 11.5, { prod: 'E' }] ],
       pipes: [ ['A', 'out', 'PA'], ['PA', 'out', 'HA'], ['HA', 'out', 'R'], ['B', 'out', 'VB'], ['VB', 'out', 'HB'], ['HB', 'out', 'R'], ['R', 'out', 'K'], ['K', 'out', 'F'],
         ['F', 'top', 'VC'], ['VC', 'out', 'CT'], ['F', 'bot', 'VL'], ['VL', 'out', 'COL'], ['COL', 'top', 'DT'], ['COL', 'bot', 'KE'], ['KE', 'out', 'ET'] ] },
     advanced: { place: [ ['BOIL', 'util', 'boiler', 10, 2], ['TOWER', 'util', 'tower', 15, 2], ['SUB', 'util', 'substation', 21, 2] ],
@@ -4602,7 +4607,7 @@ PB.sandboxSolution = function (proc, mode) {
 PB.ASSUMPTIONS = [
   { id: 'amb', kind: 'basis', text: 'Ambient temperature about 30 °C (Thailand): raw materials leave their tanks at about 30 °C (molten sulfur is kept hot; the SAF and A + B feeds follow the course slides).' },
   { id: 'store', kind: 'basis', text: 'Product tanks, ponds and the wastewater plant store liquid at 1.01 bar and take it at 50 °C or cooler (cooling-water reach in Thailand): hot liquids are cooled on the way. The refrigerated ammonia tank takes chilled liquid at 0 °C or colder.' },
-  { id: 'cw', kind: 'basis', text: 'Cooling water arrives at about 30 °C and returns at about 40 °C; process coolers bring streams to about 50 °C.' },
+  { id: 'cw', kind: 'basis', text: 'Cooling water arrives at about 30 °C and returns at about 40 °C; process coolers bring streams to about 50 °C, so the methanol flash drum takes its feed at 50 °C or cooler.' },
   { id: 'cwmin', kind: 'basis', text: 'The closest a cooling-water cooler gets is about 45 °C; colder needs refrigeration (chilled water).' },
   { id: 'hotoil', kind: 'basis', text: 'Hot oil heats streams up to about 350 °C (thermal fluids can serve up to 750 °F [22]); most steam systems only up to about 400 °F (≈ 204 °C) [22]; hotter heating uses a fired heater.' },
   { id: 'atm', kind: 'derived', text: 'Atmospheric pressure: 1 atm = 1.01 bar.' },
@@ -5451,12 +5456,6 @@ window.PB = window.PB || {};
           }
         }
       };
-      pass(false);
-      if (pipes.some(p => back.has(p.id))) { pipes.forEach(p => { if (back.has(p.id)) { const s = (outs[p.from] || {})[p.port]; st[p.id] = s && s.c.length ? s : null; } }); pass(true); }
-      // nodes from which a reaction unit can be reached along forward pipes (where a recycle may rejoin the feed)
-      const reactIds = this.order.filter(id => items[id].cat === 'unit' && S.units[items[id].type].rule === 'react' && P.reactions.some(r => r.units.includes(items[id].type)));
-      const feedSide = new Set(reactIds);
-      for (let grew = true; grew;) { grew = false; for (const p of pipes) if (!back.has(p.id) && feedSide.has(p.to) && !feedSide.has(p.from)) { feedSide.add(p.from); grew = true; } }
       // ---- recycle / return streams (v8: optional; a working one earns points)
       const upChain = (id, want) => { // walk upstream through single-feed units looking for a unit type
         for (let k = 0, cur = id; k < 12 && cur; k++) { const it = items[cur]; if (it.cat === 'unit' && it.type === want) return true;
@@ -5465,12 +5464,34 @@ window.PB = window.PB || {};
         return false; };
       // v8.1: the loop of a return pipe = units downstream of where it joins that also lead back to where it leaves (forward pipes)
       const reach = (id, nxt) => { const seen = new Set([id]), q = [id]; while (q.length) nxt(q.shift()).forEach(n => { if (!seen.has(n)) { seen.add(n); q.push(n); } }); return seen; };
-      const loopHas = (p, want) => { const up = reach(p.from, id => inP(id).filter(r => !back.has(r.id)).map(r => r.from));
-        return [...reach(p.to, id => outP(id).filter(r => !back.has(r.id)).map(r => r.to))].some(id => up.has(id) && items[id].cat === 'unit' && items[id].type === want); };
+      const loopOf = p => { const up = reach(p.from, id => inP(id).filter(r => !back.has(r.id)).map(r => r.from)); return [...reach(p.to, id => outP(id).filter(r => !back.has(r.id)).map(r => r.to))].filter(id => up.has(id)); };
+      const freeLoop = p => { const L = new Set(loopOf(p)), seen = new Set(), q = [p.to];   // review r2-M1: a way round the loop that passes no compressor (a bypass branch too)
+        while (q.length) { const u = q.shift(); if (seen.has(u) || (items[u].cat === 'unit' && items[u].type === 'compressor')) continue; seen.add(u); if (u === p.from) return true;
+          outP(u).forEach(r => { if (!back.has(r.id) && L.has(r.to)) q.push(r.to); }); } return false; };
+      pass(false);
+      // v8.1.1 (client): a gas return whose loop has no compressor loses pressure on every lap (pressure drops, PB.ASSUMPTIONS dp). The tear pass
+      // repeats with the return carrying its own pressure as its setting, so the reactor's setting runs down lap by lap until a lap stops
+      const rundown = new Set(), tear = () => pipes.forEach(p => { if (back.has(p.id)) { const s = (outs[p.from] || {})[p.port]; st[p.id] = s && s.c.length ? (rundown.has(p.id) ? Object.assign({}, s, { Pset: s.Pv }) : s) : null; } });
+      let loop;
+      if (pipes.some(p => back.has(p.id))) { tear(); pass(true);
+        const gasRet = pipes.filter(p => back.has(p.id) && st[p.id] && ph(st[p.id]) === 'G' && items[p.to].cat === 'unit');
+        gasRet.forEach(p => { if (freeLoop(p) && !upChain(p.from, 'compressor')) rundown.add(p.id); });
+        const rp = gasRet.find(p => rundown.has(p.id) && loopOf(p).some(isReact)) || gasRet.find(p => loopOf(p).some(isReact));   // review R2-M1: a running-down loop is the one played
+        if (rp) { const at = loopOf(rp).find(isReact), rIn = all => { const a = inP(at).filter(p => all || !back.has(p.id)).map(p => st[p.id]); return a.every(Boolean) ? merge(a).Pset : null; }, lap = [];   // the lap the Deploy pulse runs
+          for (let cur = at, k = 0; k < 60; k++) { const q = outP(cur).find(r => r.id === rp.id || (!back.has(r.id) && loopOf(rp).includes(r.to))); if (!q) break; lap.push(q.id); if (q.to === at) break; cur = q.to; }
+          loop = { pipes: lap, at, P: [rIn(true)], ok: !rundown.has(rp.id) };
+          if (loop.ok) loop.P.push(loop.P[0]);
+          else { pass(false); loop.P = [rIn(false)]; }   // lap 1 = the fresh feed alone, then one lap per tear pass
+          if (!loop.ok) for (let k = 0, on = new Set(loopOf(rp)); k < 200 && !fails.some(f => on.has(f.node)); k++) {   // review R2-m1: a stop elsewhere does not end the run-down
+            tear(); pass(true); const P = rIn(true); if (P == null || P === loop.P[loop.P.length - 1]) break; loop.P.push(P); } } }
+      // nodes from which a reaction unit can be reached along forward pipes (where a recycle may rejoin the feed)
+      const reactIds = this.order.filter(id => items[id].cat === 'unit' && S.units[items[id].type].rule === 'react' && P.reactions.some(r => r.units.includes(items[id].type)));
+      const feedSide = new Set(reactIds);
+      for (let grew = true; grew;) { grew = false; for (const p of pipes) if (!back.has(p.id) && feedSide.has(p.to) && !feedSide.has(p.from)) { feedSide.add(p.from); grew = true; } }
       for (const p of pipes.filter(q => back.has(q.id))) {
         const s = (outs[p.from] || {})[p.port]; st[p.id] = s && s.c.length ? s : null; if (!st[p.id]) continue;
         const T = items[p.to], prodIn = P.products.some(pr => pr.c.some(c => s.c.includes(c)));
-        if (ph(s) === 'G' && T.cat === 'unit' && !loopHas(p, 'compressor') && !upChain(p.from, 'compressor')) fail(p.to, M.recLoopComp, { pipe: p.id });   // v8.1: a compressor anywhere in the loop; only the return pipe stops
+        if (rundown.has(p.id) && !fails.some(f => loopOf(p).includes(f.node))) fail(p.to, M.recLoopComp, { pipe: p.id });   // review R1/R2-M1: a run-down that stops nothing on its loop (no reactor, a burner with no pressure window, a second loop) still needs its compressor
         if (P.loop && s.c.includes(P.loop.c) && ph(s) === 'G' && feedSide.has(p.to) && !prodIn) { rec.loopGas = true; rec.recPipes.add(p.id); }
         if (P.recycle && s.c.includes(P.recycle.c) && feedSide.has(p.to) && !prodIn && (P.recycle.c !== 'yeast' || s.treated)) rec.recPipes.add(p.id);
         // the fermenter loop: broth cooled with cooling water (no colder than it reaches, no warmer than the fermenter) comes back (v6.2)
@@ -5527,7 +5548,7 @@ window.PB = window.PB || {};
           return R && Array.isArray(R.in.P) ? Math.min(...R.in.P.map(r => [].concat(r)[0])) : null; }
         outP(u).forEach(p => { if (!back.has(p.id) && !seen.has(p.to)) { seen.add(p.to); q.push(p.to); } }); } return null; };   // the window's low end of the reactor downstream
       for (const id of this.order) { const it = items[id]; if (it.cat !== 'unit' || !(it.type === 'joint' || catR(id))) continue;
-        const ins = inP(id).filter(p => st[p.id]); if (ins.length < 2) continue;
+        const ins = inP(id).filter(p => st[p.id]); if (ins.length < 2 || ins.some(p => rundown.has(p.id))) continue;   // v8.1.1: the run-down names its own stop
         const lvl = p => st[p.id].Pset ?? st[p.id].Pv, low = Math.min(...ins.map(lvl)), w = pLow(id); if (w != null && low < w) continue;
         ins.filter(p => lvl(p) - low > B.valveDrop && (it.type === 'joint' || ph(st[p.id]) === 'G')).forEach(p => fail(id, fmt(M.missValve, { a: items[p.from].name, b: it.name }), { between: [p.from, id] })); }
       // ---- Advanced: utilities
@@ -5594,7 +5615,7 @@ window.PB = window.PB || {};
       let restage = false; for (const id of this.order) { const it = items[id]; if (it.cat !== 'unit' || it.type !== 'compressor') continue;   // v8.1: the stage count draws the model and the tag
         const n = this.stg[id] || 1; if (it.stages !== n) { it.stages = n; restage = true; } }
       if (restage) this.layout();
-      return this.lastEval = { ok, fail: stops[0] || null, stops, flow, points, fails, pens, warns, warnNodes: rec.warnNodes, passes, st, back, colors, ph, outs, nodeIn, stage, describe: s => this.describe(s, ph) };
+      return this.lastEval = { ok, fail: stops[0] || null, stops, flow, points, loop, fails, pens, warns, warnNodes: rec.warnNodes, passes, st, back, colors, ph, outs, nodeIn, stage, describe: s => this.describe(s, ph) };
     },
     describe(s, ph) {
       if (!s) return 'No flow yet.'; const C = SBX().comps, p = ph(s);
@@ -5791,14 +5812,14 @@ window.PB = window.PB || {};
     /* live card data (v4): evaluate without animating; a node with no state shows "?" */
     preview() { const v = this.evaluate(); this.previewV = v; return v; },
     /* ---------- run + flow animation ---------- */
-    resetRun() { this.running = false; this.complete = false; this.verdict = null; this.firedError = false; this.badIds = null; this.finished = null;
+    resetRun() { this.running = false; this.complete = false; this.verdict = null; this.firedError = false; this.badIds = null; this.finished = null; this.lap = null;
       if (this.edges) Object.values(this.edges).forEach(e => { e.progress = 0; e.arrived = false; }); },
     run() {
       if (this.running) return this.verdict;
       this.resetRun(); this.start();
       const v = this.verdict = this.evaluate(); this.runs++;
       this.colors = v.colors; this.backIds = v.back; this.layout();
-      this.flow = {}; for (const id in this.edges) this.flow[id] = this.edges[id].def.kind === 'pipe' ? !!v.flow[id] : true;   // v8: no pipe after a stop fills (per outlet)
+      this.flow = {}; for (const id in this.edges) this.flow[id] = this.edges[id].def.kind === 'pipe' ? !!v.flow[id] || !!(v.loop && !v.loop.ok && v.loop.pipes.includes(id)) : true;   // v8: no pipe after a stop fills (per outlet); v8.1.1 review R1/R3: the loop's laps ran through its pipes
       this.running = true; return v;
     },
     tick(dt) {
@@ -5814,6 +5835,11 @@ window.PB = window.PB || {};
         if (e.progress < 1) { pending = true; e.progress = Math.min(1, e.progress + dt * SPEED / Math.max(1, e.len)); if (e.progress >= 1) e.arrived = true; }
       }
       const v = this.verdict; if (pending) return;   // v8: every branch flows to its end first
+      // v8.1.1: a gas loop then plays its passes: a pulse runs round v.loop.pipes once per pass (f = 0–1 of the lap) and the reactor's
+      // badge shows the pass and its inlet pressure; passes 1–3 take 1.2 s each, the rest step through in 2 s; the last pass stays shown
+      if (v.loop && !(this.lap && this.lap.done)) { const L = v.loop, n = L.P.length, a = this.lap = this.lap || { t: 0, at: L.at, pipes: L.pipes }, s = Math.min(3, n), ff = n > 3 ? Math.min(1.2, 2 / (n - 3)) : 1;
+        a.t += dt; const u = a.t < s * 1.2 ? a.t / 1.2 : s + (a.t - s * 1.2) / ff, k = Math.min(n - 1, Math.floor(u));
+        a.done = u >= n; a.f = a.done ? null : u - Math.floor(u); a.text = 'Pass ' + (k + 1) + ' · ' + fmtP(L.P[k]); if (!a.done) return; }
       if (!v.ok && !this.firedError) { this.firedError = true; this.badIds = new Set(v.stops.map(f => f.node).filter(Boolean)); this.layout(); this.running = false; this.emit('error', Object.assign({}, v.fail, { stops: v.stops })); }
       else if (v.ok && !this.complete) { this.complete = true; this.running = false; this.finished = performance.now(); this.emit('complete', this.result()); }
     },
@@ -5825,11 +5851,12 @@ window.PB = window.PB || {};
     progress() { const v = this.verdict || this.lastEval || this.evaluate(); return { stage: v.stage, deploys: this.runs, time: this.elapsed(), complete: !!this.complete, points: v.points }; },
 
     /* ---------- save / load ---------- */
-    toJSON() { return { v: 1, proc: this.procId, mode: this.mode, seq: this.seq, items: this.order.map(id => this.items[id]), pipes: this.pipes, links: this.links, runs: this.runs, usedReference: !!this.usedReference, elapsed: this.elapsed() }; },
+    toJSON() { return { v: 2, proc: this.procId, mode: this.mode, seq: this.seq, items: this.order.map(id => this.items[id]), pipes: this.pipes, links: this.links, runs: this.runs, usedReference: !!this.usedReference, elapsed: this.elapsed() }; },
     load(o) {
       if (!o || o.proc !== this.procId || o.mode !== this.mode) return false;
       const S = SBX(), known = it => it && typeof it.id === 'string' && /^\w+$/.test(it.id) && ({ unit: S.units, sink: S.sinks, waste: S.waste, util: S.utilities }[it.cat] || {}).hasOwnProperty(it.type) || (it && it.cat === 'raw' && typeof it.id === 'string' && /^\w+$/.test(it.id) && S.materials.some(m => m.id === it.type));
       const own = id => typeof id === 'string' && Object.hasOwn(this.items, id), ok = q => q && typeof q.id === 'string' && /^\w+$/.test(q.id);
+      if ((o.v || 1) < 2) (Array.isArray(o.items) ? o.items : []).forEach(it => { if (it && it.cat === 'sink' && it.x > 24.3) it.x += 6; });   // v8.1.1: a board saved before the wider Process zone keeps its tanks in Product storage
       this.items = {}; this.order = []; (Array.isArray(o.items) ? o.items : []).filter(known).forEach(it => { it.sp = it.sp || {}; delete it.stages; for (const k of ['T', 'P']) if (it.sp[k] != null) it.sp[k] = spVal(it.type, k, it.sp[k]); it.skin = this.skinOf(it.cat, it.type); this.items[it.id] = it; this.order.push(it.id); });
       this.pipes = (Array.isArray(o.pipes) ? o.pipes : []).filter(p => ok(p) && own(p.from) && own(p.to) && this.inPorts(p.to).some(q => q[0] === p.inPort)); this.links = (Array.isArray(o.links) ? o.links : []).filter(l => ok(l) && own(l.unit) && own(l.util)); this.seq = o.seq || 0; this.runs = o.runs || 0; this.usedReference = !!o.usedReference; if (o.elapsed) this.started = performance.now() - o.elapsed * 1000;   // v8.1: a pipe into a missing inlet (an old return into a raw tank) is dropped
       this.placeFixed(); this.changed(); return true;
@@ -5915,6 +5942,7 @@ PB.shapeTop = function (shape) {
 PB.splitAnchors = function (game, id, paths) {
   const n = game.nodes[id], shape = PB.nodeShape(game, id), top = Math.min(PB.shapeTop(shape), 2.6), r = PB.shapeSupport(shape, -0.7071, 0.7071) * 0.7071;
   return n.def.card.parts.map(q => {
+    if (n.unit === 'column' && q.port === 'top') { const sh = shape.filter(p => p.t === 'cyl' && p.axis === 'z').reduce((a, b) => b.r > a.r ? b : a); return [n.x + sh.x, n.y + sh.y, PB.shapeTop(shape)]; }   // v8.1.1 (client): the Top card points to the top of the column, not the reflux pump nozzle
     const pipe = game.pipes.find(p => q.dir === 'in' ? p.to === id && p.inPort === q.port : p.from === id && p.port === q.port), P = pipe && paths[pipe.id];
     if (P) return (q.dir === 'in' ? P[P.length - 1] : P[0]).slice(0, 3);
     const kind = ((q.dir === 'in' ? game.inPorts(id) : game.outPorts(id)).find(p => p[0] === q.port) || [])[1];
@@ -6109,7 +6137,7 @@ PB.IsoView.prototype = {
       if (fit[i - 1] != null) depth = fit[i - 1];
       const nd = this.nozzleDepth(e, a, b); if (nd != null) depth = nd;   // v6.3: next to a vessel, the pipe goes behind it or in front of it
       if (a[3] != null) depth = Math.max(depth, a[3]);   // v6.4: a bridge is painted in front of the pipe it crosses
-      segs.push({ g, fluid, len, s0 }); s0 += len; this.items.push({ depth, g });
+      segs.push({ g, fluid, len, s0, pa, pb }); s0 += len; this.items.push({ depth, g });
     }
     const anchor = PB.pathAnchor(path);
     let rec = null;
@@ -6197,11 +6225,26 @@ PB.IsoView.prototype = {
       const prog = e.def.kind === 'util' && e.def.color ? 1 : e.progress;   // v6.4: a utility line is already in service: always shown full in its colour
       if (pe.p !== prog) { pe.p = prog; const P = prog * pe.len; pe.segs.forEach(sg => { const f = Math.max(0, Math.min(sg.len, P - sg.s0)); sg.fluid.setAttribute('stroke-dasharray', `${f.toFixed(1)} ${sg.len + 1}`); }); }
     }
+    this.lapDraw();
     if (this.tagDirty) this.declutter();
     // product tags tick
     this.g.level.fixed.forEach(f => {
       if (f.kind === 'product') { const r = this.g.reached(f.id); if (this._pr && this._pr[f.id] !== r) this.refreshNode(f.id); (this._pr = this._pr || {})[f.id] = r; }
     });
+  },
+  /* v8.1.1: a gas loop's passes after the Deploy fill: a bright bead runs round the loop's pipes and a badge above the reactor shows the
+     pass and its pressure (the engine's game.lap) */
+  lapDraw() {
+    const a = this.g.lap, n = a && this.g.nodes[a.at];
+    if (!n) { if (this.lapEl) { this.lapEl.remove(); this.bead.remove(); this.lapEl = this.bead = null; } return; }
+    if (!this.bead) this.bead = this.el('circle', { class: 'lap-bead', r: 6 }, this.streamLayer);
+    if (a.f != null && this.lapSeen !== a) { this.lapSeen = a; if (PB.ui.smallScreen()) this.centerOn(n.id, 0.3); }   // a phone closes in on the loop to read the badge
+    if (!this.lapEl || this.lapEl._t !== a.text) { if (this.lapEl) this.lapEl.remove();
+      this.lapEl = this.tag(this.tagLayer, n.x, n.y, Math.min(PB.shapeTop(PB.nodeShape(this.g, n.id)), 2.6) + 1.2, a.text, 'tag-pass'); this.lapEl._t = a.text; }
+    const segs = a.pipes.flatMap(id => this.pipeEls[id] ? this.pipeEls[id].segs : []), tot = segs.reduce((s, q) => s + q.len, 0);
+    this.bead.style.display = a.f == null || !tot ? 'none' : ''; if (a.f == null || !tot) return;
+    let d = a.f * tot; const q = segs.find(q => (d -= q.len) <= 0) || segs[segs.length - 1], t = Math.max(0, Math.min(1, 1 + d / q.len));
+    this.bead.setAttribute('cx', (q.pa[0] + (q.pb[0] - q.pa[0]) * t).toFixed(1)); this.bead.setAttribute('cy', (q.pa[1] + (q.pb[1] - q.pa[1]) * t).toFixed(1));
   },
   itemPos(id) {
     const n = this.g.nodes[id]; if (n) return this.P(n.x, n.y, 0.8);
@@ -6476,6 +6519,7 @@ window.PB = window.PB || {};
     this.cursor3.visible = false; this.S.add(this.cursor3);
     this.halo = new T.Mesh(new T.RingGeometry(1, 1.25, 40).rotateX(-Math.PI / 2), new T.MeshBasicMaterial({ color: '#ff2a1a', transparent: true, opacity: 0.6, depthWrite: false }));   // the Deploy stop, also on small units
     this.halo.visible = false; this.S.add(this.halo); this.halos = [this.halo];
+    this.bead = new T.Mesh(new T.SphereGeometry(0.45, 16, 12), new T.MeshBasicMaterial({ color: '#ff7a00', depthTest: false })); this.bead.renderOrder = 9; this.bead.visible = false; this.S.add(this.bead);   // v8.1.1: the loop-pass pulse
     this.lights(); this.content(); this.resize();
     this.ro = new ResizeObserver(() => { this.dock(); this.resize(); }); this.ro.observe(this.host); if (this.build) this.ro.observe($('#sb-view'));
     this.input(); this.idleAt = performance.now(); this.last = performance.now(); this.dirty = true;
@@ -6602,6 +6646,18 @@ window.PB = window.PB || {};
       }
       return changed;
     },
+    /* v8.1.1: a gas loop's passes after the Deploy fill (the engine's game.lap): a glowing bead runs round the loop's pipes and a badge
+       above the reactor shows the pass and its pressure, as on the 2.5D board */
+    lapFrame() {
+      const a = this.g.lap, n = a && this.g.nodes[a.at];
+      if (!n) { this.bead.visible = false; if (this.lapEl) { this.lapEl.remove(); this.lapEl = null; this.dirty = true; } return; }
+      if (!this.lapEl || !this.lapEl.isConnected) { const t = this.plan.tags.find(q => q.id === n.id); this.lapEl = document.createElement('div'); this.lapEl.className = 't3-tag t3-pass'; this.tagLayer.appendChild(this.lapEl); this.lapPos = new this.T.Vector3(t.x, t.z + 0.9, t.y); }
+      if (this.lapEl.textContent !== a.text) { this.lapEl.textContent = a.text; this.lapW = 0; this.dirty = true; }
+      const segs = a.pipes.flatMap(id => (this.plan.pipes.find(p => p.id === id) || { segs: [] }).segs), tot = segs.reduce((s, q) => s + q.len, 0);
+      this.bead.visible = a.f != null && tot > 0; if (!this.bead.visible) return;
+      let d = a.f * tot; const q = segs.find(q => (d -= q.len) <= 0) || segs[segs.length - 1], k = Math.max(0, Math.min(1, 1 + d / q.len));
+      this.bead.position.set(q.a[0] + (q.b[0] - q.a[0]) * k, q.a[2] + (q.b[2] - q.a[2]) * k, q.a[1] + (q.b[1] - q.a[1]) * k); this.dirty = true;
+    },
     /* desktop: what the board screen is doing (placing, moving, connecting, cards) shown in 3D: the zone, the glowing unit, the cards */
     highlight(st, bad) {   // v8: bad = the set of stopped units
       for (const id in this.units) { const kind = bad.has(id) ? 'bad' : id === st.focus ? 'focus' : id === this.hover ? 'hover' : null;
@@ -6657,6 +6713,7 @@ window.PB = window.PB || {};
       const now = performance.now(), dt = Math.min(0.05, (now - this.last) / 1000); this.last = now;
       if (this.g.edges !== this.edgesRef) { this.clearContent(); this.content(); }   // the board changed (an edit, or a Deploy that recolours the pipes)
       if (this.flow()) this.dirty = true;
+      this.lapFrame();
       if (this.build) {
         if (this.mouse) { const [x, y] = this.mouse; this.mouse = null; this.hover = this.pickNode(x, y); const g = this.ground(x, y); this.cell = g && [Math.round(g[0] * 2) / 2, Math.round(g[1] * 2) / 2]; }
         // v8: a Deploy can stop at several units: every one glows and gets a ground ring; the camera takes them all in
@@ -6687,8 +6744,9 @@ window.PB = window.PB || {};
         const bp = c.body && c.body.map(proj), body = bp && [Math.min(...bp.map(q => q[0])), Math.min(...bp.map(q => q[1])), Math.max(...bp.map(q => q[0])), Math.max(...bp.map(q => q[1]))];
         items.push({ el: c.el, x: p[0], y: p[1], w: c.w, h: c.h, k: c.k, card: true, body, part: c.part }); }
       const carded = new Set(Object.values(this.cards).map(c => c.id));
+      if (this.lapEl) { const p = at(this.lapPos, this.lapEl); if (p) { if (!this.lapW) this.lapW = this.lapEl.offsetWidth || 90; items.push({ el: this.lapEl, x: p[0], y: p[1], w: this.lapW, h: 24, pin: true }); } }   // v8.1.1: the pass badge, before the name tags
       this.tags.forEach(t => { if (carded.has(t.id)) { t.el.style.display = 'none'; return; } const p = at(t.pos, t.el); if (!p) return; if (!t.w) t.w = t.el.offsetWidth || 60; items.push({ el: t.el, x: p[0], y: p[1], w: t.w, h: 22 }); });
-      items.sort((a, b) => (!!b.card - !!a.card) || (a.part != null && b.part != null ? a.part - b.part : 0) || (a.card ? b.w * b.h - a.w * a.h : 0) || (b.y - a.y)); const placed = [];
+      items.sort((a, b) => (!!b.card - !!a.card) || (!!b.pin - !!a.pin) || (a.part != null && b.part != null ? a.part - b.part : 0) || (a.card ? b.w * b.h - a.w * a.h : 0) || (b.y - a.y)); const placed = [];
       let inSide = -1;   // v8.1: the side of its unit the Needs + Inlet card took
       const over = (q, y) => placed.find(r => Math.abs(r.x - q.x) < (r.w + q.w) / 2 + 2 && y > r.y - r.h - 1 && y - q.h < r.y + 1);   // a label spans [y - h, y]
       let lines = '';
@@ -6771,7 +6829,7 @@ window.PB = window.PB || {};
     destroy() {
       cancelAnimationFrame(this.raf); this.ro.disconnect(); document.removeEventListener('pointerdown', this.wake, true); this.clearContent();
       Object.values(this.unitTube).forEach(g => g.dispose()); Object.values(this.mats).concat(Object.values(this.glows)).forEach(m => m.dispose());
-      this.hitMat.dispose(); [this.cursor3, this.cursor3.children[0], this.halo].forEach(o => { o.geometry.dispose(); o.material.dispose(); }); this.envRT.dispose();
+      this.hitMat.dispose(); [this.cursor3, this.cursor3.children[0], this.halo, this.bead].forEach(o => { o.geometry.dispose(); o.material.dispose(); }); this.envRT.dispose();
       this.S.traverse(o => { if (o.isLight && o.dispose) o.dispose(); });
       this.R.dispose(); this.R.forceContextLoss(); this.R.domElement.remove(); this.R = null; this.tagLayer.innerHTML = '';
     }
