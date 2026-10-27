@@ -637,6 +637,27 @@ html:not(.teacher) .teacher-only, html:not(.board-on) .teacher-only { display: n
 .b-stats span { white-space: nowrap; }   /* v8 review: the badge points never wrap */
 @media (min-width: 900px) { .pickb .sb-tabs { gap: 2px; padding: 8px 6px; } .pickb .sb-tab { padding: 6px 4px; gap: 2px; } .pickb .sb-tab .ci { width: 20px; height: 20px; } }   /* v8 review: the whole rail (Advanced: ten tabs) fits a 900 px high screen */
 .v3d.dock #v3d-close { display: none; }   /* v8 review: desktop 3D building closes with the HUD toggle; touch (look only) keeps Close */
+/* ---------------- v8.2: Competition hints (HUD button, hint cards, flowchart) and the board hint badge (board.js) ---------------- */
+#sb-hint { display: inline-flex; align-items: center; gap: 2px; } #sb-hint .ci { width: 17px; height: 17px; stroke: #b7791f; }
+@media (max-width: 560px) { #sb-hint .k-txt { display: none; } #sb-hint { padding-inline: 8px; flex: none; } }
+.modal-card.hint-modal { width: min(640px, 100%); }
+.hint-card { border: 1px solid var(--line); border-top: 4px solid #b7791f; border-radius: 14px; padding: 10px 14px 12px; margin: 0 0 12px; background: #fff; }
+.hint-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; } .hint-h b { font: 700 16px var(--f-display); }
+.hint-tag { font: 600 12px var(--f-display); padding: 2px 8px; border-radius: 999px; background: #fff3cd; color: #8a5a00; white-space: nowrap; }
+.hint-card .eyebrow { margin: 10px 0 6px; }
+.modal-card .hint-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px; }
+.modal-card .hint-tiles li { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 10px; background: var(--panel-2); margin: 0; }
+.hint-tiles .pd-ico { width: 32px; height: 32px; border-radius: 8px; } .hint-tiles .pd-ico .ci { width: 20px; height: 20px; }
+.hint-t { flex: 1; min-width: 0; display: flex; flex-direction: column; } .hint-t b { font: 600 14px var(--f-body); } .hint-t small { font-size: 12px; color: var(--muted); line-height: 1.25; }
+.hint-n { font-size: 18px; font-weight: 700; color: var(--fg); white-space: nowrap; }
+.hint-flow { display: block; width: 100%; max-width: 560px; height: auto; margin: 4px auto 0; }
+.hint-flow .hf-n rect { fill: var(--gs); stroke: var(--gc); stroke-width: 1.6; } .hint-flow text { font: 600 11px var(--f-display); fill: var(--fg); dominant-baseline: middle; }
+.hint-flow .hf-l { font: 500 10.5px var(--f-body); fill: var(--muted); }
+.hint-flow .hf-sh { fill: #cfd5d0; } .hint-flow .hf-sh.rec { fill: #eef0ee; stroke: #98a2b3; stroke-width: 1.2; stroke-dasharray: 4 3; }
+.hint-flow .hf-a { fill: none; stroke: #5b6960; stroke-width: 1.6; } .hint-flow .hf-a.rec { stroke: #98a2b3; stroke-dasharray: 5 4; }
+.hint-note { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+.hint-used { margin: 0 0 10px; font-weight: 600; color: #8a5a00; }
+.bd-pts .bd-hint { display: block; width: max-content; margin: 2px 0 0 auto; padding: 0 6px; border-radius: 8px; background: #fff3cd; color: #8a5a00; font: 600 .7em var(--f-body, inherit); }
 
 </style>
 <script type="importmap">{"imports":{"https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.js":"https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.min.js"},"integrity":{"https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.module.min.js":"sha512-5y1OuWCUVXtYlPOwdMCvNr/Scu/rs2aBbVxO5q1Du9DzLe7X0QpPf1yxAV839cwp7ZqIDv/UrCm0O2oXxM+rMA==","https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.min.js":"sha512-XHAcLGgLlaKvTJVfBh76iqQUVHJhHbsu+g/JhY0gQBrpYkg+L1MbYckDdUXkh4D/tsp/mVoPi+Art8oxizfddA==","https://cdnjs.cloudflare.com/ajax/libs/three.js/0.186.1/three.core.js":"sha512-qlDOLg8zPtXvEqSrHL/iQY763kv248HYdKLW3j2F/XJDA/XnKZj1SNqvjXVrRe0gw96iMOgMFwj8cFSOtIrELQ=="}}</script>
@@ -734,6 +755,7 @@ html:not(.teacher) .teacher-only, html:not(.board-on) .teacher-only { display: n
           <div class="hud-title"><span class="hud-name" id="sb-title">Sandbox</span><span class="hud-sub"><span class="hud-mode" id="sb-mode">Normal</span><span id="sb-time" class="mono">0:00</span><button class="linkish sb-who" id="sb-who" type="button" hidden></button></span></div>
           <button class="btn sm" id="sb-card" aria-label="Spec card">Spec<span class="k-txt"> card</span></button>
           <button class="btn ghost sm" id="sb-guide" aria-label="Guide: rules and icon key"><span aria-hidden="true" class="k-ico">?</span><span class="k-txt"> Guide</span></button><button class="btn sm" id="sb-cards" aria-pressed="true" aria-label="Cards"><span aria-hidden="true" class="k-ico">▤</span><span class="k-txt"> Cards</span></button>
+          <button class="btn ghost sm" id="sb-hint" type="button" aria-label="Hint" hidden></button>
           <button class="btn ghost sm" id="sb-3d" aria-label="3D view" hidden>3D</button>
           <button class="icon-btn" id="sb-more" aria-label="More">⋯</button>
         </div>
@@ -4072,7 +4094,11 @@ PB.LEVELS.bioethanol = {
         products: [ { c: ['meoh'], name: 'Methanol', sink: ['tank'] } ],
         byproducts: [ { main: 'water', name: 'Water', basic: ['pond'], advanced: ['wwt'] } ],
         loop: { c: 'h2', name: 'unreacted gas', noPurge: 1 }, recovered: [ { c: ['co2', 'h2'], name: 'Unreacted gas', ph: 'G' } ],   // v6: no impurities, so the whole loop recycles
-        flashT: 50 },   // v8.1.1 (client): the flash takes its feed at 50 °C or cooler, instructor basis (PB.ASSUMPTIONS cw)
+        flashT: 50,   // v8.1.1 (client): the flash takes its feed at 50 °C or cooler, instructor basis (PB.ASSUMPTIONS cw)
+        /* v8.2 (client): the Competition hints: the units of the reference plant (one plant that works), game guidance, not a physical claim */
+        hints: { raw: [['co2', 1], ['h2', 1]],
+          units: [['compressor', 2, 2, '+1 for the recycle'], ['hx', 4, 4, '+1 if the feeds are heated apart'], ['joint', 1, 1], ['reactor', 1, 1, 'already placed'], ['flash', 1, 1], ['valve', 1, 1], ['column', 1, 1]],   // review M1 (client): one working plant's counts
+          storage: [['tank', 'Methanol tank', 1], ['pond', 'Effluent pond', 1]] } },
 
       bioethanol: { id: 'bioethanol', title: 'Bioethanol', subtitle: 'Sugarcane molasses → fuel ethanol', levelId: 'bioethanol', color: '#2e8b4f',
         card: Object.assign({}, R_FER, {
@@ -5062,6 +5088,7 @@ window.PB = window.PB || {};
     this.board = SBX().boards[this.mode];
     this.items = {}; this.order = []; this.pipes = []; this.links = []; this.seq = 0;
     this.listeners = {}; this.runs = 0; this.verdict = null; this.running = false; this.complete = false;
+    this.hints = 0; this.hintSeed = Math.floor(Math.random() * 1e9);   // v8.2: Competition hints used (each costs 10 points) and the seed of the hint-1 tile order
     this.started = null; this.finished = null; this.firedError = false;
     this.placeFixed();
   };
@@ -5614,7 +5641,8 @@ window.PB = window.PB || {};
       const parts = { units: (30 + (sepT.length ? 0 : 5) + (purT.length ? 0 : 5)) * chk.filter(t => this.order.some(id => items[id].cat === 'unit' && items[id].type === t && reached(id) && passes[id])).length / (chk.length || 1),
         feeds: reactIds.some(live) ? 10 : 0, reaction: reactIds.some(madeAt) ? 10 : 0, sep: sepT.length && stepOK(sepT) ? 5 : 0, pur: purT.length && stepOK(purT) ? 5 : 0,
         products: 10 * stored / P.products.length, pass: ok ? (noRec ? 30 : 15) : 0, recycle: ok && !noRec && pipes.some(p => rec.recPipes.has(p.id) && flow[p.id]) ? 15 : 0 };
-      const points = { total: Math.round(Object.values(parts).reduce((a, b) => a + b, 0)), parts, has: { sep: !!sepT.length, pur: !!purT.length, recycle: !noRec } };   // v8.1: has = the steps the progress bar shows
+      if (this.hints) parts.hints = -10 * this.hints;   // v8.2 (client): each Competition hint costs 10 points
+      const points = { total: Math.max(0, Math.round(Object.values(parts).reduce((a, b) => a + b, 0))), parts, has: { sep: !!sepT.length, pur: !!purT.length, recycle: !noRec } };   // v8.1: has = the steps the progress bar shows
       let restage = false; for (const id of this.order) { const it = items[id]; if (it.cat !== 'unit' || it.type !== 'compressor') continue;   // v8.1: the stage count draws the model and the tag
         const n = this.stg[id] || 1; if (it.stages !== n) { it.stages = n; restage = true; } }
       if (restage) this.layout();
@@ -5854,16 +5882,18 @@ window.PB = window.PB || {};
     progress() { const v = this.verdict || this.lastEval || this.evaluate(); return { stage: v.stage, deploys: this.runs, time: this.elapsed(), complete: !!this.complete, points: v.points }; },
 
     /* ---------- save / load ---------- */
-    toJSON() { return { v: 2, proc: this.procId, mode: this.mode, seq: this.seq, items: this.order.map(id => this.items[id]), pipes: this.pipes, links: this.links, runs: this.runs, usedReference: !!this.usedReference, elapsed: this.elapsed() }; },
+    toJSON() { return { v: 2, proc: this.procId, mode: this.mode, seq: this.seq, items: this.order.map(id => this.items[id]), pipes: this.pipes, links: this.links, runs: this.runs, usedReference: !!this.usedReference, elapsed: this.elapsed(), hints: this.hints, hintSeed: this.hintSeed }; },
     load(o) {
       if (!o || o.proc !== this.procId || o.mode !== this.mode) return false;
       const S = SBX(), known = it => it && typeof it.id === 'string' && /^\w+$/.test(it.id) && ({ unit: S.units, sink: S.sinks, waste: S.waste, util: S.utilities }[it.cat] || {}).hasOwnProperty(it.type) || (it && it.cat === 'raw' && typeof it.id === 'string' && /^\w+$/.test(it.id) && S.materials.some(m => m.id === it.type));
       const own = id => typeof id === 'string' && Object.hasOwn(this.items, id), ok = q => q && typeof q.id === 'string' && /^\w+$/.test(q.id);
       if ((o.v || 1) < 2) (Array.isArray(o.items) ? o.items : []).forEach(it => { if (it && it.cat === 'sink' && it.x > 24.3) it.x += 6; });   // v8.1.1: a board saved before the wider Process zone keeps its tanks in Product storage
       this.items = {}; this.order = []; (Array.isArray(o.items) ? o.items : []).filter(known).forEach(it => { it.sp = it.sp || {}; delete it.stages; for (const k of ['T', 'P']) if (it.sp[k] != null) it.sp[k] = spVal(it.type, k, it.sp[k]); it.skin = this.skinOf(it.cat, it.type); this.items[it.id] = it; this.order.push(it.id); });
-      this.pipes = (Array.isArray(o.pipes) ? o.pipes : []).filter(p => ok(p) && own(p.from) && own(p.to) && this.inPorts(p.to).some(q => q[0] === p.inPort)); this.links = (Array.isArray(o.links) ? o.links : []).filter(l => ok(l) && own(l.unit) && own(l.util)); this.seq = o.seq || 0; this.runs = o.runs || 0; this.usedReference = !!o.usedReference; if (o.elapsed) this.started = performance.now() - o.elapsed * 1000;   // v8.1: a pipe into a missing inlet (an old return into a raw tank) is dropped
+      this.pipes = (Array.isArray(o.pipes) ? o.pipes : []).filter(p => ok(p) && own(p.from) && own(p.to) && this.inPorts(p.to).some(q => q[0] === p.inPort)); this.links = (Array.isArray(o.links) ? o.links : []).filter(l => ok(l) && own(l.unit) && own(l.util)); this.seq = o.seq || 0; this.runs = o.runs || 0; this.usedReference = !!o.usedReference; this.hints = Math.min(2, Math.max(0, Math.floor(Number(o.hints)) || 0)); if (Number.isFinite(Number(o.hintSeed))) this.hintSeed = Number(o.hintSeed); if (o.elapsed) this.started = performance.now() - o.elapsed * 1000;   // v8.1: a pipe into a missing inlet (an old return into a raw tank) is dropped
       this.placeFixed(); this.changed(); return true;
     },
+    /* v8.2: the next Competition hint (at most 2); kept by Clear board, as deploys and the clock are */
+    useHint() { if (this.hints >= 2) return false; this.hints++; this.changed(); return true; },
     clear() { this.items = {}; this.order = []; this.pipes = []; this.links = []; this.usedReference = false; this.placeFixed(); this.changed(); },   // deploys and time are kept (fair scoring)
 
     /* ---------- build a reference solution (tests, "show reference") ---------- */
@@ -6917,10 +6947,11 @@ window.PB = window.PB || {};
     const who = kind === 'competition' && PB.Board.configured() && PB.Board.session();   // v7.1: the joined nickname; a tap goes back to #join
     $('#sb-who').hidden = !who; if (who) { $('#sb-who').innerHTML = U().esc(who.nickname) + '<span class="who-ch"> · change</span>'; $('#sb-who').setAttribute('aria-label', 'Playing as ' + who.nickname + ': change class or nickname'); }   // phones: the nickname takes the title's place (style.css)
     $('#sb-zones').innerHTML = game.board.zones.map(z => `<button class="sb-zone" data-zone="${z.id}">${U().esc(z.label.replace(' Storage', '').replace('Raw Material', 'Raw materials'))}</button>`).join('');
-    game.on('change', () => { save(); makeView(); status(); $('#sb-run').disabled = false; });
+    game.on('change', () => { save(); makeView(); status(); hintBtn(); $('#sb-run').disabled = false; });
     game.on('error', d => onError(d));
     game.on('complete', r => setTimeout(() => onComplete(r), 700));
-    makeView(); status();
+    if (kind === 'competition') game.hints = Math.max(game.hints, PB.Board.savedHints());   // review M2 (client): a rejoin keeps the hints this class + nickname bought on this device
+    makeView(); status(); hintBtn();
     document.documentElement.style.setProperty('--sb-bar-h', ($('#sb-bar').offsetHeight + 10) + 'px');
     if (U().smallScreen()) setTimeout(() => SB && centerZone('proc'), 30);
     $('#sb-prog').hidden = true;
@@ -7297,7 +7328,7 @@ window.PB = window.PB || {};
     const where = many ? 'The flow stopped at ' + list.length + ' places' : stops[0].node || stops[0].between ? 'The flow stopped ' + list[0] : 'The flow did not reach the end of your plant';
     ui.modal({ kicker: 'Deploy stopped', title: where, bad: true, cls: 'stop-card',
       html: (many ? `<ul class="needs stops">${list.map(s => `<li>${ui.esc(s)}</li>`).join('')}</ul>` : '') +
-        `<p>Your plant does not work from ${many ? 'these places' : 'here'}. Check the unit cards to find out why, fix it and deploy again.</p>` + progHTML(), actions: [{ label: 'OK', primary: true }] });
+        `<p>Your plant does not work from ${many ? 'these places' : 'here'}. Check the unit cards to find out why, fix it and deploy again.</p>` + progHTML() + hintsLine(), actions: [{ label: 'OK', primary: true }] });
   }
   /* v7.1: a finished plant also posts its finish (done, the final time) */
   function onComplete(r) {
@@ -7313,7 +7344,7 @@ window.PB = window.PB || {};
     const pts = `<p class="report-time"><span class="mono">${Math.round(r.points ? r.points.total : 0)}<small> / 100</small></span><small>points</small></p>`;
     if (r.reference) { ui.modal({ kicker: 'Plant report', title: 'The reference plant works.', html: '<p>This board was built from the reference design. Clear the board and design your own plant.</p>' + progHTML() + list('Tips', r.pens) + plantSources(r), actions: [{ label: 'OK', primary: true }] }); return; }
     ui.modal({ kicker: 'Plant report', title: 'Your plant works! You can be a chemical engineer.', html: `<div class="report-score">${pts}<p class="report-time"><span class="mono">${esc(PB.fmtTime(r.time))}</span><small>your time</small></p></div>` +
-      progHTML(true) + list('Tips', r.pens) + plantSources(r),
+      progHTML(true) + hintsLine() + list('Tips', r.pens) + plantSources(r),
       actions: [{ label: 'Keep building' }, { label: 'Get my badge', primary: true, fn: () => badge(r) }] });
   }
   /* v5: after the score — every source behind the numbers and facts of this process, and the stated assumptions */
@@ -7361,6 +7392,53 @@ window.PB = window.PB || {};
       $('#modal-b').querySelectorAll('[data-gpanel]').forEach(q => { q.hidden = q.dataset.gpanel !== k; });
       $('#modal-t').textContent = k === 'key' ? 'What the icons mean' : 'How the plant works'; });
   }
+  /* v8.2 (client): Competition hints, 2 at most, −10 points each (game.useHint); a hint used once reopens free, any number of times.
+     Hint 1 lists the units by zone (only the Process tiles shuffled, seeded by game.hintSeed); hint 2 is the order of the main units */
+  const BULB = 'M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0-1 3a2 2 0 0 1-4 0a3.5 3.5 0 0 0-1-3M9.7 17h4.6M12 2v1M3 11h1M20 11h1M5.6 4.6l.7.7M18.4 4.6l-.7.7';   // Tabler bulb
+  const HINT_ICO = { compressor: 'comp', hx: 'temp', joint: 'joint', reactor: 'react', flash: 'sep', valve: 'valve', column: 'col', tank: 'tank', pond: 'sink' };
+  function hintBtn() { const b = $('#sb-hint'), on = !!SB && SB.kind === 'competition' && !SB.game.usedReference; b.hidden = !on; if (!on) return;
+    const n = 2 - SB.game.hints; b.innerHTML = `<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><path d="${BULB}"/></svg><span class="k-txt">&nbsp;Hint ·&nbsp;</span>${n}<span class="k-txt">&nbsp;left</span>`; b.setAttribute('aria-label', 'Hint: ' + n + ' left'); }
+  function hint() { if (!SB || SB.game.running) return; if (SB.game.hints) showHints(); else askHint(); }   // review m1: not while a Deploy plays
+  function askHint() { const k = SB.game.hints + 1;   // no-dismiss: a tap beside the card must not buy the hint
+    U().modal({ kicker: 'Hint', title: `Use hint ${k} of 2?`, cls: 'no-dismiss', html: '<p>It costs 10 points from your total. You can reopen a hint you used for free.</p>',
+      actions: [{ label: 'Not now' }, { label: 'Use hint (−10)', primary: true, fn: () => { if (!SB) return; if (SB.game.useHint()) { PB.Board.noteHints(SB.game.hints); save(); hintBtn(); if (!$('#sb-prog').hidden) showProg(); } showHints(true); } }] });
+  }
+  function hintTile(ico, grp, name, n, note) { const esc = U().esc;
+    return `<li class="g-${grp}"><span class="pd-ico">${icn(ico)}</span><span class="hint-t"><b>${esc(name)}</b>${note ? `<small>${esc(note)}</small>` : ''}</span><span class="hint-n mono">${esc(n)}</span></li>`; }
+  function hint1() {
+    const H = SB.game.proc.hints, S = PB.SANDBOX, ul = a => `<ul class="hint-tiles">${a.join('')}</ul>`;
+    let s = SB.game.hintSeed >>> 0; const rnd = () => { s = (s + 0x6D2B79F5) >>> 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t ^= t + Math.imul(t ^ t >>> 7, 61 | t); return ((t ^ t >>> 14) >>> 0) / 4294967296; };   // mulberry32: the same order every time
+    const units = H.units.slice(); for (let i = units.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [units[i], units[j]] = [units[j], units[i]]; }
+    return `<div class="hint-card"><div class="hint-h"><b>Hint 1 · Units your plant needs</b><span class="hint-tag">−10 points</span></div><p class="hint-note">The units of one plant that works; other designs can work too.</p>` +
+      `<p class="eyebrow">Raw materials</p>${ul(H.raw.map(([m, n]) => hintTile('gastank', 'raw', S.materials.find(q => q.id === m).name, String(n))))}` +
+      `<p class="eyebrow">Process</p>${ul(units.map(([t, a, b, note]) => hintTile(HINT_ICO[t], groupOf({ cat: 'unit', type: t }), PB.EQUIP[t].name, a === b ? String(a) : a + '–' + b, note)))}` +
+      `<p class="eyebrow">Storage</p>${ul(H.storage.map(([t, name, n]) => hintTile(HINT_ICO[t], 'tank', name, String(n))))}</div>`;
+  }
+  /* hint 2: a branched flowchart; grey boxes stand for the pressure and temperature changers (viewBox scales to a 390 px phone) */
+  function hint2() {
+    const box = (x, y, w, h, grp, lines) => `<g class="hf-n g-${grp}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/>` + lines.map((t, i) => `<text x="${x + w / 2}" y="${y + h / 2 + (i - (lines.length - 1) / 2) * 13}" text-anchor="middle">${t}</text>`).join('') + '</g>';
+    const sh = (x, y, cls) => `<rect class="hf-sh${cls ? ' ' + cls : ''}" x="${x}" y="${y}" width="26" height="22" rx="5"/>`;
+    const ar = (d, cls) => `<path class="hf-a${cls ? ' ' + cls : ''}" d="${d}" marker-end="url(#hf-${cls ? 'r' : 'm'})"/>`;
+    const lb = (x, y, t, a) => `<text class="hf-l" x="${x}" y="${y}" text-anchor="${a || 'start'}">${t}</text>`;
+    return `<div class="hint-card"><div class="hint-h"><b>Hint 2 · The order of the main units</b><span class="hint-tag">−10 points</span></div>` +
+      `<svg class="hint-flow" viewBox="0 0 360 262" role="img" aria-labelledby="hf-t"><title id="hf-t">Raw tanks, then a grey box, the reactor, a grey box and the flash drum. The flash drum top goes through a dashed grey box back to before the reactor (recycle). The flash drum bottom goes through a grey box to the distillation column. The column top goes through a grey box to the methanol tank, the column bottom through a grey box to the effluent pond.</title>` +
+      `<defs><marker id="hf-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5b6960"/></marker>` +
+      `<marker id="hf-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#98a2b3"/></marker></defs>` +
+      box(17, 53, 66, 34, 'raw', ['Raw tanks']) + ar('M83 70H100') + sh(101, 59) + ar('M127 70H144') + box(145, 53, 66, 34, 'react', ['Reactor']) +
+      ar('M211 70H228') + sh(229, 59) + ar('M255 70H269') + box(270, 53, 76, 34, 'sep', ['Flash drum']) +
+      `<path class="hf-a rec" d="M308 53V20H235M209 20H114V58" marker-end="url(#hf-r)"/>` + sh(209, 9, 'rec') + lb(313, 42, 'top') + lb(172, 14, 'recycle', 'middle') +
+      ar('M308 87V107') + lb(313, 101, 'bottom') + sh(295, 108) + ar('M308 130V147') + box(263, 148, 90, 44, 'pur', ['Distillation', 'column']) +
+      ar('M263 158H217') + lb(240, 153, 'top', 'middle') + sh(190, 147) + ar('M190 158H173') + box(80, 141, 92, 34, 'tank', ['Methanol tank']) +
+      ar('M308 192V232H217') + lb(313, 212, 'bottom') + sh(190, 221) + ar('M190 232H173') + box(80, 215, 92, 34, 'tank', ['Effluent pond']) +
+      `</svg><p class="hint-note">Grey boxes hide the pressure and temperature changers (one unit or several).</p></div>`;
+  }
+  function showHints(fresh) {   // fresh: a hint just bought scrolls into view
+    if (!SB) return; const n = SB.game.hints;
+    U().modal({ kicker: 'Hint', title: n > 1 ? 'Your hints' : 'Your hint', cls: 'unit-card hint-modal', html: hint1() + (n > 1 ? hint2() : ''),
+      actions: (n < 2 ? [{ label: 'Use hint 2 (−10)', fn: askHint }] : []).concat([{ label: 'OK', primary: true }]) });
+    if (fresh && n > 1) setTimeout(() => { const c = $('#modal-b').lastElementChild, m = $('#modal-card'); if (c) m.scrollTop += c.getBoundingClientRect().top - m.getBoundingClientRect().top - 12; }, 60);   // after modal()'s own scroll to the top
+  }
+  const hintsLine = () => SB.game.hints ? `<p class="hint-used">Hints used: ${SB.game.hints} (−10 each)</p>` : '';
   function badge(r) {
     $('#b-plant').textContent = KIND[SB.kind] + ' · ' + r.proc.title + ' · ' + PB.SANDBOX.modes[r.mode].name;
     $('#b-time').textContent = PB.fmtTime(r.time); $('#b-pts').textContent = String(Math.round(r.points ? r.points.total : 0)); $('#b-mode').textContent = PB.SANDBOX.modes[r.mode].name;
@@ -7400,6 +7478,7 @@ window.PB = window.PB || {};
   $('#sb-add').onclick = () => { if (SB) { clearAction(); openSheet(); } };
   $('#sb-card').onclick = () => specCard();
   $('#sb-guide').onclick = () => guide('rules');
+  $('#sb-hint').onclick = () => hint();   // v8.2
   $('#sb-pick-key').onclick = () => { const tab = sheetTab; closeSheet(); guide('key', () => openSheet(tab)); };
   $('#sb-cards').onclick = () => { if (!SB) return; SB.cardsOn = !SB.cardsOn; SB.cardOnly = null; $('#sb-cards').setAttribute('aria-pressed', String(SB.cardsOn)); makeView(); };
   $('#sb-zones').addEventListener('click', e => { const b = e.target.closest('[data-zone]'); if (b && SB) centerZone(b.dataset.zone); });
@@ -7410,11 +7489,12 @@ window.PB = window.PB || {};
   $('#sb-zfit').onclick = () => SB && SB.view.fit();
   $('#sb-more').onclick = () => {
     if (!SB) return; const ui = U();
-    const ref = { label: SB.kind === 'example' ? 'Show finished plant' : 'Show a reference design', fn: () => { SB.game.clear(); try { SB.game.buildSolution(PB.sandboxSolution(SB.proc, SB.mode)); SB.game.usedReference = SB.kind !== 'example'; save(); ui.toast('Built. Press Deploy.'); } catch (e) { console.error(e); ui.toast('Could not build it.', true); } } };
+    const ref = { label: SB.kind === 'example' ? 'Show finished plant' : 'Show a reference design', fn: () => { SB.game.clear(); try { SB.game.buildSolution(PB.sandboxSolution(SB.proc, SB.mode)); SB.game.usedReference = SB.kind !== 'example'; save(); hintBtn(); ui.toast('Built. Press Deploy.'); } catch (e) { console.error(e); ui.toast('Could not build it.', true); } } };
     const teacher = PB.teacher.on(), showRef = SB.kind !== 'competition' || teacher;
     if (teacher) ref.label = 'Show finished plant';
     const acts = [{ label: 'Clear board', cls: 'danger', fn: () => ui.modal({ kicker: 'Clear board', title: 'Remove everything you built?', html: '<p>The fixed reaction units stay. Your time keeps running.</p>', actions: [{ label: 'Keep my board', primary: true }, { label: 'Clear board', cls: 'danger', fn: () => { SB.game.clear(); ui.toast('Board cleared.'); } }] }) }].concat(showRef ? [ref] : [],
       PB.View3D.supported() && !is3D() ? [{ label: '3D view', fn: () => open3D() }] : [],
+      !$('#sb-hint').hidden ? [{ label: 'Hint · ' + (2 - SB.game.hints) + ' left', fn: hint }] : [],   // v8.2
       SB.kind === 'competition' && PB.Board.session() ? [{ label: 'Change class or nickname', fn: () => { location.hash = '#join'; } }] : [],
       teacher ? [{ label: 'Leave teacher mode', fn: () => { PB.teacher.set(false); ui.toast('Teacher mode is off.'); } }] : [{ label: 'Teacher mode', fn: () => PB.teacher.ask() }], [{ label: 'OK', primary: true }]);
     ui.modal({ kicker: KIND[SB.kind] + (teacher ? ' · teacher mode' : ''), title: 'Options', html: '<p>Your board is saved on this device only.</p><ul class="needs"><li><b>Clear board</b> removes everything except the fixed reaction units. Your time keeps running.</li>' + (showRef ? '<li><b>' + ref.label + '</b> builds one working plant for this process (it replaces your board).</li>' : '') + '<li>Tap a unit to set it, connect it, move it or remove it.</li></ul>',
@@ -7442,7 +7522,7 @@ window.PB = window.PB || {};
   const STAGES = ['Feeds in', 'Reaction', 'Products', 'Works'];   // milestone 1–4 (game.progress().stage)
   // v8.1.2: the step cards of the game's bar and the class board, in this order, with their PB.MS_ICONS index
   const STEPS = [['Feeds in', 0], ['Reaction', 1], ['Separation', 5], ['Purification', 6], ['Products', 2], ['Works', 3], ['Recycle', 4]];
-  const QKEY = 'chpe-queue', SKEY = 'chpe-join', RKEY = 'chpe-runs', KKEY = 'chpe-board-key';   // the board key stays on the teacher's device; it is sent only to the scoreboard URL
+  const QKEY = 'chpe-queue', SKEY = 'chpe-join', RKEY = 'chpe-runs', KKEY = 'chpe-board-key', HKEY = 'chpe-hints';   // the board key stays on the teacher's device; it is sent only to the scoreboard URL
   const POST_MS = 35000, BOARD_MS = 20000, JOIN_WAIT_MS = 8000, REFRESH_MS = 5000;
 
   /* ---------- cleaning: the same rules as clean_ / cleanClass_ in apps-script/Code.gs ---------- */
@@ -7530,8 +7610,8 @@ window.PB = window.PB || {};
     return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
   }
   function toCSV(players, fmtTime) {
-    const head = ['Rank', 'Nickname', 'Points', 'Milestone', 'Stage', 'Deploys', 'Time', 'Seconds', 'Finished', 'Steps'];
-    const lines = rank(players).map((p, i) => [i + 1, p.nickname, pts(p), p.done ? STAGES[3] : STAGES[(p.stage || 0) - 1] || 'Joined', p.done ? 4 : p.stage || 0, p.deploys || 0, fmtTime(p.seconds || 0), Math.round(p.seconds || 0), p.done ? 'yes' : 'no', STEP_OK.test(p.steps) ? STEPS.filter((q, k) => p.steps[k] === '1').map(q => q[0]).join(' · ') : '']);
+    const head = ['Rank', 'Nickname', 'Points', 'Milestone', 'Stage', 'Deploys', 'Time', 'Seconds', 'Finished', 'Steps', 'Hints'];
+    const lines = rank(players).map((p, i) => [i + 1, p.nickname, pts(p), p.done ? STAGES[3] : STAGES[(p.stage || 0) - 1] || 'Joined', p.done ? 4 : p.stage || 0, p.deploys || 0, fmtTime(p.seconds || 0), Math.round(p.seconds || 0), p.done ? 'yes' : 'no', STEP_OK.test(p.steps) ? STEPS.filter((q, k) => p.steps[k] === '1').map(q => q[0]).join(' · ') : '', hintN(p)]);
     return [head].concat(lines).map(r => r.map(csvCell).join(',')).join('\r\n') + '\r\n';
   }
 
@@ -7547,6 +7627,9 @@ window.PB = window.PB || {};
       s.map(([w, i, c]) => `<span class="ms-step${c === '1' ? ' on' : ''}${c === '1' && (i === 3 || i === 4) ? ' done' : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${PB.MS_ICONS[i]}"/></svg><b>${w}</b></span>`).join('') + '</div>';
   }
   const STEP_OK = /^[01]{2}[01-]{2}[01]{2}[01-]$/;   // as Code.gs
+  /* v8.2 (server Version 7): Competition hints used, 0–2; old rows have none */
+  const hintN = p => [1, 2].indexOf(Number(p.hints)) >= 0 ? Number(p.hints) : 0;
+  const hintHTML = p => hintN(p) ? `<small class="bd-hint">${hintN(p)} hint${hintN(p) > 1 ? 's' : ''}</small>` : '';
 
   function runIdNew() {
     let r = '';
@@ -7554,7 +7637,7 @@ window.PB = window.PB || {};
     return Date.now().toString(36) + '-' + r;
   }
 
-  PB.Board = { GAME, STAGES, STEPS, stepCode, stepsHTML, cleanNick, cleanClass, checkNick, checkClass, safeStore, makeQueue, replyFlag, joinPlan, rank, csvCell, toCSV, runIdNew };
+  PB.Board = { GAME, STAGES, STEPS, stepCode, stepsHTML, cleanNick, cleanClass, checkNick, checkClass, safeStore, makeQueue, replyFlag, joinPlan, rank, csvCell, toCSV, hintHTML, runIdNew };
   if (typeof document === 'undefined' || !document.querySelector) return;   // headless tests stop here
 
   /* ================= browser part ================= */
@@ -7579,13 +7662,16 @@ window.PB = window.PB || {};
   /* ---------- the student's session on this device: class, nickname, runId (+ taken / closed / full when refused) ---------- */
   const readJSON = k => { try { return JSON.parse(local.get(k) || 'null'); } catch (e) { return null; } };
   function session() { const s = readJSON(SKEY); return s && s.classCode && s.nickname && s.runId ? s : null; }
+  /* v8.2 review M2 (client): the hints bought per class + nickname on this device, so a rejoin cannot drop them */
+  function noteHints(n) { const s = session(); if (!s) return; const h = readJSON(HKEY) || {}, k = runKey(s.classCode, s.nickname); if ((h[k] || 0) < n) { h[k] = n; local.set(HKEY, JSON.stringify(h)); } }
+  function savedHints() { const s = session(), h = s && readJSON(HKEY); return h ? Math.min(2, Math.max(0, Number(h[runKey(s.classCode, s.nickname)]) || 0)) : 0; }
   function setSession(s) { local.set(SKEY, JSON.stringify(s)); const r = readJSON(RKEY) || {}; r[runKey(s.classCode, s.nickname)] = s.runId; local.set(RKEY, JSON.stringify(r)); }
 
   /* a Deploy (sandbox-ui.js: right after run(), so a Deploy cut short by an edit still counts) and a finished plant */
   function post(game) {
     const s = session(); if (!configured() || !s || refused(s) || game.usedReference) return;   // a reference board is not a student's plant
     const p = game.progress();
-    Q().add({ game: GAME, classCode: s.classCode, nickname: s.nickname, runId: s.runId, deploy: p.deploys, stage: p.complete ? p.stage : Math.min(p.stage, 3), time: Math.round(p.time), done: !!p.complete, score: (p.points && p.points.total) || 0, steps: stepCode(p, !!(game.proc.recycle || game.proc.loop)) }, rep => lateReply(rep, s));
+    Q().add({ game: GAME, classCode: s.classCode, nickname: s.nickname, runId: s.runId, deploy: p.deploys, stage: p.complete ? p.stage : Math.min(p.stage, 3), time: Math.round(p.time), done: !!p.complete, score: (p.points && p.points.total) || 0, steps: stepCode(p, !!(game.proc.recycle || game.proc.loop)), hints: game.hints || 0 }, rep => lateReply(rep, s));
   }
   /* the server can refuse after the student started (the join row waited offline): tell them once, after any open message */
   const LATE = {
@@ -7655,7 +7741,7 @@ window.PB = window.PB || {};
     $('#bd-list').innerHTML = !BD.cls ? '<li class="bd-empty">Type the class code to see the class.</li>'
       : !BD.open ? '<li class="bd-empty">This class is not open yet.' + (tk ? ' Press <b>Open this class</b>, then students can join.' : '') + '</li>'
       : !list.length ? '<li class="bd-empty">No one has joined yet. Students open the link and type the class code.</li>'
-      : list.map((p, i) => `<li class="bd-row${p.done ? ' done' : ''}"><span class="bd-rank">${i + 1}</span><span class="bd-nick">${esc(p.nickname)}</span>${bar(p)}<span class="bd-pts"><b>${pts(p)}</b><small> pts</small></span><span class="bd-dep">${esc(String(p.deploys || 0))}<small> deploy${p.deploys === 1 ? '' : 's'}</small></span><span class="bd-time mono">${esc(PB.fmtTime(p.seconds || 0))}</span>${tk ? `<button class="bd-x" type="button" data-nick="${esc(p.nickname)}" aria-label="Hide ${esc(p.nickname)}" title="Hide this nickname">×</button>` : ''}</li>`).join('');
+      : list.map((p, i) => `<li class="bd-row${p.done ? ' done' : ''}"><span class="bd-rank">${i + 1}</span><span class="bd-nick">${esc(p.nickname)}</span>${bar(p)}<span class="bd-pts"><b>${pts(p)}</b><small> pts</small>${hintHTML(p)}</span><span class="bd-dep">${esc(String(p.deploys || 0))}<small> deploy${p.deploys === 1 ? '' : 's'}</small></span><span class="bd-time mono">${esc(PB.fmtTime(p.seconds || 0))}</span>${tk ? `<button class="bd-x" type="button" data-nick="${esc(p.nickname)}" aria-label="Hide ${esc(p.nickname)}" title="Hide this nickname">×</button>` : ''}</li>`).join('');
     $('#bd-open').hidden = !tk || !BD.cls || BD.open;
     $('#bd-csv').hidden = $('#bd-clear').hidden = !tk;
     $('#bd-csv').disabled = $('#bd-clear').disabled = !BD.cls;
@@ -7753,7 +7839,7 @@ window.PB = window.PB || {};
     if (configured()) { Q().flush(); document.querySelectorAll('a[href="#competition"].home-card').forEach(a => a.setAttribute('href', '#join')); }
   }
 
-  Object.assign(PB.Board, { configured, session, post, init, showJoin, showBoard, leaveBoard, joinLink, _queue: Q });
+  Object.assign(PB.Board, { configured, session, noteHints, savedHints, post, init, showJoin, showBoard, leaveBoard, joinLink, _queue: Q });
 })();
 
 </script>
