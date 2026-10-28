@@ -7729,9 +7729,10 @@ window.PB = window.PB || {};
   const boardKey = () => local.get(KKEY) || '';
   const KEY_BAD = 'The server did not accept the board key. Type it again.';
   function bar(p) {
-    if (STEP_OK.test(p.steps)) return stepsHTML(p.steps);   // v8.1.2 (server Version 6): the game's step cards; older rows show the four stage steps
-    const st = p.done ? 4 : p.stage || 0;
-    return `<div class="ms" role="img" aria-label="${STAGES.slice(0, st).join(', ') || 'Joined'}">${STAGES.map((w, i) => `<span class="ms-step${i < st ? ' on' : ''}${i === 3 && p.done ? ' done' : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${PB.MS_ICONS[i]}"/></svg><b>${w}</b></span>`).join('')}</div>`;
+    if (STEP_OK.test(p.steps)) return stepsHTML(p.steps);   // v8.1.2 (server Version 6): the game's step cards
+    // v8.2.1 (client): a join row or a row from before Version 6 has no steps: the same 7 cards, lit from its stage (the methanol tank takes only purified methanol, so Products lights Separation and Purification; Recycle is unknown)
+    const st = p.done ? 4 : p.stage || 0, b = x => (x ? '1' : '0');
+    return stepsHTML(b(st > 0) + b(st > 1) + b(st > 2) + b(st > 2) + b(st > 2) + b(p.done) + '0');
   }
   function renderBoard() {
     const esc = U().esc, list = rank(BD.players), tk = tools();
