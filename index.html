@@ -4092,7 +4092,7 @@ PB.LEVELS.bioethanol = {
         reactions: [ { units: ['reactor', 'converter'], in: { c: ['co2', 'h2'], ph: 'G', T: [250], P: [75], cat: 'inside', Tref: ['Heat to 250 °C [3]'], Pref: ['Compress to 75 bar [3]'], span: 1 },
           out: { out: { c: ['meoh', 'water', 'co2', 'h2'], ph: 'G', T: 250, est: 'meohT' } } } ],
         products: [ { c: ['meoh'], name: 'Methanol', sink: ['tank'] } ],
-        byproducts: [ { main: 'water', name: 'Water', basic: ['pond'], advanced: ['wwt'] } ],
+        byproducts: [ { main: 'water', name: 'Water', basic: ['pond', 'tank'], advanced: ['wwt', 'tank'] } ],   // v8.3 (client): water may be stored in a tank
         loop: { c: 'h2', name: 'unreacted gas', noPurge: 1 }, recovered: [ { c: ['co2', 'h2'], name: 'Unreacted gas', ph: 'G' } ],   // v6: no impurities, so the whole loop recycles
         flashT: 50,   // v8.1.1 (client): the flash takes its feed at 50 °C or cooler, instructor basis (PB.ASSUMPTIONS cw)
         /* v8.2 (client): the Competition hints: the units of the reference plant (one plant that works), game guidance, not a physical claim */
@@ -4301,7 +4301,7 @@ PB.LEVELS.bioethanol = {
       sieve: ['Wet vapour'], drytower: ['Damp air'], acidtank: ['Yeast cream'] },
     /* v6.1: what each separator and purifier needs (icons + a few words, no numbers). Phase codes: G gas, V vapour, Lp polar liquid, Ln oily liquid, S solid */
     needsSep: {
-      flash:      { split: [['G', 'L'], ['V', 'L', 'vapour | liquid (after cooling)']], comps: [{ ph: 'G', name: 'Gas + liquid' }, { ph: 'Lp', name: 'or a liquid with' }, { ph: 'V', name: 'one part to boil off' }] },
+      flash:      { split: [['G', 'L'], ['V', 'L', 'vapour | liquid (after cooling)'], ['G', 'V', 'gas | vapour: condense the vapour first']], comps: [{ ph: 'G', name: 'Gas + liquid' }, { ph: 'Lp', name: 'or a liquid with' }, { ph: 'V', name: 'one part to boil off' }] },   // v8.3 (client): gas | vapour
       settler:    { split: [['Lp', 'Ln']], comps: [{ ph: 'Lp', name: 'Polar layer' }, { ph: 'Ln', name: '+ oily layer' }, { ph: '', name: 'two layers' }] },
       centrifuge: { split: [['Lp', 'S']], comps: [{ ph: 'Lp', name: 'A liquid' }, { ph: 'S', name: '+ solids or cells' }] },
       column:     { split: [['Lp', 'Lp'], ['Ln', 'Ln']], comps: [{ ph: 'L', name: 'One mixed liquid' }] },
@@ -4387,13 +4387,13 @@ PB.LEVELS.bioethanol = {
 
     /* ---------------- product storage (Product zone) ---------------- */
     sinks: {
-      tank: { name: 'Product tank', does: 'Stores one liquid product or by-product at atmospheric pressure. Choose what it stores.', shape: () => PB.FIXED.tank(0.95, 2.0, 'steelDark') },
+      tank: { name: 'Product tank', does: 'Stores one liquid product or by-product at atmospheric pressure. It takes the one material that arrives; you may choose it to lock the tank.', shape: () => PB.FIXED.tank(0.95, 2.0, 'steelDark') },
       refrigtank: { name: 'Refrigerated tank', does: 'An insulated tank that keeps a liquefied gas very cold at atmospheric pressure.',
         shape: () => [ {t:'cyl',axis:'z',x:0,y:0,z:0,r:1.0,h:2.3,c:'steelLight'},
                        {t:'cyl',axis:'z',x:0,y:0,z:0.75,r:1.02,h:0.05,c:'refrig',ring:1}, {t:'cyl',axis:'z',x:0,y:0,z:1.55,r:1.02,h:0.05,c:'refrig',ring:1},
                        {t:'cyl',axis:'z',x:0,y:0,z:2.3,r:1.0,r2:0.8,h:0.2,c:'steelLight'}, {t:'cyl',axis:'z',x:0,y:0,z:2.5,r:0.8,r2:0.2,h:0.28,c:'steelLight'} ],   // v6.4: insulated shell (bands) and a shallow domed roof (unit-models 7.4)
         info: [ 'Product: liquid ammonia, stored fully refrigerated at -33 °C in atmospheric tanks. [13]' ] },
-      gastank: { name: 'Gas storage', does: 'Stores one gas (a product, a by-product or leftover gas) at any pressure. Choose what it stores.', shape: () => PB.FIXED.sphere(0.85, 'steelDark') },   // v8: both modes
+      gastank: { name: 'Gas storage', does: 'Stores one gas (a product, a by-product or leftover gas) at any pressure. It takes the one material that arrives; you may choose it to lock the tank.', shape: () => PB.FIXED.sphere(0.85, 'steelDark') },   // v8: both modes
       vent: { name: 'Vent stack', basicOnly: 1, does: 'Releases leftover gas high above the ground.', shape: () => PB.FIXED.stack('co2') },
       pond: { name: 'Effluent pond', basicOnly: 1, does: 'Collects watery by-products for treatment or reuse.', shape: () => PB.FIXED.pond('water') }
     },
@@ -4480,7 +4480,7 @@ PB.LEVELS.bioethanol = {
       dryIn: 'The drying tower is for damp air.',
       sinkGas: 'A gas cannot be stored in this liquid tank.',
       gasLiq: 'Gas storage takes only gas. This stream contains liquid.',
-      tankChoose: 'Choose what this tank stores (tap the tank).',
+      storeNone: 'This storage takes one finished material, but {got} arrives.',   // v8.3: a tank detects what it stores
       tankWrong: 'This tank was chosen for {want}, but {got} arrives.',
       tankHot: 'The liquid is too hot to store. Cool it to {max} or below first.',
       colLowP: 'The feed is below the column pressure. Pump it up to the column pressure first.',
@@ -5028,7 +5028,7 @@ window.PB = window.PB || {};
     if (type === 'pond' || type === 'wwt') return { T: '≤ ' + fmtT(B.storeMax), P: tP, comps: [{ name: 'Watery liquid', ph: 'Lp' }] };
     if (type !== 'tank' && !gas) return null;
     const pr = P.products.find(p => p.name === prod), by = P.byproducts.find(b => b.name === prod), rc = (P.recovered || []).find(r => r.name === prod);
-    return { T: gas ? S.cardWords.anyT : '≤ ' + fmtT(B.storeMax), P: gas ? S.cardWords.anyP : tP, comps: pr ? bpSort(pr.c).map(one) : by ? [Object.assign(one(by.main), { name: by.name })] : rc ? bpSort(rc.c).map(one) : [{ name: 'Tap to choose', ph: '' }] };
+    return { T: gas ? S.cardWords.anyT : '≤ ' + fmtT(B.storeMax), P: gas ? S.cardWords.anyP : tP, comps: pr ? bpSort(pr.c).map(one) : by ? [Object.assign(one(by.main), { name: by.name })] : rc ? bpSort(rc.c).map(one) : [{ name: 'One finished material', ph: '' }] };
   };
   PB.sandboxSepNeeds = function (proc, type) {
     const S = SBX(), B = BS(), W = S.cardWords, N = S.needsSep[type]; if (!N) return null;
@@ -5050,7 +5050,8 @@ window.PB = window.PB || {};
     if (type === 'flash') {   // v6.3: just what goes in, with icons
       const C = S.comps;
       const light = made.filter(c => C[c].bp != null).sort((a, b) => C[a].bp - C[b].bp)[0];
-      return { T, P: Pr, comps: gasOut ? [{ ph: 'G', name: 'Gas' }, { ph: 'L', name: 'Liquid' }] : [{ ph: 'L', name: 'Liquid' }].concat(light ? [{ ph: 'V', name: C[light].name + ' boils off' }] : []), split: N.split || [] };
+      const pairs = (N.split || []).map(([a, b]) => ({ pair: [a, b], sign: '|', ph: '', name: PHW[a] + ' | ' + PHW[b] }));   // v8.3 (client): a gas + liquid flash shows its pairs (short words: the board card is narrow; the picker gives the full note)
+      return { T, P: Pr, comps: gasOut ? [{ ph: 'G', name: 'Gas' }, { ph: 'L', name: 'Liquid' }].concat(pairs) : [{ ph: 'L', name: 'Liquid' }].concat(light ? [{ ph: 'V', name: C[light].name + ' boils off' }] : []), split: N.split || [] };
     }
     return { T, P: Pr, comps: N.comps.concat((N.split || []).map(([a, b, lab, sg]) => ({ pair: [a, b], sign: sg || '|', ph: '', name: lab || PHW[a] + ' | ' + PHW[b] }))), split: N.split || [] };
   };
@@ -5110,7 +5111,7 @@ window.PB = window.PB || {};
     spec(id) { const it = this.items[id]; return it && spec(it.cat, it.type); },
     zone(id) { return this.board.zones.find(z => z.id === id); },
     fp(it) { return PB.footprint(it.cat === 'unit' && it.type === 'compressor' ? PB.EQUIP.compressor4.shape : shapeOf(it), it.x, it.y); },   // v8.1: a compressor always reserves the 4-stage footprint
-    name(id) { const it = this.items[id]; return !it ? id : it.cat === 'sink' && it.sp && it.sp.prod ? it.sp.prod + (it.type === 'gastank' ? ' storage' : ' tank') : it.name; },   // v8: gas storage too
+    name(id) { const it = this.items[id], pr = it && it.cat === 'sink' && it.sp && (it.sp.prod || (this.stored || {})[id]); return !it ? id : pr ? pr + (it.type === 'gastank' ? ' storage' : ' tank') : it.name; },   // v8: gas storage too; v8.3: or what the last evaluation found in it
 
     placeFixed() {
       const sh = this.mode === 'advanced' ? (this.board.shift || 0) : 0;
@@ -5461,7 +5462,7 @@ window.PB = window.PB || {};
       // round, so every unit sees it through the same merge (one tear pass, presence only)
       const pass = seeded => {
         fails = []; pens = []; warns = []; outs = {}; passes = {}; this.duty = {}; this.stg = {};   // v8.1: compressor stages
-        rec = { warnNodes: new Set(), loopHx: new Set(), yeastNoop: [], loopGas: false, purgeFrom: [], recPipes: new Set(), ferm: [], loopOK: {}, products: {}, byp: {} };
+        rec = { warnNodes: new Set(), loopHx: new Set(), yeastNoop: [], loopGas: false, purgeFrom: [], recPipes: new Set(), ferm: [], loopOK: {}, products: {}, byp: {}, stored: {} };
         for (const p of pipes) if (!back.has(p.id)) delete st[p.id];
         for (const id of topo) {
           const it = items[id], ins = inP(id).filter(p => !back.has(p.id) || (seeded && st[p.id]));
@@ -5643,7 +5644,8 @@ window.PB = window.PB || {};
         products: 10 * stored / P.products.length, pass: ok ? (noRec ? 30 : 15) : 0, recycle: ok && !noRec && pipes.some(p => rec.recPipes.has(p.id) && flow[p.id]) ? 15 : 0 };
       if (this.hints) parts.hints = -10 * this.hints;   // v8.2 (client): each Competition hint costs 10 points
       const points = { total: Math.max(0, Math.round(Object.values(parts).reduce((a, b) => a + b, 0))), parts, has: { sep: !!sepT.length, pur: !!purT.length, recycle: !noRec } };   // v8.1: has = the steps the progress bar shows
-      let restage = false; for (const id of this.order) { const it = items[id]; if (it.cat !== 'unit' || it.type !== 'compressor') continue;   // v8.1: the stage count draws the model and the tag
+      let restage = JSON.stringify(rec.stored) !== JSON.stringify(this.stored || {}); this.stored = rec.stored;   // v8.3: a tank named after what it found in it redraws its tag
+      for (const id of this.order) { const it = items[id]; if (it.cat !== 'unit' || it.type !== 'compressor') continue;   // v8.1: the stage count draws the model and the tag
         const n = this.stg[id] || 1; if (it.stages !== n) { it.stages = n; restage = true; } }
       if (restage) this.layout();
       return this.lastEval = { ok, fail: stops[0] || null, stops, flow, points, loop, fails, pens, warns, warnNodes: rec.warnNodes, passes, st, back, colors, ph, outs, nodeIn, stage, describe: s => this.describe(s, ph) };
@@ -5787,7 +5789,11 @@ window.PB = window.PB || {};
         if (it.cat === 'sink' && t === 'gastank') {   // v8: one chosen gas, exactly (v8.1: at any pressure)
           if (p !== 'G') return { fail: M.gasLiq };
           if (loopGas) rec.purgeFrom.push({ from, sink: it.id });   // v8 (lead decision): gas stored off the loop is a purge, like a vent or flare (a wrong choice then stops at the tank)
-          const want = it.sp.prod; if (!want) return { fail: M.tankChoose };
+          const want = it.sp.prod || PB.sandboxTankChoices(this.procId, this.mode, 'gastank').find(n => { const q = P.products.find(x => x.name === n) || (P.recovered || []).find(x => x.name === n), b = P.byproducts.find(x => x.name === n), c = q ? q.c : b ? [b.main] : [];
+            return c.length === s.c.length && c.every(x => s.c.includes(x)); });   // v8.3 (client): with no choice, the storage takes the one gas that arrives
+          if (!want) return { fail: fmt(M.storeNone, { got: list(s.c) }) };
+          if (rec.stored[it.id] && rec.stored[it.id] !== want) return { fail: fmt(M.tankWrong, { want: rec.stored[it.id], got: want }) };   // v8.3 review (Fable M1): one material per storage, on every pipe
+          rec.stored[it.id] = want;
           const ch = P.products.find(q => q.name === want) || (P.recovered || []).find(q => q.name === want), by = P.byproducts.find(q => q.name === want), wc = ch ? ch.c : by ? [by.main] : [];
           if (wc.length !== s.c.length || !wc.every(c => s.c.includes(c))) return { fail: fmt(M.tankWrong, { want, got: (prod || rc || {}).name || list(s.c) }) };
           if (prod) (rec.products[prod.name] = rec.products[prod.name] || []).push(it.id);
@@ -5799,9 +5805,11 @@ window.PB = window.PB || {};
           if (like && !prod) return { fail: fmt(M.notProduct, { why: prodWhy(s) }) };
           if (prod && prod.c.includes('nh3') && t !== 'refrigtank') return { fail: M.nh3Tank };
           if (t === 'tank') {   // v6.2: the tank stores what the student chose, at 50 °C or cooler and below its boiling point
-            const want = it.sp.prod, got = prod ? prod.name : byp ? byp.name : like ? like.name : rc ? rc.name : null;
-            if (!want) return { fail: M.tankChoose };
+            const got = prod ? prod.name : byp ? byp.name : like ? like.name : rc ? rc.name : null, want = it.sp.prod || got;   // v8.3 (client): with no choice, the tank takes what arrives
+            if (!want) return { fail: fmt(M.storeNone, { got: list(s.c) }) };
             if (got && got !== want) return { fail: fmt(M.tankWrong, { want, got }) };
+            if (rec.stored[it.id] && rec.stored[it.id] !== want) return { fail: fmt(M.tankWrong, { want: rec.stored[it.id], got: want }) };   // v8.3 review (Fable M1): one material per tank, on every pipe
+            rec.stored[it.id] = want;   // named after what reached it, so a stop below (too hot, wet) still reads e.g. "Methanol tank"
             if (s.Tv > X.B.storeMax || s.c.some(c => C[c].bp != null && s.Tv >= C[c].bp)) return { fail: fmt(M.tankHot, { max: fmtT(X.B.storeMax) }) };
           }
           if (prod && t === 'refrigtank' && !prod.c.includes('nh3')) pen(M.refrigNoop, it.id);
@@ -6974,7 +6982,7 @@ window.PB = window.PB || {};
     const outs = v.outs[id] || {}, grp = groupOf(it);
     if (it.cat === 'raw') return { title: it.name, grp, cols: [col(outs.out, 'Outlet')] };
     if (it.cat === 'sink' || it.cat === 'waste') {
-      const nd = PB.sandboxStoreNeeds(SB.proc, it.type, it.sp.prod);   // v6.2: tanks, pond and wastewater show what they need
+      const nd = PB.sandboxStoreNeeds(SB.proc, it.type, it.sp.prod || (g.stored || {})[id]);   // v6.2: tanks, pond and wastewater show what they need (v8.3: or what the tank found it stores)
       if (nd) return { title: g.name(id), grp, cols: [{ label: 'Needs', T: nd.T, P: nd.P, comps: nd.comps }, col(v.nodeIn[id], 'Inlet')] };
       const c = PB.sandboxSinkCard(it.type, it.cat, v.nodeIn[id]);
       return { title: it.name, grp, cols: [c ? Object.assign({ label: 'Inlet' }, c) : col(null, 'Inlet')] };
@@ -7231,7 +7239,8 @@ window.PB = window.PB || {};
         const inS = it.type === 'pump' && v != null && g.previewV && g.previewV.nodeIn[id];   // v7.1: a pump set below the pressure its liquid already has
         if (inS && v < inS.Pv) body += '<p class="sl-note">The liquid already arrives above this pressure.</p>'; } }
     if (it.cat === 'sink') { const k = S.sinks[it.type]; head = esc(k.does); if (k.info) body += `<ul class="needs">${k.info.map(s => `<li>${plain(s)}</li>`).join('')}</ul>`;
-      if (it.type === 'tank' || it.type === 'gastank') body = `<p class="eyebrow">Stores</p><div class="sb-store" role="group" aria-label="What this tank stores">${PB.sandboxTankChoices(SB.proc, g.mode, it.type).map(n =>   // v8: gas storage chooses its gas too
+      if (it.type === 'tank' || it.type === 'gastank') body = `<p class="eyebrow">Stores</p><div class="sb-store" role="group" aria-label="What this tank stores">${`<button class="chip${it.sp.prod ? '' : ' on'}" data-store="" aria-pressed="${!it.sp.prod}">Auto</button>` +   // v8.3 (client): Auto (the tank takes what arrives) or a choice that locks it
+        PB.sandboxTankChoices(SB.proc, g.mode, it.type).map(n =>   // v8: gas storage chooses its gas too
         `<button class="chip${it.sp.prod === n ? ' on' : ''}" data-store="${esc(n)}" aria-pressed="${it.sp.prod === n}">${esc(n)}</button>`).join('')}</div>` + body; }
     if (it.cat === 'util') { const k = S.utilities[it.type]; head = esc(k.does); const info = k.info.concat(it.type === 'fuel' ? [S.fuelInfoGas] : []); body += `<ul class="needs">${info.map(s => `<li>${plain(s)}</li>`).join('')}</ul>`; }
     if (it.cat === 'waste') { const k = S.waste[it.type]; head = esc(k.does); body += `<ul class="needs">${k.info.map(s => `<li>${plain(s)}</li>`).join('')}</ul>`; }
